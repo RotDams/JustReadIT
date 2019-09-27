@@ -112,6 +112,9 @@ fabric.properties
 *.su
 *.idb
 *.pdb
+CMakeFiles/
+cmake-build-debug/
+CMakeLists.txt
 
 # Kernel Module Compile Results
 *.mod*
