@@ -1,17 +1,14 @@
-OBJS	= main.o
-SOURCE	= main.c
-HEADER	= main.h
-OUT	= output.exe
-CC	 = gcc
-FLAGS	 = -g -c -Wall
-SDL_FLAGS	 = `sdl-config --cflags --libs` 
+SOURCE  	= $(wildcard *.c)
+OBJS     	= $(SOURCE:.c=.o)
+HEADER   	= $(SOURCE:.c=.h)
+OUT       	= output.exe
+CC        	= gcc
+FLAGS      	= -O3
+CFLAGS     	= -Wall -Wextra -Werror -O3
+SDL_FLAGS 	= `sdl-config --cflags --libs`
 
 all: $(OBJS)
-	$(CC) -g $(OBJS) -o $(OUT) $(SDL_FLAGS)
-
-main.o: main.c
-	$(CC) $(FLAGS) main.c 
-
+	$(CC) $(FLAGS) -g $(OBJS) -o $(OUT) $(SDL_FLAGS)
 
 clean:
 	rm -f $(OBJS) $(OUT)
