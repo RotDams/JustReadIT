@@ -1,10 +1,9 @@
 #include <SDL2/SDL.h>
 
-
-Uint32 getpixel(SDL_Surface *surface, int x, int y) {
-    int bpp = surface->format->BytesPerPixel;
-    Uint8 *p = (Uint8 *) surface->pixels + y * surface->pitch + x * bpp;
-    return *p;
+Uint32 getpixel(SDL_Surface *surface, int x, int y)
+{
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * 4;
+    return *(Uint32 *)p;
 }
 
 SDL_Surface CutImage(SDL_Surface *Source,int startX,int startY,int W,int H){
@@ -58,9 +57,11 @@ void TakeLetters(SDL_Surface *Words) {
 
 int main() {
     SDL_Surface *image;
-    image = SDL_LoadBMP("src/assets/chat.bmp");
+  //  image = SDL_LoadBMP("src/assets/chat.bmp");
+    image = SDL_LoadBMP("src/assets/test.bmp");
     //takeAllPixelColor(image);
-    CutImage(image,100,100,400,200);
+    //CutImage(image,100,100,400,200);
+    takeAllPixelColor(image);
     return 0;
 }
 
