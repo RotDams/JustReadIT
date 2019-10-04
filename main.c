@@ -31,36 +31,29 @@ SDL_Surface CutImage(SDL_Surface *Source,int startX,int startY,int W,int H){
 }
 
 void takeAllPixelColor(SDL_Surface *image) {
-    int r, g, b;
+    Uint8 r, g, b;
     for (int y = 0; y < image->h; ++y) {
         for (int x = 0; x < image->w; ++x) {
             printf("%i %i \n", x, y);
             SDL_GetRGB(getpixel(image, x, y), image->format, &r, &g, &b);
-            printf("pixel: r(%i) g(%i) b(%i) \n ", r, g, b);
+            printf("pixel: r(%u) g(%u) b(%u) \n ", r, g, b);
         }
     }
 }
 
-SDL_Surface TakeParagraphe(SDL_Surface *image) {
+//void TakeParagraphe(SDL_Surface *image) {}
 
-}
+//oid TakeWords(SDL_Surface *Paragraphe) {}
 
-void TakeWords(SDL_Surface *Paragraphe) {
-
-}
-
-void TakeLetters(SDL_Surface *Words) {
-
-
-}
+//void TakeLetters(SDL_Surface *Words) {}
 
 
 int main() {
     SDL_Surface *image;
-  //  image = SDL_LoadBMP("src/assets/chat.bmp");
-    image = SDL_LoadBMP("src/assets/test.bmp");
+    image = SDL_LoadBMP("src/assets/chat.bmp");
+    //image = SDL_LoadBMP("src/assets/test.bmp");
     //takeAllPixelColor(image);
-    //CutImage(image,100,100,400,200);
+    CutImage(image,100,100,400,200);
     takeAllPixelColor(image);
     return 0;
 }
