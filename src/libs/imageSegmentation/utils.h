@@ -1,4 +1,4 @@
-#include <SDL2/SDL.h>
+#include <SDL/SDL.h>
 
 #ifndef JUSTREADIT_UTILS_H
 #define JUSTREADIT_UTILS_H

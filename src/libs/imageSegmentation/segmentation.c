@@ -22,11 +22,10 @@ SDL_Surface* GetAllText(SDL_Surface *image) {
             if (r <=10  && y < top)
                 top = y;
         }
-
     }
     //Create a new image with the good scale
     SDL_Surface* newImage = CutImage(image, left, top, right - left, bottom - top);
-    return newImage;
+    return  newImage;
 }
 /*
 void GetParagraph(SDL_Surface *image) {
