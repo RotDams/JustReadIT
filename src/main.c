@@ -1,17 +1,10 @@
 #include <SDL/SDL.h>
-#include "libs/imageSegmentation/segmentation.h"
+#include "libs/imageSegmentation/index.h"
+
 
 
 int main() {
-    SDL_Surface *image;
-    SDL_Surface *image2;
-    image = SDL_LoadBMP("src/assets/test-image-0.bmp");
-    image2 = GetAllText(image);
-    SDL_SaveBMP (image2, "image2.bmp");
-//    image = SDL_LoadBMP("src/assets/test.bmp");
-//    //takeAllPixelColor(image);
-//    CutImage(image,100,100,400,200);
-//    takeAllPixelColor(image);
+    ExecAndSAve("image2.bmp");
     return 0;
 }
 
