@@ -1,7 +1,6 @@
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
 SOURCE      = $(call rwildcard, src/, *.c)
-#SOURCE 		= main.c
 OBJS        = $(SOURCE:%.c=_build/%.o)
 HEADER      = $(SOURCE:.c=.h)
 OUT         = output.exe
