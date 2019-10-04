@@ -3,6 +3,15 @@
 
 #include "utils.h"
 
+/* GetAllText
+ * Input:
+ *      - *image  => SLD_SURFACE
+ *
+ * Description:
+ *      - Return a a new scale image with the text in border
+ * */
+SDL_Surface* GetAllText(SDL_Surface *image);
+
 /* GetParagraph
  * Input:
  *      - *image  => SLD_SURFACE

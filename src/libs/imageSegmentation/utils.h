@@ -32,6 +32,6 @@ Uint32 GetPixel(SDL_Surface *surface, int x, int y);
  * Description:
  *      - Return a new image, which is a part of an other image
  * */
-SDL_Surface CutImage(SDL_Surface *Source, int startX, int startY, int W, int H);
+SDL_Surface* CutImage(SDL_Surface *Source, int startX, int startY, int W, int H);
 
 #endif
