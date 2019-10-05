@@ -5,7 +5,7 @@ OBJS        = $(SOURCE:%.c=_build/%.o)
 HEADER      = $(SOURCE:.c=.h)
 OUT         = output.exe
 CC          = gcc
-FLAGS       = -O3
+FLAGS       = -O0
 CFLAGS      = -Wall -Wextra -Werror -O3 -g
 SDL_FLAGS   = `sdl-config --cflags --libs`		# For windows and linux
 #SDL_FLAGS   = -lSDL          		        #FOR MAC OS
