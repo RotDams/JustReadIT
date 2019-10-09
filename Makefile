@@ -8,11 +8,10 @@ CC          = gcc
 FLAGS       = -O0
 CFLAGS      = -Wall -Wextra -Werror -O3 -g
 SDL_FLAGS   = `sdl-config --cflags --libs`		# For windows and linux
-#SDL_FLAGS   = -lSDL          		        #FOR MAC OS
 
 
 all: $(OBJS)
-	$(CC) $(FLAGS) -g $(OBJS) -o $(OUT) $(SDL_FLAGS)
+  $(CC) $(FLAGS) -g $(OBJS) -o $(OUT) $(SDL_FLAGS)
 
 _build/%.o: %.c
 	mkdir -p $(dir $@)
