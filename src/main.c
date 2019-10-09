@@ -10,12 +10,12 @@ int main() {
     print_list(list);
     printf("Taille de la liste: %lu\n", get_length(list));
 
-    list = push_back_list(list, 14);
+    list = push_back_list(list, 14, ListType);
     print_list(list);
     printf("Taille de la liste: %lu\n", get_length(list));
 
-    list = push_back_list(list, 6);
-    list = push_back_list(list, 23);
+    list = push_back_list(list, 6, ListType);
+    list = push_back_list(list, 23, ListType);
     print_list(list);
     printf("Taille de la liste: %lu\n", get_length(list));
 
@@ -30,4 +30,3 @@ int main() {
 
     return 0;
 }
-
