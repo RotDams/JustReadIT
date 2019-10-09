@@ -22,7 +22,7 @@ typedef enum {
  * Definition of a node of the list
  * */
 typedef struct Node {
-    int value;
+    void*  value;
     struct Node *previous;
     struct Node *next;
 } Node;
@@ -111,7 +111,7 @@ Node *get_last_element(List list);
  * Description:
  *      - Add an element at the back of the list
  * */
-List push_back_list(List list, int x, ListElementType elementType);
+List push_back_list(List list, void* x, ListElementType elementType);
 
 
 /* push_front_list
@@ -125,7 +125,7 @@ List push_back_list(List list, int x, ListElementType elementType);
  * Description:
  *      - Add an element at the front of the list
  * */
-List push_front_list(List list, int x, ListElementType elementType);
+List push_front_list(List list, void* x, ListElementType elementType);
 
 
 /* pop_back_list

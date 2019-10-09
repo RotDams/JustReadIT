@@ -7,15 +7,19 @@ int main() {
 
     List list = create_list();
 
+    int six = 6;
+    int quatorze = 14;
+    int vingttrois = 23;
+
     print_list(list);
     printf("Taille de la liste: %lu\n", get_length(list));
 
-    list = push_back_list(list, 14, ListType);
+    list = push_back_list(list, &quatorze, ListType);
     print_list(list);
     printf("Taille de la liste: %lu\n", get_length(list));
 
-    list = push_back_list(list, 6, ListType);
-    list = push_back_list(list, 23, ListType);
+    list = push_back_list(list, &six, ListType);
+    list = push_back_list(list, &vingttrois, ListType);
     print_list(list);
     printf("Taille de la liste: %lu\n", get_length(list));
 

@@ -38,7 +38,7 @@ Node *get_last_element(List list) {
     return list->last;
 }
 
-List push_back_list(List list, int x, ListElementType elementType) {
+List push_back_list(List list, void* x, ListElementType elementType) {
     Node *element;
     element = malloc(sizeof(*element));
 
@@ -80,7 +80,7 @@ List push_back_list(List list, int x, ListElementType elementType) {
     return list;
 }
 
-List push_front_list(List list, int x, ListElementType elementType) {
+List push_front_list(List list, void* x, ListElementType elementType) {
     Node *element;
     element = malloc(sizeof(*element));
 
@@ -185,7 +185,7 @@ void print_list(List list) {
     Node *temp = list->first;
 
     while (temp != NULL) {
-        printf("[%d]", temp->value);
+        printf("[%d]", *((int*) (temp->value)));
         temp = temp->next;
     }
 
