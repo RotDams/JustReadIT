@@ -4,7 +4,8 @@
 
 int main() {
     //ExecAndSAve("src/assets/test-image-1.bmp", "image2.bmp");
-
+/*
+ *
     List list = create_list();
 
     print_list(list);
@@ -27,7 +28,9 @@ int main() {
     list = pop_front_list(list);
     print_list(list);
     printf("Taille de la liste: %lu\n", get_length(list));
-
+*/
+    SDL_Surface* image =extract_text("src/assets/Tour_eiffel_meme.bmp",2);
+    SDL_SaveBMP (image, "textOUT.jpg");
     return 0;
 }
 
