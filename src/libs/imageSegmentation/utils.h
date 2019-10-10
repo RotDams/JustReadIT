@@ -34,4 +34,18 @@ Uint32 GetPixel(SDL_Surface *surface, int x, int y);
  * */
 SDL_Surface* CutImage(SDL_Surface *Source, int startX, int startY, int W, int H);
 
+
+/* IsBlankLine
+ * Input:
+ *      - *image    => SDL_SURFACE (image source)
+ *      - height    => int (the line height)
+ *
+ * Return:
+ *      - int (0 or 1)
+ *
+ * Description:
+ *      - Check if an image contain a blank line in the height line, return 1 if true, else 0
+ * */
+int IsBlankLine(SDL_Surface *image, int height);
+
 #endif

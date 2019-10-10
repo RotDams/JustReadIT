@@ -2,6 +2,7 @@
 #define JUSTREADIT_SEGMENTATION_H
 
 #include "utils.h"
+#include "paragraph/paragraph_manipulation.h"
 
 /* GetAllText
  * Input:
@@ -10,7 +11,7 @@
  * Description:
  *      - Return a a new scale image with the text in border
  * */
-SDL_Surface* GetAllText(SDL_Surface *image);
+SDL_Surface *GetAllText(SDL_Surface *image);
 
 /* GetParagraph
  * Input:

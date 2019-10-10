@@ -4,6 +4,6 @@
 #include "segmentation.h"
 #include "utils.h"
 
-void ExecAndSAve(char* nameFile);
+void ExecAndSAve(char *input, char *output);
 
 #endif //JUSTREADIT_MAIN_H
