@@ -33,7 +33,7 @@ These instructions will get you a copy of the project up and running on your mac
 $ git clone https://github.com/RotDams/JustReadIT
 ```
 
-- Go in the created folder, make an run
+- Go in the created folder, make and run
 
 ```
 $ cd JustReadIT
