@@ -11,6 +11,10 @@ Bool is_empty(List list) {
         return true;
     }
 
+    if (list->length == 0) {
+        return true;
+    }
+
     return false;
 }
 
@@ -38,7 +42,7 @@ Node *get_last_element(List list) {
     return list->last;
 }
 
-List push_back_list(List list, int x) {
+List push_back_list(List list, void *x, ListElementType elementType) {
     Node *element;
     element = malloc(sizeof(*element));
 
@@ -59,11 +63,17 @@ List push_back_list(List list, int x) {
             exit(EXIT_FAILURE);
         }
 
+        list->elementType = elementType;
         list->length = 0;
         list->first = element;
         list->last = element;
 
     } else {
+        if (elementType != list->elementType) {
+            fprintf(stderr, "Error: the type is different");
+            exit(EXIT_FAILURE);
+        }
+
         list->last->next = element;
         element->previous = list->last;
         list->last = element;
@@ -74,7 +84,7 @@ List push_back_list(List list, int x) {
     return list;
 }
 
-List push_front_list(List list, int x) {
+List push_front_list(List list, void *x, ListElementType elementType) {
     Node *element;
     element = malloc(sizeof(*element));
 
@@ -95,11 +105,17 @@ List push_front_list(List list, int x) {
             exit(EXIT_FAILURE);
         }
 
+        list->elementType = elementType;
         list->length = 0;
         list->first = element;
         list->last = element;
 
     } else {
+        if (elementType != list->elementType) {
+            fprintf(stderr, "Error: the type is different");
+            exit(EXIT_FAILURE);
+        }
+
         list->first->previous = element;
         element->next = list->first;
         list->first = element;

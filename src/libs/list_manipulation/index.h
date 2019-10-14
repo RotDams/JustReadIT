@@ -13,11 +13,16 @@ typedef enum {
     true
 } Bool;
 
+typedef enum {
+    ListType,
+    IntType
+} ListElementType;
+
 /* Node
  * Definition of a node of the list
  * */
 typedef struct Node {
-    int value;
+    void*  value;
     struct Node *previous;
     struct Node *next;
 } Node;
@@ -26,6 +31,7 @@ typedef struct Node {
  * Definition of a double chained list
  * */
 typedef struct List {
+    ListElementType elementType;
     unsigned long length;
     struct Node *first;
     struct Node *last;
@@ -98,26 +104,28 @@ Node *get_last_element(List list);
  * Input:
  *      - list =>  List (the list to use)
  *      - x    => int (the value to add)
+ *      - elementType => ListElementType (the type of element)
  * Return:
  *      - List => the list
  *
  * Description:
  *      - Add an element at the back of the list
  * */
-List push_back_list(List list, int x);
+List push_back_list(List list, void* x, ListElementType elementType);
 
 
 /* push_front_list
  * Input:
  *      - list =>  List (the list to use)
  *      - x    => int (the value to add)
+ *      - elementType => ListElementType (the type of element)
  * Return:
  *      - List => the list
  *
  * Description:
  *      - Add an element at the front of the list
  * */
-List push_front_list(List list, int x);
+List push_front_list(List list, void* x, ListElementType elementType);
 
 
 /* pop_back_list

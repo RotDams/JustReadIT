@@ -4,7 +4,7 @@
 #include "segmentation.h"
 #include "utils.h"
 
-void ExecAndSAve(char* nameFile);
+void ExecAndSAve(char *input, char *output);
 
 /* CutImage
  * Input:

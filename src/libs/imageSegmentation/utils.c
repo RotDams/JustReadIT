@@ -1,15 +1,11 @@
 #include "utils.h"
-/*
-Uint32 GetPixel(SDL_Surface *surface, int x, int y) {
-    Uint8 *p = (Uint8 *) surface->pixels + y * surface->pitch + x * 4;
-    return *(Uint32 *) p;
-}*/
+
+
 Uint8* pixel_ref(SDL_Surface *surf, unsigned x, unsigned y)
 {
     int bpp = surf->format->BytesPerPixel;
     return (Uint8*)surf->pixels + y * surf->pitch + x * bpp;
 }
-
 
 Uint32 GetPixel(SDL_Surface *surface,int x,int y)
 {
@@ -59,6 +55,52 @@ SDL_Surface* CutImage(SDL_Surface *Source, int startX, int startY, int W, int H)
 
     return screen;
 }
+
+
+int IsBlankLine(SDL_Surface *image, int height) {
+    int imageHeight = image->h;
+    int imageWidth  = image->w;
+
+    // If the height in parameter is superior than the size of the image
+    if (height > imageHeight) {
+        return 0;
+    }
+
+    // Else, check for all pixel
+    Uint8 r, g, b;
+    for (int i = 0; i < imageWidth; i++) {
+        // Get RGB color
+        SDL_GetRGB(GetPixel(image, i, height), image->format, &r, &g, &b);
+
+        // Check if one of the RGB color is inferior than 250 (we aspect to have blank pixel)
+        if (r < 250 || g < 250 || b < 250) {
+            return 0;
+        }
+    }
+
+    // This is a white line
+    return 1;
+}
+
+int is_blank_column(SDL_Surface *image, int width) {
+    int imageHeight = image->h;
+    int imageWidth  = image->w;
+
+    if (width > imageWidth) {
+        return 0;
+    }
+
+    Uint8 r, g, b;
+    for (int i = 0; i < imageHeight; i++) {
+        SDL_GetRGB(GetPixel(image, width, i), image->format, &r, &g, &b);
+
+        if (r < 250 || g < 250 || b < 250) {
+            return 0;
+
+        }
+    }
+
+    return 1;
 
 
 void put_pixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel)

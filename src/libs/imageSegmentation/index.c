@@ -1,11 +1,10 @@
 #include "index.h"
 
-void exec_and_save(char* nameFile){
+void ExecAndSAve(char *input, char *output) {
     SDL_Surface *image;
-    SDL_Surface *image2;
-    image = SDL_LoadBMP("src/assets/test-image-0.bmp");
-    image2 = GetAllText(image,10);
-    SDL_SaveBMP (image2, nameFile);
+    image = SDL_LoadBMP(input);
+    GetParagraph(image);
+    SDL_SaveBMP (image, output);
 }
 
 SDL_Surface* extract_text(char* source_location, int Seuil){
@@ -40,3 +39,4 @@ SDL_Surface* extract_text(char* source_location, int Seuil){
 //        }
 //    }
 //}
+

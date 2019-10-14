@@ -48,6 +48,35 @@ Uint32 GetPixel(SDL_Surface *surface, int x, int y);
  * */
 SDL_Surface* CutImage(SDL_Surface *Source, int startX, int startY, int W, int H);
 
+
+/* IsBlankLine
+ * Input:
+ *      - *image    => SDL_SURFACE (image source)
+ *      - height    => int (the line height)
+ *
+ * Return:
+ *      - int (0 or 1)
+ *
+ * Description:
+ *      - Check if an image contain a blank line in the height line, return 1 if true, else 0
+ * */
+int IsBlankLine(SDL_Surface *image, int height);
+
+
+/* IsBlankLine
+ * Input:
+ *      - *image    => SDL_SURFACE (image source)
+ *      - width    => int (the line width)
+ *
+ * Return:
+ *      - int (0 or 1)
+ *
+ * Description:
+ *      - Check if an image contain a blank column in the width line, return 1 if true, else 0
+ * */
+int is_blank_column(SDL_Surface *image, int width);
+
+
 /* CutImage
  * Input:
  *      - *surface  => SDL_SURFACE (source image)
@@ -75,5 +104,6 @@ void put_pixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel);
  *      - Is use to correct the black pixels that are only one on the image
  * */
 SDL_Surface* correct_image(SDL_Surface *image,int Seuil);
+
 
 #endif
