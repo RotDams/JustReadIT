@@ -48,4 +48,18 @@ SDL_Surface* CutImage(SDL_Surface *Source, int startX, int startY, int W, int H)
  * */
 int IsBlankLine(SDL_Surface *image, int height);
 
+
+/* IsBlankLine
+ * Input:
+ *      - *image    => SDL_SURFACE (image source)
+ *      - width    => int (the line width)
+ *
+ * Return:
+ *      - int (0 or 1)
+ *
+ * Description:
+ *      - Check if an image contain a blank column in the width line, return 1 if true, else 0
+ * */
+int is_blank_column(SDL_Surface *image, int width);
+
 #endif

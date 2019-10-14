@@ -74,3 +74,24 @@ int IsBlankLine(SDL_Surface *image, int height) {
     // This is a white line
     return 1;
 }
+
+int is_blank_column(SDL_Surface *image, int width) {
+    int imageHeight = image->h;
+    int imageWidth  = image->w;
+
+    if (width > imageWidth) {
+        return 0;
+    }
+
+    Uint8 r, g, b;
+    for (int i = 0; i < imageHeight; i++) {
+        SDL_GetRGB(GetPixel(image, width, i), image->format, &r, &g, &b);
+
+        if (r < 250 || g < 250 || b < 250) {
+            return 0;
+
+        }
+    }
+
+    return 1;
+}
