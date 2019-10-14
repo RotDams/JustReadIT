@@ -152,6 +152,18 @@ List pop_back_list(List list);
 List pop_front_list(List list);
 
 
+/* get_element_by_index
+ * Input:
+ *      - list =>  List (the list to use)
+ *      - i    => int(the index of the wanted value)
+ * Return:
+ *      - Node => the node at the i position
+ *
+ * Description:
+ *      - return an element by its id
+ * */
+Node get_element_by_index(List list, int i);
+
 /* print_list
  * Input:
  *      - list =>  List (the list to use)

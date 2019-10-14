@@ -10,6 +10,20 @@
  *      - y         => position y of the pixel
  *
  * Return:
+ *      - Return the uint8* format of the pixel
+ *
+ * Description:
+ *      - Return a the ref of the pixel of an SDL_SURFACE
+ * */
+Uint8* pixel_ref(SDL_Surface *surf, unsigned x, unsigned y);
+
+/* GetPixel
+ * Input:
+ *      - *surface  => SLD_SURFACE
+ *      - x         => position x of the pixel
+ *      - y         => position y of the pixel
+ *
+ * Return:
  *      - Return the uint32 format of the pixel
  *
  * Description:
@@ -61,5 +75,35 @@ int IsBlankLine(SDL_Surface *image, int height);
  *      - Check if an image contain a blank column in the width line, return 1 if true, else 0
  * */
 int is_blank_column(SDL_Surface *image, int width);
+
+
+/* CutImage
+ * Input:
+ *      - *surface  => SDL_SURFACE (source image)
+ *      - x         => int (start x index)
+ *      - y         => int (start y index)
+ *      - pixel     => Uint32 used to set the new color
+ *
+ * Return:
+ *      void
+ *
+ * Description:
+ *      -put new pixels colors on the image
+ * */
+void put_pixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel);
+
+/* CutImage
+ * Input:
+ *      - *image        => SDL_SURFACE (source image)
+ *      - Seuil         => threshold of tolerance
+ *
+ * Return:
+ *      The image with correction
+ *
+ * Description:
+ *      - Is use to correct the black pixels that are only one on the image
+ * */
+SDL_Surface* correct_image(SDL_Surface *image,int Seuil);
+
 
 #endif

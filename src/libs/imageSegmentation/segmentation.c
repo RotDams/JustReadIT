@@ -1,7 +1,6 @@
 #include "segmentation.h"
 
-SDL_Surface *GetAllText(SDL_Surface *image) {
-
+SDL_Surface* GetAllText(SDL_Surface *image,int Seuil) {
     // default values
     int left = image->w;
     int top = image->h;
@@ -13,13 +12,14 @@ SDL_Surface *GetAllText(SDL_Surface *image) {
     for (int y = 0; y < image->h; ++y) {
         for (int x = 0; x < image->w; ++x) {
             SDL_GetRGB(GetPixel(image, x, y), image->format, &r, &g, &b);
-            if (r <= 10 && x < left)
+
+            if (r <=Seuil && x < left)
                 left = x;
-            if (r <= 10 && x > right)
+            if (r <=Seuil  && x > right)
                 right = x;
-            if (r <= 10)
+            if (r <=Seuil && y >bottom )
                 bottom = y;
-            if (r <= 10 && y < top)
+            if (r <=Seuil  && y < top)
                 top = y;
         }
     }

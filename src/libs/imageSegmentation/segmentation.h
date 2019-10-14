@@ -11,7 +11,8 @@
  * Description:
  *      - Return a a new scale image with the text in border
  * */
-SDL_Surface *GetAllText(SDL_Surface *image);
+SDL_Surface* GetAllText(SDL_Surface *image,int Seuil);
+
 
 /* GetParagraph
  * Input:
