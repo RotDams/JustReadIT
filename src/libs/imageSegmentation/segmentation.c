@@ -25,7 +25,7 @@ SDL_Surface* GetAllText(SDL_Surface *image,int Seuil) {
         }
     }
     //Create a new image with the good scale
-    SDL_Surface *newImage = CutImage(image, left, top, right - left, bottom - top);
+    SDL_Surface *newImage = CutImage(image, left, top, right - left + 1, bottom - top);
     return newImage;
 }
 

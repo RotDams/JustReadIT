@@ -4,7 +4,7 @@
 #include "libs/imageSegmentation/line/line_manipulation.h"
 #include "libs/list_manipulation/index.h"
 
-int main(int argc, char *argv[]) {
+int main(){//int argc, char *argv[]) {
 
 //    if (argc == 1) {
 //        printf("Error: Please specify the path of the image\nEx: ./output.exe -p \"my_image.bmp\"\n");
@@ -38,7 +38,8 @@ int main(int argc, char *argv[]) {
 //    }
 
 
-    SDL_Surface *image = extract_text("src/assets/Tour_eiffel_meme.bmp", 2);
+    //SDL_Surface *image = extract_text("src/assets/Tour_eiffel_meme.bmp", 2);
+    SDL_Surface *image = extract_text("src/assets/SummerPlayaText.bmp", 2);
     List paragraphs = GetParagraph(image);
 
     // Get a node

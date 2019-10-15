@@ -47,7 +47,7 @@ List get_letters(SDL_Surface *image) {
 List get_words_and_letters(SDL_Surface *image) {
     image = GetAllText(image, 10);
     int space_limite = get_words_space(image)-6;
-    space_limite -= (int)(space_limite* 0,1);
+    space_limite -= (int)(space_limite* 0.1);
    // space_limite = (int) (space_limite *0,90);
     //SDL_SaveBMP(image,"Coco.jpg");
     // SDL_SaveBMP(GetAllText(image,10),"Cocospace.jpg");
