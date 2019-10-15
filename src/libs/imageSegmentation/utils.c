@@ -84,7 +84,7 @@ int IsBlankLine(SDL_Surface *image, int height) {
 
 int is_blank_column(SDL_Surface *image, int width) {
     int imageHeight = image->h;
-    int imageWidth  = image->w;
+    int imageWidth = image->w;
 
     if (width > imageWidth) {
         return 0;
@@ -101,7 +101,7 @@ int is_blank_column(SDL_Surface *image, int width) {
     }
 
     return 1;
-
+}
 
 void put_pixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel)
 {
