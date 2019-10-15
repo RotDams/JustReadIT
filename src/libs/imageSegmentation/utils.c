@@ -35,9 +35,9 @@ SDL_Surface* CutImage(SDL_Surface *Source, int startX, int startY, int W, int H)
     SDL_Surface *screen;
 
     //Init of the new image
-    screen = SDL_CreateRGBSurface(0, W, H, 32,
-                                  0xff000000, 0x00ff0000,
-                                  0x0000ff00, 0x000000ff);
+    screen = SDL_CreateRGBSurface(255, W, H, 32,
+                                  0, 0,
+                                  0, 0);
 
     //init of the start of the edition
     pos.x = 0;
@@ -51,7 +51,7 @@ SDL_Surface* CutImage(SDL_Surface *Source, int startX, int startY, int W, int H)
     SDL_BlitSurface(Source, &cut, screen, &pos);
 
     // Save image, to allow user to see the image after manipulation
-    // SDL_SaveBMP (screen, "ImageTest.bmp");      //TODO Debug mode
+   //  SDL_SaveBMP (screen, "ImageTest.bmp");      //TODO Debug mode
 
     return screen;
 }

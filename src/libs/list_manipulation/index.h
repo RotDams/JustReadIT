@@ -15,7 +15,7 @@ typedef enum {
 
 typedef enum {
     ListType,
-    IntType
+    ElementType
 } ListElementType;
 
 /* Node
