@@ -1,4 +1,5 @@
 #include "segmentation.h"
+#include "../list_manipulation/index.h"
 
 SDL_Surface* GetAllText(SDL_Surface *image,int Seuil) {
     // default values
@@ -28,16 +29,17 @@ SDL_Surface* GetAllText(SDL_Surface *image,int Seuil) {
     return newImage;
 }
 
-void GetParagraph(SDL_Surface *image) {
-    // Define variable to save spaces and line height
-    int paragraphJumpSpace = 0;
-    printf("Is blank line: %d\n", IsBlankLine(image, 22));
-    // Get spaces
-    GetParagraphSpace(image, &paragraphJumpSpace);
+List GetParagraph(SDL_Surface *image) {
+    // Get the space between 2 paragraphs
+    int paragraphJumpSpace = GetParagraphSpace(image);
 
-    GetParagraphAndLine(image, paragraphJumpSpace);
+    // Get a list of paragraphs (a paragraphs is a list of lines)
+    List paragraphs = GetParagraphAndLine(image, paragraphJumpSpace);
+
+    return paragraphs;
 
     printf("paragraph space: %d\n", paragraphJumpSpace);
+    printf("There is %lu paragraph(s).\n", paragraphs->length);
 }
 
 /*

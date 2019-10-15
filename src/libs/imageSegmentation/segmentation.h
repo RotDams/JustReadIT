@@ -21,7 +21,7 @@ SDL_Surface* GetAllText(SDL_Surface *image,int Seuil);
  * Description:
  *      - Return a list of paragraph
  * */
-void GetParagraph(SDL_Surface *image);
+List GetParagraph(SDL_Surface *image);
 
 void GetWords(SDL_Surface *Paragraph);
 
