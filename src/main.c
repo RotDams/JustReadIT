@@ -1,6 +1,7 @@
 #include <SDL/SDL.h>
 #include <unistd.h>
 #include "libs/imageSegmentation/index.h"
+#include "libs/imageSegmentation/line/line_manipulation.h"
 #include "libs/list_manipulation/index.h"
 
 int main(int argc, char *argv[]) {
@@ -39,6 +40,38 @@ int main(int argc, char *argv[]) {
 
     SDL_Surface *image = extract_text("src/assets/Tour_eiffel_meme.bmp", 2);
     List paragraphs = GetParagraph(image);
+
+    // Get a node
+    // Node node1 = *((Node*) (paragraphs->first));
+    // List lines_of_p1 = ((List) (node1.value));
+    // SDL_Surface *img = ((SDL_Surface *) (lines_of_p1->first->value));
+
+    Node current_paragraph_node = *((Node*) (paragraphs->first));
+
+    while (current_paragraph_node.value) {
+
+        Node current_line_node = *((List) (current_paragraph_node.value))->first;
+
+        while (current_line_node.value != NULL) {
+            SDL_Surface *img = ((SDL_Surface *) current_line_node.value);
+
+            List words = get_words_and_letters(img);
+            printf("Il y a %lu mots.\n", words->length);
+
+            if (current_line_node.next == NULL) {
+                current_line_node.value = NULL;
+            } else {
+                current_line_node = *(current_line_node.next);
+            }
+        }
+
+        if (current_paragraph_node.next == NULL) {
+            current_paragraph_node.value = NULL;
+        } else {
+            current_paragraph_node = *(current_paragraph_node.next);
+        }
+    }
+
     SDL_SaveBMP (image, "textOUT.jpg");
     return 0;
 }

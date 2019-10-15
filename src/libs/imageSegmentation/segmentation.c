@@ -37,9 +37,6 @@ List GetParagraph(SDL_Surface *image) {
     List paragraphs = GetParagraphAndLine(image, paragraphJumpSpace);
 
     return paragraphs;
-
-    printf("paragraph space: %d\n", paragraphJumpSpace);
-    printf("There is %lu paragraph(s).\n", paragraphs->length);
 }
 
 /*
