@@ -1,13 +1,13 @@
 #include <SDL/SDL.h>
 #include <stdio.h>
+#include "paragraph_manipulation.h"
 #include "../utils.h"
 #include "../../list_manipulation/index.h"
-#include "paragraph_manipulation.h"
 
-void GetParagraphSpace(SDL_Surface *image, int *paragraphJumpSpace) {
+
+int GetParagraphSpace(SDL_Surface *image) {
     // Set the 2 variables at 0
-    int lineJumpSpace = 0;
-    *paragraphJumpSpace = 0;
+    int paragraphJumpSpace = 0;
     int lineHeight = 0;
 
 
@@ -29,18 +29,19 @@ void GetParagraphSpace(SDL_Surface *image, int *paragraphJumpSpace) {
 
         } else {
             // Check if we arrive in text part
-            if (spaceCount != 0 && spaceCount > *paragraphJumpSpace) {
-                lineJumpSpace = *paragraphJumpSpace;
-                *paragraphJumpSpace = spaceCount;
+            if (spaceCount != 0 && spaceCount > paragraphJumpSpace) {
+                paragraphJumpSpace = spaceCount;
             }
 
             spaceCount = 0;
             lineHeightCount++;
         }
     }
+
+    return paragraphJumpSpace;
 }
 
-void GetParagraphAndLine(SDL_Surface *image, int paragraphJumpSpace) {
+List GetParagraphAndLine(SDL_Surface *image, int paragraphJumpSpace) {
 
     // Index to remind the start of the text
     int saved_index = 0;
@@ -104,12 +105,12 @@ void GetParagraphAndLine(SDL_Surface *image, int paragraphJumpSpace) {
 
         }
     }
-
     SDL_Surface *new_img = CutImage(image, 0, saved_index, image->w, index - saved_index - 1);
     line = push_back_list(line,(void * ) new_img, ListType);
     paragraphs = push_back_list(paragraphs, (void *)line, ListType);
 
-
+    return paragraphs;
+/*
     // Get a node
     // Node node1 = *((Node*) (paragraphs->first));
     // List lines_of_p1 = ((List) (node1.value));
@@ -139,5 +140,7 @@ void GetParagraphAndLine(SDL_Surface *image, int paragraphJumpSpace) {
         }
     }
 
-    printf("There is %d paragraphs and %d lines\n", p, l);
+    printf("There is %d paragraphs and %d lines\n", p, l);*/
+
+
 }
