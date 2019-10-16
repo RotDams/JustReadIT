@@ -38,7 +38,7 @@ int main(){//int argc, char *argv[]) {
 //    }
 
 
-    SDL_Surface *image = extract_text("src/assets/SummerPlayaText.bmp", 2);
+    SDL_Surface *image = extract_text("src/assets/test_image_1.bmp", 2);
     List paragraphs = GetParagraph(image);
     printf("There is %lu paragraphs\n", paragraphs->length);
     print_list(paragraphs);
