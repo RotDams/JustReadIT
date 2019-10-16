@@ -210,13 +210,13 @@ void print_list(List list) {
 
 
     if (list->elementType == LetterType){
-        printf("%s [%lu] ",KBLU,list->length);
+        printf("%s [%lu] ",KCYN,list->length);
         return;
     }
    // printf("[");
 
     if (list->elementType == ParagraphType){
-        printf("%sParagraphs    %sLines    %sWords     %sLetters\n\n",KRED,KYEL,KGRN,KBLU);
+        printf("%sParagraphs    %sLines    %sWords     %sLetters\n\n",KRED,KYEL,KGRN,KCYN);
         printf("%s[",KRED);
     }
     else if (list->elementType == LineType)
@@ -224,7 +224,7 @@ void print_list(List list) {
     else if (list->elementType == WordType)
         printf("%s\n[",KGRN);
     else
-        printf("%s[\n",KBLU);
+        printf("%s[\n",KCYN);
 
     Node current_paragraph_node = *((Node *) (list->first));
 
@@ -249,7 +249,7 @@ void print_list(List list) {
     else if (list->elementType == WordType)
         printf("%s]",KGRN);
     else
-        printf("%s]\n",KBLU);
+        printf("%s]\n",KCYN);
   //  printf("]\n");
 }
 
