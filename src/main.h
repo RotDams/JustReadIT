@@ -1,2 +1,2 @@
-#include "libs/imageSegmentation/index.h"
+#include "libs/image_segmentation/index.h"
 

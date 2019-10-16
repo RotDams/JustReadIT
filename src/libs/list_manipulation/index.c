@@ -2,6 +2,16 @@
 #include <stdlib.h>
 #include "index.h"
 
+
+#define KNRM  "\x1B[0m"
+#define KRED  "\x1B[31m"
+#define KGRN  "\x1B[32m"
+#define KYEL  "\x1B[33m"
+#define KBLU  "\x1B[34m"
+#define KMAG  "\x1B[35m"
+#define KCYN  "\x1B[36m"
+#define KWHT  "\x1B[37m"
+
 List create_list(void) {
     return NULL;
 }
@@ -181,7 +191,7 @@ List pop_front_list(List list) {
 }
 
 Node get_element_by_index(List list, int i) {
-    if (i >= list->length) {
+    if ((unsigned long) i >= list->length) {
         fprintf(stderr, "Error: the i is out the range of the ");
         exit(EXIT_FAILURE);
     }
@@ -197,19 +207,50 @@ Node get_element_by_index(List list, int i) {
 }
 
 void print_list(List list) {
-    if (is_empty(list)) {
-        printf("The list is empty\n");
+
+
+    if (list->elementType == LetterType){
+        printf("%s [%lu] ",KCYN,list->length);
         return;
     }
+   // printf("[");
 
-    Node *temp = list->first;
+    if (list->elementType == ParagraphType){
+        printf("%sParagraphs    %sLines    %sWords     %sLetters\n\n",KRED,KYEL,KGRN,KCYN);
+        printf("%s[",KRED);
+    }
+    else if (list->elementType == LineType)
+        printf("%s[",KYEL);
+    else if (list->elementType == WordType)
+        printf("%s\n[",KGRN);
+    else
+        printf("%s[\n",KCYN);
 
-    while (temp != NULL) {
-        // printf("[%d]", temp->value);
-        temp = temp->next;
+    Node current_paragraph_node = *((Node *) (list->first));
+
+    while (current_paragraph_node.value) {
+
+
+        if (list->elementType !=LetterType) {
+            print_list((List) current_paragraph_node.value);
+        }
+
+        if (current_paragraph_node.next == NULL) {
+            current_paragraph_node.value = NULL;
+        } else {
+            current_paragraph_node = *(current_paragraph_node.next);
+        }
     }
 
-    printf("\n");
+    if (list->elementType == ParagraphType)
+        printf("%s]",KRED);
+    else if (list->elementType == LineType)
+        printf("%s]\n",KYEL);
+    else if (list->elementType == WordType)
+        printf("%s]",KGRN);
+    else
+        printf("%s]\n",KCYN);
+  //  printf("]\n");
 }
 
 List clear_list(List list) {

@@ -14,8 +14,10 @@ typedef enum {
 } Bool;
 
 typedef enum {
-    ListType,
-    IntType
+    ParagraphType,
+    LineType,
+    WordType,
+    LetterType
 } ListElementType;
 
 /* Node
