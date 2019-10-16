@@ -68,7 +68,7 @@ List GetParagraphAndLine(SDL_Surface *image, int paragraphJumpSpace) {
                 // Here we can insert line on the list ?
                 SDL_Surface *new_img = CutImage(image, 0, saved_index, image->w, index - saved_index - 1);
                 List l = get_words_and_letters(new_img);
-                line = push_back_list(line, (void *) l, ListType);
+                line = push_back_list(line, (void *) l, LineType);
 
                 // We are
             } else {
@@ -86,7 +86,7 @@ List GetParagraphAndLine(SDL_Surface *image, int paragraphJumpSpace) {
 
                 // We are in a new the paragraph
                 if (white_counter > 0.9 * paragraphJumpSpace) {
-                    paragraphs = push_back_list(paragraphs, (void *) line, ListType);
+                    paragraphs = push_back_list(paragraphs, (void *) line, ParagraphType);
                     line = create_list();
                 }
 
@@ -104,8 +104,8 @@ List GetParagraphAndLine(SDL_Surface *image, int paragraphJumpSpace) {
     }
     SDL_Surface *new_img = CutImage(image, 0, saved_index, image->w, index - saved_index - 1);
     List l = get_words_and_letters(new_img);
-    line = push_back_list(line,(void *) l, ListType);
-    paragraphs = push_back_list(paragraphs, (void *)line, ListType);
+    line = push_back_list(line,(void *) l, LineType);
+    paragraphs = push_back_list(paragraphs, (void *)line, ParagraphType);
 
     return paragraphs;
 }

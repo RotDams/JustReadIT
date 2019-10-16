@@ -2,6 +2,16 @@
 #include <stdlib.h>
 #include "index.h"
 
+
+#define KNRM  "\x1B[0m"
+#define KRED  "\x1B[31m"
+#define KGRN  "\x1B[32m"
+#define KYEL  "\x1B[33m"
+#define KBLU  "\x1B[34m"
+#define KMAG  "\x1B[35m"
+#define KCYN  "\x1B[36m"
+#define KWHT  "\x1B[37m"
+
 List create_list(void) {
     return NULL;
 }
@@ -197,16 +207,32 @@ Node get_element_by_index(List list, int i) {
 }
 
 void print_list(List list) {
-    printf("[");
+
+
+    if (list->elementType == LetterType){
+        printf("%s [%lu] ",KBLU,list->length);
+        return;
+    }
+   // printf("[");
+
+    if (list->elementType == ParagraphType){
+        printf("%sParagraphs    %sLines    %sWords     %sLetters\n\n",KRED,KYEL,KGRN,KBLU);
+        printf("%s[",KRED);
+    }
+    else if (list->elementType == LineType)
+        printf("%s[",KYEL);
+    else if (list->elementType == WordType)
+        printf("%s\n[",KGRN);
+    else
+        printf("%s[\n",KBLU);
 
     Node current_paragraph_node = *((Node *) (list->first));
 
     while (current_paragraph_node.value) {
 
-        if (list->elementType == ListType) {
+
+        if (list->elementType !=LetterType) {
             print_list((List) current_paragraph_node.value);
-        } else {
-            printf(" x ");
         }
 
         if (current_paragraph_node.next == NULL) {
@@ -216,8 +242,15 @@ void print_list(List list) {
         }
     }
 
-
-    printf("]\n");
+    if (list->elementType == ParagraphType)
+        printf("%s]",KRED);
+    else if (list->elementType == LineType)
+        printf("%s]\n",KYEL);
+    else if (list->elementType == WordType)
+        printf("%s]",KGRN);
+    else
+        printf("%s]\n",KBLU);
+  //  printf("]\n");
 }
 
 List clear_list(List list) {

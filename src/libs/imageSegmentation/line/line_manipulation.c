@@ -34,7 +34,7 @@ List get_letters(SDL_Surface *image) {
             } else {
                 letters_list = push_back_list(letters_list,
                                               (void *) CutImage(image, save_index, 0, x - save_index, image->h),
-                                              ElementType);
+                                              LetterType);
                 SDL_SaveBMP(image, "CurrentWord.jpg");
                 SDL_SaveBMP(GetAllText(CutImage(image, save_index, 0, x - save_index, image->h), 10), "CurrentLetters.jpg");
                 save_index = x + 1;
@@ -64,7 +64,7 @@ List get_words_and_letters(SDL_Surface *image) {
         if (blank_count >= space_limite || x== image->w) {
             words_list = push_back_list(words_list,
                                         (void *) get_letters(CutImage(image, save_index, 0, x - save_index, image->h)),
-                                        ListType);
+                                        WordType);
             save_index = x + 1;
             blank_count = 0;
         }
