@@ -18,4 +18,4 @@ _build/%.o: %.c
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $(^:_build=)
 
 clean:
-	rm -fr $(OBJS) $(OUT) _build/
+	rm -fr $(OBJS) $(OUT) _build/ *.jpg
