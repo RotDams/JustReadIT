@@ -3,6 +3,7 @@
 #include "paragraph_manipulation.h"
 #include "../utils.h"
 #include "../../list_manipulation/index.h"
+#include "../line/line_manipulation.h"
 
 
 int GetParagraphSpace(SDL_Surface *image) {
@@ -52,9 +53,6 @@ List GetParagraphAndLine(SDL_Surface *image, int paragraphJumpSpace) {
     // Count the number of white line
     int white_counter = 0;
 
-    int p = 1;
-    int l = 1;
-
     List paragraphs = create_list();
     List line = create_list();
 
@@ -69,7 +67,8 @@ List GetParagraphAndLine(SDL_Surface *image, int paragraphJumpSpace) {
 
                 // Here we can insert line on the list ?
                 SDL_Surface *new_img = CutImage(image, 0, saved_index, image->w, index - saved_index - 1);
-                line = push_back_list(line, (void *) new_img, ListType);
+                List l = get_words_and_letters(new_img);
+                line = push_back_list(line, (void *) l, ListType);
 
                 // We are
             } else {
@@ -84,11 +83,9 @@ List GetParagraphAndLine(SDL_Surface *image, int paragraphJumpSpace) {
             // We are before on white line
             if (white_counter != 0) {
                 saved_index = index;
-                l++;
 
                 // We are in a new the paragraph
                 if (white_counter > 0.9 * paragraphJumpSpace) {
-                    p++;
                     paragraphs = push_back_list(paragraphs, (void *) line, ListType);
                     line = create_list();
                 }
@@ -106,41 +103,9 @@ List GetParagraphAndLine(SDL_Surface *image, int paragraphJumpSpace) {
         }
     }
     SDL_Surface *new_img = CutImage(image, 0, saved_index, image->w, index - saved_index - 1);
-    line = push_back_list(line,(void * ) new_img, ListType);
+    List l = get_words_and_letters(new_img);
+    line = push_back_list(line,(void *) l, ListType);
     paragraphs = push_back_list(paragraphs, (void *)line, ListType);
 
     return paragraphs;
-/*
-    // Get a node
-    // Node node1 = *((Node*) (paragraphs->first));
-    // List lines_of_p1 = ((List) (node1.value));
-    // SDL_Surface *img = ((SDL_Surface *) (lines_of_p1->first->value));
-
-    Node current_paragraph_node = *((Node*) (paragraphs->first));
-
-    while (current_paragraph_node.value) {
-
-        Node current_line_node = *((List) (current_paragraph_node.value))->first;
-
-        while (current_line_node.value != NULL) {
-            SDL_Surface *img = ((SDL_Surface *) current_line_node.value);
-            printf("Size: %d\n", img->h);
-
-            if (current_line_node.next == NULL) {
-                current_line_node.value = NULL;
-            } else {
-                current_line_node = *(current_line_node.next);
-            }
-        }
-
-        if (current_paragraph_node.next == NULL) {
-            current_paragraph_node.value = NULL;
-        } else {
-            current_paragraph_node = *(current_paragraph_node.next);
-        }
-    }
-
-    printf("There is %d paragraphs and %d lines\n", p, l);*/
-
-
 }

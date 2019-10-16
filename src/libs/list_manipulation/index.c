@@ -197,19 +197,27 @@ Node get_element_by_index(List list, int i) {
 }
 
 void print_list(List list) {
-    if (is_empty(list)) {
-        printf("The list is empty\n");
-        return;
+    printf("[");
+
+    Node current_paragraph_node = *((Node *) (list->first));
+
+    while (current_paragraph_node.value) {
+
+        if (list->elementType == ListType) {
+            print_list((List) current_paragraph_node.value);
+        } else {
+            printf(" x ");
+        }
+
+        if (current_paragraph_node.next == NULL) {
+            current_paragraph_node.value = NULL;
+        } else {
+            current_paragraph_node = *(current_paragraph_node.next);
+        }
     }
 
-    Node *temp = list->first;
 
-    while (temp != NULL) {
-        // printf("[%d]", temp->value);
-        temp = temp->next;
-    }
-
-    printf("\n");
+    printf("]\n");
 }
 
 List clear_list(List list) {
