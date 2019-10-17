@@ -19,25 +19,30 @@ void Init(NeuralNetwork *network)
 	Neuron n;
 	n.value = 0;
 	n.bias = 0;
-	double weight[2] = {0.5,0.5};
-	n.link[2] = *weight;
+	n.link[0] = 0.5;
+	n.link[1] = 0.5;
 	n.nb_link = 2;
 
 	NeuralNetwork net;
 	net.error = 0.05;
-	Neuron list_neurons[5] = {n,n,n,n,n};
-	net.neurons[5] = *list_neurons;
+	net.neurons[0] = n;
+	net.neurons[1] = n;
+	net.neurons[2] = n;
+	net.neurons[3] = n;
+	net.neurons[4] = n;
 	net.nb_neurons = 5;
 	*network = net;
 }
 
 void Print_Info(NeuralNetwork *network)
 {
+	// Print all links information
 	printf("Link : \n");
 	printf("%f, %f\n",network->neurons[2].link[0],network->neurons[2].link[1]);
 	printf("%f, %f\n",network->neurons[3].link[0],network->neurons[3].link[1]);
 	printf("%f, %f\n",network->neurons[4].link[0],network->neurons[4].link[1]);
 
+	// Print all neurons values
 	printf("Values :\n");
 	printf("%f, %f \n",network->neurons[0].value, network->neurons[1].value);
 	printf("%f, %f \n",network->neurons[2].value, network->neurons[3].value);
