@@ -14,7 +14,7 @@ double derivative(double value)
 	return value*(1-value);
 }
 
-void Init(NeuralNetwork *network)
+NeuralNetwork Init()
 {
 	Neuron n;
 	n.value = 0;
@@ -31,13 +31,13 @@ void Init(NeuralNetwork *network)
 	net.neurons[3] = n;
 	net.neurons[4] = n;
 	net.nb_neurons = 5;
-	*network = net;
+	return net;
 }
 
 void Print_Info(NeuralNetwork *network)
 {
 	// Print all links information
-	printf("Link : \n");
+	printf("Link :\n");
 	printf("%f, %f\n",network->neurons[2].link[0],network->neurons[2].link[1]);
 	printf("%f, %f\n",network->neurons[3].link[0],network->neurons[3].link[1]);
 	printf("%f, %f\n",network->neurons[4].link[0],network->neurons[4].link[1]);

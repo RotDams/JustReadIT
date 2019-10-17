@@ -36,9 +36,15 @@ int main(){//int argc, char *argv[]) {
 //        return EXIT_FAILURE;
 //    }
 
-	NeuralNetwork *network = NULL;
-	Init(network);
-	Print_Info(network);
+	NeuralNetwork *pointer = NULL, network;
+	network = Init();
+	pointer = &network;
+	Print_Info(pointer);
+	int entry[2];
+	entry[0] = 1;
+	entry[1] = 0;
+	printf("Output : %f\n",Run(pointer,entry,2));
+	Print_Info(pointer);
 
     //List paragraphs = image_segmentation("src/assets/image_white_bg.bmp");
     //print_list(paragraphs);

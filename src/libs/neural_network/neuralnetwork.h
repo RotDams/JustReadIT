@@ -18,7 +18,7 @@ typedef struct NeuralNetwork
 
 double sigmmoide(double value);
 
-void Init(NeuralNetwork *network);
+struct NeuralNetwork Init();
 
 void Print_Info(NeuralNetwork *network);
 
