@@ -28,7 +28,6 @@ List get_letters(SDL_Surface *image) {
     List letters_list = create_list();
     int save_index = 0;
     for (int x = 0; x <= image->w; ++x) {
-        //SDL_SaveBMP(image,"Coco1.jpg");
         if (is_blank_column(image, x) || x == image->w) {
             if (x == save_index) {
                 save_index += 1;
