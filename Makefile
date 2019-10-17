@@ -11,7 +11,7 @@ SDL_FLAGS   = `sdl-config --cflags --libs`		# For windows and linux
 
 
 all: $(OBJS)
-	$(CC) $(FLAGS) -g $(OBJS) -o $(OUT) $(SDL_FLAGS)
+	$(CC) $(FLAGS) -g $(OBJS) -o $(OUT) $(SDL_FLAGS) -lm -ldl
 
 _build/%.o: %.c
 	mkdir -p $(dir $@)

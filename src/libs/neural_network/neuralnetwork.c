@@ -23,10 +23,12 @@ void Init(NeuralNetwork *network)
 	n.link[2] = *weight;
 	n.nb_link = 2;
 
-	network->error = 0.05;
+	NeuralNetwork net;
+	net.error = 0.05;
 	Neuron list_neurons[5] = {n,n,n,n,n};
-	network->neurons[5] = *list_neurons;
-	network->nb_neurons = 5;
+	net.neurons[5] = *list_neurons;
+	net.nb_neurons = 5;
+	*network = net;
 }
 
 void Print_Info(NeuralNetwork *network)
@@ -189,27 +191,4 @@ void Load_Neural_Network(NeuralNetwork *network)
 		// Close file
 		fclose(file);
 	}
-}
-
-int main()
-{
-	// Init variable
-	/*NeuralNetwork *network = NULL;
-	Init(network);
-    int entry[] = {1,0};
-    Print_Info(network);
-	Propagation(network,entry,2);
-	Print_Info(network);
-	Backpropagation(network,1);
-	Print_Info(network);*/
-
-	// Machine Learning
-	/*int alea = 0;
-
-	alea = rand() % 1;*/
-
-	// Test the program
-	/*printf("Example :\n");
-	printf("The probabilitie it is true is : %d\n", Run(network,,100));*/
-	return 0;
 }
