@@ -39,12 +39,78 @@ int main(){//int argc, char *argv[]) {
 	NeuralNetwork *pointer = NULL, network;
 	network = Init();
 	pointer = &network;
+
 	Print_Info(pointer);
+
 	int entry[2];
 	entry[0] = 1;
 	entry[1] = 0;
-	printf("Output : %f\n",Run(pointer,entry,2));
-	Print_Info(pointer);
+
+	for(int i =0;i<100;i++)
+	{
+		Learn(pointer,entry,1);
+	}
+
+	printf("\n=====================================\n\n");
+	entry[1] = 0;
+	entry[0] = 0;
+	for(int i =0;i<100;i++)
+	{
+		Learn(pointer,entry,0);
+	}
+
+	printf("\n=====================================\n\n");
+	entry[1] = 0;
+	entry[0] = 0;
+	for(int i =0;i<100;i++)
+	{
+		Learn(pointer,entry,0);
+	}
+
+	printf("\n=====================================\n\n");
+	entry[1] = 1;
+	entry[0] = 0;
+	for(int i =0;i<100;i++)
+	{
+		Learn(pointer,entry,1);
+	}
+
+	printf("\n=====================================\n\n");
+	entry[1] = 1;
+	entry[0] = 1;
+	for(int i =0;i<100;i++)
+	{
+		Learn(pointer,entry,0);
+	}
+
+	printf("\n=====================================\n\n");
+	entry[1] = 1;
+	entry[0] = 0;
+	for(int i =0;i<100;i++)
+	{
+		Learn(pointer,entry,1);
+	}
+
+	printf("\n=====================================\n\n");
+	entry[1] = 1;
+	entry[0] = 0;
+	for(int i =0;i<100;i++)
+	{
+		Learn(pointer,entry,1);
+	}
+
+	printf("\n=====================================\n\n");
+	entry[1] = 0;
+	entry[0] = 0;
+	for(int i =0;i<100;i++)
+	{
+		Learn(pointer,entry,0);
+	}
+
+	entry[0] = 1;
+	entry[1] = 0;
+	Run(pointer,entry,2);
+
 
     //List paragraphs = image_segmentation("src/assets/image_white_bg.bmp");
     //print_list(paragraphs);

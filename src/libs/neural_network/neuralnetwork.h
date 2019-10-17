@@ -26,7 +26,7 @@ void Propagation(NeuralNetwork *network, int entry[],size_t len);
 
 void Backpropagation(NeuralNetwork *network, int expected);
 
-void Learn(NeuralNetwork *network, int entry[], int expected[]);
+void Learn(NeuralNetwork *network, int entry[], int expected);
 
 double Run(NeuralNetwork *network, int entry[], size_t len);
 
