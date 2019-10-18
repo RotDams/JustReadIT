@@ -40,8 +40,11 @@ int main(){//int argc, char *argv[]) {
 	network = Load_Neural_Network();
 	pointer = &network;
 
-	printf("Value : %f\n",pointer->neurons[0].value);
-	printf("Links : %f - %f\n",pointer->neurons[0].link[0], pointer->neurons[0].link[1]);
+	printf("Value : %f\n",pointer->neurons[2].value);
+	printf("Links : %f - %f\n\n",pointer->neurons[2].link[0], pointer->neurons[2].link[1]);
+
+	printf("Value : %f\n",pointer->neurons[3].value);
+	printf("Links : %f - %f\n\n", pointer->neurons[3].link[0], pointer->neurons[3].link[1]);
 
 	/*int entry[2];
 	entry[0] = 1;
