@@ -14,6 +14,7 @@ double derivative(double value)
 	return value*(1-value);
 }
 
+// Initialize the network from scratch
 NeuralNetwork Init()
 {
 	Neuron n;
@@ -52,6 +53,7 @@ void Print_Info(NeuralNetwork *network)
 	printf("=====================================================\n\n");
 }
 
+// 
 void Propagation(NeuralNetwork *network, int entry[], size_t len)
 {
 	// Check if there is enough entry or neuron
@@ -141,6 +143,7 @@ void Backpropagation(NeuralNetwork *network,int expected)
 	}*/
 }
 
+// Machine learning function
 void Learn(NeuralNetwork *network, int entry[],int expected)
 {
 	Propagation(network,entry,2);
@@ -148,6 +151,7 @@ void Learn(NeuralNetwork *network, int entry[],int expected)
 	printf("Output : %f\n", network->neurons[4].value);
 }
 
+// Pass through the neural network
 double Run(NeuralNetwork *network, int entry[], size_t len)
 {
 	Propagation(network, entry,len);
@@ -155,6 +159,7 @@ double Run(NeuralNetwork *network, int entry[], size_t len)
 	return network->neurons[4].value;
 }
 
+// Save network into save_network.txt
 void Save_Neural_Network(NeuralNetwork *network)
 {
 	FILE *file = NULL;
@@ -172,6 +177,7 @@ void Save_Neural_Network(NeuralNetwork *network)
 	fclose(file);
 }
 
+// Get information from one neuron in save_network.txt
 Neuron Load_Neuron(FILE *file)
 {
 	double neuron_data[3];
@@ -183,8 +189,10 @@ Neuron Load_Neuron(FILE *file)
 	}
 	else
 	{
+		// Get neuron data through thanks to a pattern
 		fscanf(file,"Value :\n%lf\nLinks :\n%lf; %lf\n\n",&neuron_data[0],&neuron_data[1],&neuron_data[2]);
 
+		// Creation of the neuron with data from save_network information
 		Neuron n;
 		n.value = neuron_data[0];
 		n.link[0] = neuron_data[1];
@@ -193,6 +201,7 @@ Neuron Load_Neuron(FILE *file)
 	}
 }
 
+// Create a network with data from save_network.txt
 NeuralNetwork Load_Neural_Network()
 {
 	FILE *file = NULL;
@@ -206,7 +215,9 @@ NeuralNetwork Load_Neural_Network()
 	}
 	else
 	{
+		// Creation of the network with all data in save_network.txt
 		NeuralNetwork net;
+		// Init all neurons
 		for(int i = 0; i < 5; i++)
 		{
 			net.neurons[i] = Load_Neuron(file);
