@@ -172,30 +172,48 @@ void Save_Neural_Network(NeuralNetwork *network)
 	fclose(file);
 }
 
+Neuron Load_Neuron(FILE *file)
+{
+	double neuron_data[3];
+	// Check if the file exist
+	if(file == NULL)
+	{
+		printf("Error: fail to load neuron\n");
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		fscanf(file,"Value :\n%lf\nLinks :\n%lf; %lf\n\n",&neuron_data[0],&neuron_data[1],&neuron_data[2]);
+
+		Neuron n;
+		n.value = neuron_data[0];
+		n.link[0] = neuron_data[1];
+		n.link[1] = neuron_data[2];
+		return n;
+	}
+}
+
 NeuralNetwork Load_Neural_Network()
 {
 	FILE *file = NULL;
-	double filedata[15];
 	// Get the file where network data is saved
 	file = fopen("src/libs/neural_network/save_network.txt","r");
 	// Check if the file exist
 	if(file==NULL)
 	{
-		printf("Error: fail to load\n");
+		printf("Error: fail to load neural network\n");
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		fscanf(file,"Value :\n%lf\nLinks :\n%lf; %lf\n\n",&filedata[0],&filedata[1],&filedata[2]);
+		NeuralNetwork net;
+		for(int i = 0; i < 5; i++)
+		{
+			net.neurons[i] = Load_Neuron(file);
+		}
 
 		// Close file
 		fclose(file);
-		NeuralNetwork net;
-		net.nb_neurons = 1;
-		net.neurons[0].value = filedata[0];
-		net.neurons[0].link[0] = filedata[1];
-		net.neurons[0].link[1] = filedata[2];
-
 		return net;
 	}
 }
