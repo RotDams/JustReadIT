@@ -45,12 +45,31 @@ int main(){//int argc, char *argv[]) {
 	entry[1] = 0;
 
 	printf("\n=====================================\n\n");
-	for(int i =0;i<10000000;i++)
+	for(int i =0;i<100000;i++)
 	{
-		entry[0] = rand()%2;
-		entry[1] = rand()%2;
+		entry[0] = 0;//rand()%2;
+		entry[1] = 0;// rand()%2;
 		printf("Expected : %d\n",entry[0]!=entry[1]);
 		Learn(pointer,entry,entry[0]!=entry[1]);
+		printf("\n");
+
+        entry[0] = 1;//rand()%2;
+        entry[1] = 0;// rand()%2;
+        printf("Expected : %d\n",entry[0]!=entry[1]);
+        Learn(pointer,entry,entry[0]!=entry[1]);
+        printf("\n");
+
+        entry[0] = 1;//rand()%2;
+        entry[1] = 1;// rand()%2;
+        printf("Expected : %d\n",entry[0]!=entry[1]);
+        Learn(pointer,entry,entry[0]!=entry[1]);
+        printf("\n");
+
+        entry[0] = 0;//rand()%2;
+        entry[1] = 1;// rand()%2;
+        printf("Expected : %d\n",entry[0]!=entry[1]);
+        Learn(pointer,entry,entry[0]!=entry[1]);
+        printf("\n");
 	}
 
 	entry[0] = 1;

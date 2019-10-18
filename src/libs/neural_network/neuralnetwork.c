@@ -15,7 +15,8 @@ double derivative(double value) {
 // Initialize the network from scratch
 NeuralNetwork Init() {
     Neuron n, n1, n2, n3, n4;
-    n.value = 0.9;
+    n.value = 0;
+    n.value = 1;
     n.bias = 0.2;
     n.link[0] = 1;
     n.link[1] = 1;
@@ -102,24 +103,24 @@ void Backpropagation(NeuralNetwork *network, int expected) {
     double Gb[3];
 
     //neurone 4
-    Gw[5] = Activation[4] * derivative(Weight[5] * Activation[4] + Bias[4]) * (Activation[4] - expected);
-    Gw[4] = Activation[4] * derivative(Weight[4] * Activation[4] + Bias[4]) * (Activation[4] - expected);
+    Gw[5] = Activation[4] * derivative(Weight[5] * Activation[3] + Bias[4]) * (Activation[4] - expected);
+    Gw[4] = Activation[4] * derivative(Weight[4] * Activation[2] + Bias[4]) * (Activation[4] - expected);
 
     //neurone 3
-    Gw[3] = Activation[3] * derivative(Weight[3] * Activation[3] + Bias[3]) * (Activation[3] - expected);
-    Gw[2] = Activation[3] * derivative(Weight[2] * Activation[3] + Bias[3]) * (Activation[3] - expected);
+    Gw[3] = Activation[3] * derivative(Weight[3] * Activation[0] + Bias[3]) * (Activation[3] - expected);
+    Gw[2] = Activation[3] * derivative(Weight[2] * Activation[1] + Bias[3]) * (Activation[3] - expected);
 
     //neurone 2
-    Gw[1] = Activation[2] * derivative(Weight[1] * Activation[2] + Bias[2]) * (Activation[2] - expected);
-    Gw[0] = Activation[2] * derivative(Weight[0] * Activation[2] + Bias[2]) * (Activation[2] - expected);
+    Gw[1] = Activation[2] * derivative(Weight[1] * Activation[1] + Bias[2]) * (Activation[2] - expected);
+    Gw[0] = Activation[2] * derivative(Weight[0] * Activation[0] + Bias[2]) * (Activation[2] - expected);
 
 
-    Gb[2] = (derivative(Weight[4] * Activation[4] + Bias[4]) * (Activation[4] - expected) +
-             (derivative(Weight[5] * Activation[4] + Bias[4]) * (Activation[4] - expected)));
-    Gb[1] = (derivative(Weight[3] * Activation[4] + Bias[4]) * (Activation[4] - expected) +
-             (derivative(Weight[2] * Activation[4] + Bias[4]) * (Activation[4] - expected)));
-    Gb[0] = (derivative(Weight[0] * Activation[4] + Bias[4]) * (Activation[4] - expected) +
-             (derivative(Weight[1] * Activation[4] + Bias[4]) * (Activation[4] - expected)));
+    Gb[2] = (derivative(Weight[4] * Activation[3] + Bias[4]) * (Activation[4] - expected) +
+             (derivative(Weight[5] * Activation[2] + Bias[4]) * (Activation[4] - expected)));
+    Gb[1] = (derivative(Weight[3] * Activation[0] + Bias[4]) * (Activation[4] - expected) +
+             (derivative(Weight[2] * Activation[1] + Bias[4]) * (Activation[4] - expected)));
+    Gb[0] = (derivative(Weight[0] * Activation[1] + Bias[4]) * (Activation[4] - expected) +
+             (derivative(Weight[1] * Activation[0] + Bias[4]) * (Activation[4] - expected)));
 
 
     network->neurons[2].link[0] -= Gw[0];
