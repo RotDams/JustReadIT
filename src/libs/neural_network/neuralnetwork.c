@@ -11,7 +11,7 @@ double sigmoide(double value)
 
 double derivative(double value)
 {
-	return value*(1-value);
+	return sigmoide(value)*(1-sagmoide(value));
 }
 
 // Initialize the network from scratch
@@ -84,24 +84,58 @@ void Propagation(NeuralNetwork *network, int entry[], size_t len)
 
 void Backpropagation(NeuralNetwork *network,int expected)
 {
-	double sum = 0;
-	// Compute the error
-	for (int i = 4; i >1; i--)
-	{
-		network->neurons[4].value = expected - network->neurons[4].value;
+	double Co = (1/2)*(network->neurons[4].value - expected);
+	double Activation [5];
+	double Weight[6];
+	double Bias[5];
+
+	for(int i=0;i<5;i++){
+		Activation[i] = network->neurons[i].value;
 	}
+
+	Weight[0] = network->neurons[2].link[0];
+	Weight[1] = network->neurons[2].link[1];
+	Weight[2] = network->neurons[3].link[0];
+	Weight[3] = network->neurons[3].link[1];
+	Weight[4] = network->neurons[4].link[0];
+	Weight[5] = network->neurons[4].link[1];
+
+	 for(int i=0;i<5;i++){
+		Bias[i] = network->neurons[i].bias;
+»·······}              
+
+	double Gw[6];
+	double Gb[3];
+
+	Gw[5] = Activation[4]*derivative(Weight[5]*Activation[4]+bias[4])*(Activation[4]- expected);
+	Gw[4] = Activation[4]*derivative(Weight[4]*Activation[4]+bias[4])*(Activation[4]- expected);
+	Gw[3] = Activation[3]*derivative(Weight[3]*Activation[3]+bias[3])*(Activation[3]- expected);
+	Gw[2] = Activation[3]*derivative(Weight[2]*Activation[3]+bias[3])*(Activation[3]- expected);
+	Gw[1] = Activation[2]*derivative(Weight[1]*Activation[2]+bias[2])*(Activation[2]- expected);
+	Gw[0] = Activation[2]*derivative(Weight[0]*Activation[2]+bias[2])*(Activation[2]- expected);
+
 	
-	for (int j = 4; j > 1; j--)
-	{
-		if(j==3)
-		{
-		    sum = 0;
-		}
-		for(int k = 0;k < 2; k++)
-		{
-		    sum += network->neurons[j-1-(j%2)].value * network->neurons[j-1-(j%2)].link[k];
-		}
-		sum = sigmoide(sum);
+	Gb[2] = (derivative(Weight[4]*Activation[4]+bias[4])*(Activation[4]- expected)+(derivative(Weight[5]*Activation[4]+bias[4])*(Activation[4]- expected))*(1/2);
+	Gb[1] = (derivative(Weight[3]*Activation[4]+bias[4])*(Activation[4]- expected)+(derivative(Weight[2]*Activation[4]+bias[4])*    (Activation[4]- expected))*(1/2);
+	Gb[0] = (derivative(Weight[0]*Activation[4]+bias[4])*(Activation[4]- expected)+(derivative(Weight[1]*Activation[4]+bias[4])*    (Activation[4]- expected))*(1/2);
+
+
+
+	network->neurons[2].link[0]-= Gw[0];
+	network->neurons[2].link[1]-= Gw[1];
+ 	network->neurons[3].link[0]-= Gw[2];
+ 	network->neurons[3].link[1]-= Gw[3];
+	network->neurons[4].link[0]-= Gw[4];
+	network->neurons[4].link[1]-= Gw[5];
+
+
+	network->neurons[4].bias -= Gb[2] ;
+	network->neurons[3].bias -= Gb[1];
+	network->neurons[2].bias -= Gb[0];
+
+
+
+
 		//network->neurons[j-1].link[k] -= network->error * ((-1)*network->neurons[j].value * sum * (1-sum)*network->neurons[j-1-(j%2)].value);
 	}
 
