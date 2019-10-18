@@ -1,4 +1,3 @@
-Neurons:
 Value :
 1.000000
 Links :
@@ -24,4 +23,3 @@ Value :
 Links :
 0.500000; 0.500000
 
-Bonsoirs

@@ -36,7 +36,7 @@ NeuralNetwork Init()
 
 void Print_Info(NeuralNetwork *network)
 {
-	printf("=================Network Information=================\n\n");
+	printf("=================Network Information=================\n");
 	// Print all links information
 	printf("Link :\n");
 	printf("%f, %f\n",network->neurons[2].link[0],network->neurons[2].link[1]);
@@ -83,29 +83,14 @@ void Propagation(NeuralNetwork *network, int entry[], size_t len)
 
 void Backpropagation(NeuralNetwork *network,int expected)
 {
-	//double sum = 0;
-	double cost_prime = 0, x = 0;
-	cost_prime = 2*(network->neurons[4].value - expected);
-	x =derivative(network->neurons[4].value);
-
-	network->neurons[4].link[0] = network->neurons[4].link[0] - network->error*(network->neurons[2].value*cost_prime);
-	network->neurons[4].link[1] = network->neurons[4].link[1] - network->error*(network->neurons[3].value*cost_prime);
-
-	network->neurons[3].value = network->neurons[3].link[0]*cost_prime + network->neurons[3].link[0]*cost_prime;
-	network->neurons[3].link[0] = network->neurons[3].link[0] - network->error*(network->neurons[0].value*network->neurons[4].link[1]*network->neurons[0].value*cost_prime);
-	network->neurons[3].link[1] = network->neurons[3].link[1] - network->error*(network->neurons[1].value*network->neurons[4].link[1]*network->neurons[1].value*cost_prime);
-
-	network->neurons[2].value = network->neurons[2].link[0]*cost_prime + network->neurons[2].link[0]*cost_prime;
-	network->neurons[2].link[0] = network->neurons[2].link[0] - network->error*(network->neurons[0].value*network->neurons[4].link[0]*network->neurons[0].value*cost_prime);
-	network->neurons[2].link[1] = network->neurons[2].link[1] - network->error*(network->neurons[1].value * network->neurons[4].link[0] * network->neurons[1].value*cost_prime);
-
+	double sum = 0;
 	// Compute the error
-	/*for (int i = 4; i >1; i--)
+	for (int i = 4; i >1; i--)
 	{
-
-	}*/
+		network->neurons[4].value = expected - network->neurons[4].value;
+	}
 	
-	/*for (int j = 4; j > 1; j--)
+	for (int j = 4; j > 1; j--)
 	{
 		if(j==3)
 		{
@@ -117,7 +102,7 @@ void Backpropagation(NeuralNetwork *network,int expected)
 		}
 		sum = sigmoide(sum);
 		//network->neurons[j-1].link[k] -= network->error * ((-1)*network->neurons[j].value * sum * (1-sum)*network->neurons[j-1-(j%2)].value);
-	}*/
+	}
 
 /*
 	for (size_t i = network.lenvalue -1; i > 0; i--)
@@ -177,7 +162,6 @@ void Save_Neural_Network(NeuralNetwork *network)
 	file = fopen("src/libs/neural_network/save_network.txt","w");
 
 	// Write all info
-	fprintf(file,"Neurons:\n");
 	for(size_t i=0; i<network->nb_neurons;i++)
 	{
 		fprintf(file,"Value :\n%f\n",network->neurons[i].value);
@@ -188,10 +172,10 @@ void Save_Neural_Network(NeuralNetwork *network)
 	fclose(file);
 }
 
-void Load_Neural_Network(NeuralNetwork *network)
+NeuralNetwork Load_Neural_Network()
 {
 	FILE *file = NULL;
-	char *filedata = NULL;
+	double filedata[15];
 	// Get the file where network data is saved
 	file = fopen("src/libs/neural_network/save_network.txt","r");
 	// Check if the file exist
@@ -202,15 +186,16 @@ void Load_Neural_Network(NeuralNetwork *network)
 	}
 	else
 	{
-		for(size_t i = 0; i<network->nb_neurons; i++)
-		{
-			fgets(filedata,1000,file);
-			fgets(filedata,1000,file);
-			//network->neurons[i].value = (float)filedata;
-			
-		}
+		fscanf(file,"Value :\n%lf\nLinks :\n%lf; %lf\n\n",&filedata[0],&filedata[1],&filedata[2]);
 
 		// Close file
 		fclose(file);
+		NeuralNetwork net;
+		net.nb_neurons = 1;
+		net.neurons[0].value = filedata[0];
+		net.neurons[0].link[0] = filedata[1];
+		net.neurons[0].link[1] = filedata[2];
+
+		return net;
 	}
 }

@@ -32,6 +32,6 @@ double Run(NeuralNetwork *network, int entry[], size_t len);
 
 void Save_Neural_Network(NeuralNetwork *network);
 
-void Load_Neural_Network(NeuralNetwork *network);
+NeuralNetwork Load_Neural_Network();
 
 #endif
