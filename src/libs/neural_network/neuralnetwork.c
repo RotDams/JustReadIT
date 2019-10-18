@@ -11,26 +11,31 @@ double sigmoide(double value)
 
 double derivative(double value)
 {
-	return sigmoide(value)*(1-sagmoide(value));
+	return sigmoide(value)*(1-sigmoide(value));
 }
 
 // Initialize the network from scratch
 NeuralNetwork Init()
 {
-	Neuron n;
+	Neuron n,n1,n2,n3,n4;
 	n.value = 0;
-	n.bias = 0;
+	n.bias = 0.2;
 	n.link[0] = 0.5;
 	n.link[1] = 0.5;
 	n.nb_link = 2;
+	n1 = n2 = n3 = n4 = n;
+	n1.bias = 0.5;
+	n2.bias = 0.7;
+	n3.bias = 0.3;
+	n4.bias = 0.9;
 
 	NeuralNetwork net;
 	net.error = 0.05;
 	net.neurons[0] = n;
-	net.neurons[1] = n;
-	net.neurons[2] = n;
-	net.neurons[3] = n;
-	net.neurons[4] = n;
+	net.neurons[1] = n1;
+	net.neurons[2] = n2;
+	net.neurons[3] = n3;
+	net.neurons[4] = n4;
 	net.nb_neurons = 5;
 	return net;
 }
@@ -72,6 +77,7 @@ void Propagation(NeuralNetwork *network, int entry[], size_t len)
 			{
 				val_neuron+=network->neurons[j-1-k-(j%2)].value*network->neurons[j].link[k];
 			}
+			val_neuron += network->neurons[j].bias;
 			// Activation function
 			network->neurons[j].value = sigmoide(val_neuron);
 		}
@@ -84,7 +90,7 @@ void Propagation(NeuralNetwork *network, int entry[], size_t len)
 
 void Backpropagation(NeuralNetwork *network,int expected)
 {
-	double Co = (1/2)*(network->neurons[4].value - expected);
+	// double Co = (1/2)*(network->neurons[4].value - expected);
 	double Activation [5];
 	double Weight[6];
 	double Bias[5];
@@ -100,80 +106,79 @@ void Backpropagation(NeuralNetwork *network,int expected)
 	Weight[4] = network->neurons[4].link[0];
 	Weight[5] = network->neurons[4].link[1];
 
-	 for(int i=0;i<5;i++){
+	for(int i=0;i<5;i++){
 		Bias[i] = network->neurons[i].bias;
-»·······}              
+	}
 
 	double Gw[6];
 	double Gb[3];
 
-	Gw[5] = Activation[4]*derivative(Weight[5]*Activation[4]+bias[4])*(Activation[4]- expected);
-	Gw[4] = Activation[4]*derivative(Weight[4]*Activation[4]+bias[4])*(Activation[4]- expected);
-	Gw[3] = Activation[3]*derivative(Weight[3]*Activation[3]+bias[3])*(Activation[3]- expected);
-	Gw[2] = Activation[3]*derivative(Weight[2]*Activation[3]+bias[3])*(Activation[3]- expected);
-	Gw[1] = Activation[2]*derivative(Weight[1]*Activation[2]+bias[2])*(Activation[2]- expected);
-	Gw[0] = Activation[2]*derivative(Weight[0]*Activation[2]+bias[2])*(Activation[2]- expected);
-
-	
-	Gb[2] = (derivative(Weight[4]*Activation[4]+bias[4])*(Activation[4]- expected)+(derivative(Weight[5]*Activation[4]+bias[4])*(Activation[4]- expected))*(1/2);
-	Gb[1] = (derivative(Weight[3]*Activation[4]+bias[4])*(Activation[4]- expected)+(derivative(Weight[2]*Activation[4]+bias[4])*    (Activation[4]- expected))*(1/2);
-	Gb[0] = (derivative(Weight[0]*Activation[4]+bias[4])*(Activation[4]- expected)+(derivative(Weight[1]*Activation[4]+bias[4])*    (Activation[4]- expected))*(1/2);
+	Gw[5] = Activation[4]*derivative(Weight[5]*Activation[4]+Bias[4])*(Activation[4]- expected);
+	Gw[4] = Activation[4]*derivative(Weight[4]*Activation[4]+Bias[4])*(Activation[4]- expected);
+	Gw[3] = Activation[3]*derivative(Weight[3]*Activation[3]+Bias[3])*(Activation[3]- expected);
+	Gw[2] = Activation[3]*derivative(Weight[2]*Activation[3]+Bias[3])*(Activation[3]- expected);
+	Gw[1] = Activation[2]*derivative(Weight[1]*Activation[2]+Bias[2])*(Activation[2]- expected);
+	Gw[0] = Activation[2]*derivative(Weight[0]*Activation[2]+Bias[2])*(Activation[2]- expected);
 
 
-
-	network->neurons[2].link[0]-= Gw[0];
-	network->neurons[2].link[1]-= Gw[1];
- 	network->neurons[3].link[0]-= Gw[2];
- 	network->neurons[3].link[1]-= Gw[3];
-	network->neurons[4].link[0]-= Gw[4];
-	network->neurons[4].link[1]-= Gw[5];
-
-
-	network->neurons[4].bias -= Gb[2] ;
-	network->neurons[3].bias -= Gb[1];
-	network->neurons[2].bias -= Gb[0];
+	Gb[2] = (derivative(Weight[4]*Activation[4]+Bias[4])*(Activation[4]- expected)+(derivative(Weight[5]*Activation[4]+Bias[4])*(Activation[4]- expected))*(1/2));
+			Gb[1] = (derivative(Weight[3]*Activation[4]+Bias[4])*(Activation[4]- expected)+(derivative(Weight[2]*Activation[4]+Bias[4])*    (Activation[4]- expected))*(1/2));
+				Gb[0] = (derivative(Weight[0]*Activation[4]+Bias[4])*(Activation[4]- expected)+(derivative(Weight[1]*Activation[4]+Bias[4])*    (Activation[4]- expected))*(1/2));
 
 
 
+					network->neurons[2].link[0]-= Gw[0];
+					network->neurons[2].link[1]-= Gw[1];
+					network->neurons[3].link[0]-= Gw[2];
+					network->neurons[3].link[1]-= Gw[3];
+					network->neurons[4].link[0]-= Gw[4];
+					network->neurons[4].link[1]-= Gw[5];
 
-		//network->neurons[j-1].link[k] -= network->error * ((-1)*network->neurons[j].value * sum * (1-sum)*network->neurons[j-1-(j%2)].value);
-	}
 
-/*
-	for (size_t i = network.lenvalue -1; i > 0; i--)
-	{
-			
-		for (size_t j = 0; j < network.lenlayer-1; j++)
-		{
-				
-			for (size_t k = 0; k < network.lenlayer[i]; k++)
-			{
-				sum = 0;
-					
-				for (size_t l = 0; l < &network.valuesize[i]; l++)
-				{
+					network->neurons[4].bias -= Gb[2];
+					network->neurons[3].bias -= Gb[1];
+					network->neurons[2].bias -= Gb[0];
+
+
+
+
+					//network->neurons[j-1].link[k] -= network->error * ((-1)*network->neurons[j].value * sum * (1-sum)*network->neurons[j-1-(j%2)].value);
+
+					/*
+					   for (size_t i = network.lenvalue -1; i > 0; i--)
+					   {
+
+					   for (size_t j = 0; j < network.lenlayer-1; j++)
+					   {
+
+					   for (size_t k = 0; k < network.lenlayer[i]; k++)
+					   {
+					   sum = 0;
+
+					   for (size_t l = 0; l < &network.valuesize[i]; l++)
+					   {
 					// On effectue la somme pondérée du neurone vers lequel pointe la connexion :
 					sum += network.value[i-1][l] * network.link[i-l][l][k];	
-				}
-				sum = sigmoide(sum);// fonction sigmoide je crois
+					}
+					sum = sigmoide(sum);// fonction sigmoide je crois
 
-				// On met à jour le poids de la connexion
-				network.link[i-1][j][k] -= network.error * ((-1) * network.value[i][k] * sum * (1-sum)* network.value[i-1][j]);
-			}
-				
-			for (size_t j = 0; j < &network.valuesize[i-1]; j++)
-			{
-				sum = 0;
-				
-				for (size_t k = 0; k < &network.value[i]; k++)
-				{
+					// On met à jour le poids de la connexion
+					network.link[i-1][j][k] -= network.error * ((-1) * network.value[i][k] * sum * (1-sum)* network.value[i-1][j]);
+					}
+
+					for (size_t j = 0; j < &network.valuesize[i-1]; j++)
+					{
+					sum = 0;
+
+					for (size_t k = 0; k < &network.value[i]; k++)
+					{
 					// On met à jour les neurones de la prochaine couche en fonction de l'erreur qui se rétropropage
 					sum += network.value[i][k] * network.link[i-1][j][k];
-				}
-				network.value[i-l][j] = sum;
-			}
-		}
-	}*/
+					}
+					network.value[i-l][j] = sum;
+					}
+					}
+					}*/
 }
 
 // Machine learning function
@@ -261,3 +266,4 @@ NeuralNetwork Load_Neural_Network()
 		return net;
 	}
 }
+
