@@ -37,7 +37,7 @@ int main(){//int argc, char *argv[]) {
 //    }
 
 	NeuralNetwork *pointer = NULL, network;
-	network = Load_Neural_Network();
+	network = Init();//Load_Neural_Network();
 	pointer = &network;
 
 	int entry[2];
