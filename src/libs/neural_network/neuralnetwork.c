@@ -53,7 +53,6 @@ void Print_Info(NeuralNetwork *network)
 	printf("=====================================================\n\n");
 }
 
-// 
 void Propagation(NeuralNetwork *network, int entry[], size_t len)
 {
 	// Check if there is enough entry or neuron
@@ -151,7 +150,7 @@ void Learn(NeuralNetwork *network, int entry[],int expected)
 	printf("Output : %f\n", network->neurons[4].value);
 }
 
-// Pass through the neural network
+// Pass through the neural network and return the output
 double Run(NeuralNetwork *network, int entry[], size_t len)
 {
 	Propagation(network, entry,len);
