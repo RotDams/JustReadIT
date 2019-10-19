@@ -5,11 +5,11 @@
 #include "neuralnetwork.h"
 
 double sigmoide(double value) {
-    return 1 / (1 + exp((-1) * value));
+    return 1 / (1 + exp(-value));
 }
 
 double derivative(double value) {
-    return sigmoide(value) * (1 - sigmoide(value));
+    return (value) * (1 - (value));
 }
 
 // Initialize the network from scratch
@@ -67,7 +67,7 @@ void Propagation(NeuralNetwork *network, int entry[], size_t len) {
         for (int j = 2; j < 5; j++) {
             val_neuron = 0;
             for (int k = 0; k < 2; k++) {
-                val_neuron += network->neurons[j - 1 - k - (j % 2)].value * network->neurons[j].link[k];
+                val_neuron += network->neurons[j - 1 - k - (j % 2)].value * network->neurons[j].link[(k+1)%2];
             }
             val_neuron += network->neurons[j].bias;
             // Activation function
@@ -78,9 +78,74 @@ void Propagation(NeuralNetwork *network, int entry[], size_t len) {
     }
 }
 
-void Backpropagation(NeuralNetwork *network, int expected) {
+void Backpropagation(NeuralNetwork *network, int expected) 
+{
+	//double total_error = (1/2)*(pow(expected-(network->neurons[4].value),2));
+
+	// Compute weight to output layer
+	// Compute new weight between neuron 2 and 4
+	double derivative_error = -(expected-network->neurons[4].value);
+	double derivative_output = derivative(network->neurons[4].value);
+	double value_previous_neuron = network->neurons[2].value;
+
+	double derivative_weight = derivative_error*derivative_output*value_previous_neuron;
+
+	double new_weight = network->neurons[4].link[0] - (0.5*derivative_weight);
+	network->neurons[4].link[0] = new_weight;
+
+	// Compute new weight between neuron 3 and 4
+	value_previous_neuron = network->neurons[3].value;
+
+	derivative_weight = derivative_error*derivative_output*value_previous_neuron;
+	
+	new_weight = network->neurons[4].link[1] - (0.5*derivative_weight);
+	network->neurons[4].link[1] = new_weight;
+
+	// Compute weight to hidden layer
+	// Compute new weight between neuron 0 and 2
+	double layer_error = (derivative_error * derivative_output) * network->neurons[4].link[0];
+	double derivative_neuron = derivative(network->neurons[2].value);
+	value_previous_neuron = network->neurons[0].value;
+
+	derivative_weight = layer_error * derivative_neuron * value_previous_neuron;
+
+	new_weight = network->neurons[2].link[0] - (0.5*derivative_weight);
+	network->neurons[2].link[0] = new_weight;
+
+	// Compute new weight between neuron 1 and 2
+	layer_error = (derivative_error * derivative_output) * network->neurons[4].link[0];
+	derivative_neuron = derivative(network->neurons[2].value);
+	value_previous_neuron = network->neurons[1].value;
+
+	derivative_weight = layer_error * derivative_neuron * value_previous_neuron;
+
+	new_weight = network->neurons[2].link[1] - (0.5*derivative_weight);
+	network->neurons[2].link[1] = new_weight;
+
+	// Compute new weight between neuron 0 and 3
+	layer_error = (derivative_error * derivative_output) * network->neurons[4].link[1];
+	derivative_neuron = derivative(network->neurons[3].value);
+	value_previous_neuron = network->neurons[0].value;
+
+	derivative_weight = layer_error * derivative_neuron * value_previous_neuron;
+
+	new_weight = network->neurons[3].link[0] - (0.5*derivative_weight);
+	network->neurons[3].link[0] = new_weight;
+
+	// Compute new weight between neuron 1 and 3
+	layer_error = (derivative_error * derivative_output) * network->neurons[4].link[1];
+	derivative_neuron = derivative(network->neurons[3].value);
+	value_previous_neuron = network->neurons[1].value;
+
+	derivative_weight = layer_error * derivative_neuron * value_previous_neuron;
+
+	new_weight = network->neurons[3].link[1] - (0.5*derivative_weight);
+	network->neurons[3].link[1] = new_weight;
+
+
+
     // double Co = (1/2)*(network->neurons[4].value - expected);
-    double Activation[5];
+    /*double Activation[5];
     double Weight[6];
     double Bias[5];
 
@@ -133,7 +198,7 @@ void Backpropagation(NeuralNetwork *network, int expected) {
 
     network->neurons[4].bias -= Gb[2];
     network->neurons[3].bias -= Gb[1];
-    network->neurons[2].bias -= Gb[0];
+    network->neurons[2].bias -= Gb[0];*/
 
 
 
