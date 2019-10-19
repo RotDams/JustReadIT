@@ -41,7 +41,7 @@ int main(){//int argc, char *argv[]) {
 	pointer = &network;
 
 	int entry[2];
-	/*entry[0] = 1;
+	entry[0] = 1;
 	entry[1] = 0;
 
 	printf("\n=====================================\n\n");
@@ -52,14 +52,14 @@ int main(){//int argc, char *argv[]) {
         printf("Expected : %d\n",entry[0]!=entry[1]);
         Learn(pointer,entry,entry[0]!=entry[1]);
         printf("\n");
-	}*/
+	}
 
 	entry[0] = 1;
 	entry[1] = 0;
 	printf("\n");
 	Run(pointer,entry,2);
 
-	//Save_Neural_Network(pointer);
+	Save_Neural_Network(pointer);
 
 	Print_Info(pointer);
 

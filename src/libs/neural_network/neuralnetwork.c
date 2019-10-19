@@ -311,10 +311,12 @@ NeuralNetwork Load_Neural_Network() {
         for (int i = 0; i < 5; i++) {
             net.neurons[i] = Load_Neuron(file);
         }
-
-        // Close file
-        fclose(file);
+        net.nb_neurons = 5;
+		// Close file
+		fclose(file);        
         return net;
     }
+    // Close file
+    fclose(file);
 }
 
