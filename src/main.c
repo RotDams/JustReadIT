@@ -45,7 +45,7 @@ int main(){//int argc, char *argv[]) {
 	entry[1] = 0;
 
 	printf("\n=====================================\n\n");
-	for(int i =0;i<10000000;i++)
+	for(int i =0;i<1000000;i++)
 	{
         entry[0] = rand()%2;
         entry[1] = rand()%2;
@@ -54,14 +54,12 @@ int main(){//int argc, char *argv[]) {
         printf("\n");
 	}*/
 
-	Print_Info(pointer);
-
 	entry[0] = 1;
 	entry[1] = 0;
 	printf("\n");
 	Run(pointer,entry,2);
 
-	/*Save_Neural_Network(pointer);*/
+	//Save_Neural_Network(pointer);
 
 	Print_Info(pointer);
 

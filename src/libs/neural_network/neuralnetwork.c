@@ -265,7 +265,8 @@ void Save_Neural_Network(NeuralNetwork *network) {
     // Write all info
     for (size_t i = 0; i < network->nb_neurons; i++) {
         fprintf(file, "Value :\n%f\n", network->neurons[i].value);
-        fprintf(file, "Links :\n%f; %f\n\n", network->neurons[i].link[0], network->neurons[i].link[1]);
+        fprintf(file, "Links :\n%f; %f\n", network->neurons[i].link[0], network->neurons[i].link[1]);
+        fprintf(file, "Bias :\n%f\n\n", network->neurons[i].bias);
     }
 
     // Close the file
@@ -274,20 +275,22 @@ void Save_Neural_Network(NeuralNetwork *network) {
 
 // Get information from one neuron in save_network.txt
 Neuron Load_Neuron(FILE *file) {
-    double neuron_data[3];
+    double neuron_data[4];
     // Check if the file exist
     if (file == NULL) {
         printf("Error: fail to load neuron\n");
         exit(EXIT_FAILURE);
     } else {
         // Get neuron data through thanks to a pattern
-        fscanf(file, "Value :\n%lf\nLinks :\n%lf; %lf\n\n", &neuron_data[0], &neuron_data[1], &neuron_data[2]);
+        fscanf(file, "Value :\n%lf\nLinks :\n%lf; %lf\nBias :\n%lf\n\n", &neuron_data[0], &neuron_data[1], &neuron_data[2], &neuron_data[3]);
 
         // Creation of the neuron with data from save_network information
         Neuron n;
         n.value = neuron_data[0];
         n.link[0] = neuron_data[1];
         n.link[1] = neuron_data[2];
+        n.bias = neuron_data[3];
+
         return n;
     }
 }
