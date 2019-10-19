@@ -63,8 +63,8 @@ List get_words_and_letters(SDL_Surface *image) {
 
     // Remove all white excess and get space
     image = get_all_text(image, 10);
-    int space_limite = get_words_space(image) - 6;
-    space_limite -= (int) (space_limite * 0.1);
+    int space_limite = get_words_space(image);
+    space_limite -= (int) (space_limite * 0.3);
 
     // Init
     List words_list = create_list();
