@@ -1,6 +1,9 @@
 #include <SDL/SDL.h>
 #include <unistd.h>
 #include "libs/image_segmentation/index.h"
+#include "libs/neural_network/neuralnetwork.h"
+#include "libs/neural_network/index.h"
+
 
 int main(int argc, char *argv[]) {
 
@@ -11,7 +14,7 @@ int main(int argc, char *argv[]) {
 	// List of all possible arguments
 	char *path = "";
 
-	// for each arg
+  // for each arg
 	int i = 1;
 	while (i < argc) {
 		if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--path") == 0) {
@@ -31,5 +34,7 @@ int main(int argc, char *argv[]) {
 
 	List paragraphs = image_segmentation(path);
 	print_list(paragraphs);
+  xor_neural_network(1000000, 0, 0);
 	return 0;
+
 }
