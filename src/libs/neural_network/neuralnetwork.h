@@ -61,20 +61,20 @@ double derivative(double value);
  * Description:
  *      - Return a new neural network from scratch with default value
  * */
-struct NeuralNetwork Init();
+struct NeuralNetwork init();
 
 
-/* Print_Info
+/* print_info
  * Input:
  *      - *network => pointer to a neural network
  *
  * Description:
  *      - Write all neural network information to the console
  * */
-void Print_Info(NeuralNetwork *network);
+void print_info(NeuralNetwork *network);
 
 
-/* Propagation
+/* propagation
  * Input:
  *      - *network => pointer to a neural network
  *      - entry    => entry values of the neural network
@@ -83,10 +83,10 @@ void Print_Info(NeuralNetwork *network);
  * Description:
  *      - Compute the output of the neural network with entry values
  * */
-void Propagation(NeuralNetwork *network, int entry[],size_t len);
+void propagation(NeuralNetwork *network, int entry[],size_t len);
 
 
-/* Backpropagation
+/* backpropagation
  * Input:
  *      - *network => pointer to a neural network
  *      - expected => output expected from neural network
@@ -94,10 +94,10 @@ void Propagation(NeuralNetwork *network, int entry[],size_t len);
  * Description:
  *      - Compute all new weights
  * */
-void Backpropagation(NeuralNetwork *network, int expected);
+void backpropagation(NeuralNetwork *network, int expected);
 
 
-/* Learn
+/* learn
  * Input:
  *      - *network => pointer to a neural network
  *      - entry[]  => entry values of the neural network
@@ -106,10 +106,10 @@ void Backpropagation(NeuralNetwork *network, int expected);
  * Description:
  *      - Function that combine propagation and backpropagation
  * */
-void Learn(NeuralNetwork *network, int entry[], int expected);
+void learn(NeuralNetwork *network, int entry[], int expected);
 
 
-/* Run
+/* run
  * Input:
  *      - *network => pointer to a neural network
  *      - entry[]  => entry values of the neural network
@@ -121,20 +121,20 @@ void Learn(NeuralNetwork *network, int entry[], int expected);
  *      - Display in the console the result of the neural network
  *          and returns this value
  * */
-double Run(NeuralNetwork *network, int entry[], size_t len);
+double run(NeuralNetwork *network, int entry[], size_t len);
 
 
-/* Save_Neural_Network
+/* save_neural_network
  * Input:
  *      - *network => pointer to a neural network
  *
  * Description:
  *      - Save all neural network information into save_network.txt
  * */
-void Save_Neural_Network(NeuralNetwork *network);
+void save_neural_network(NeuralNetwork *network);
 
 
-/* Load_Neuron
+/* load_neuron
  * Input:
  *      - *file => pointer to a file
  * Return:
@@ -144,10 +144,10 @@ void Save_Neural_Network(NeuralNetwork *network);
  *      - Read in save_network.txt information about one neuron
  *          and return a neuron instanciated with this information
  * */
-Neuron Load_Neuron(FILE *file);
+Neuron load_neuron(FILE *file);
 
 
-/* Load_Neuron
+/* load_neuron
  * Input:
  *      - *file => pointer to a file
  * Return:
@@ -156,10 +156,10 @@ Neuron Load_Neuron(FILE *file);
  *
  * Description:
  *      - Read in save_network.txt all information about neurons
- *          thanks to Load_Neuron function and return a neural network
+ *          thanks to load_neuron function and return a neural network
  *          instanciated
  * */
-NeuralNetwork Load_Neural_Network();
+NeuralNetwork load_neural_network();
 
 
 #endif

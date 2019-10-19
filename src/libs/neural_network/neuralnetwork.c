@@ -13,7 +13,7 @@ double derivative(double value) {
 }
 
 // Initialize the network from scratch
-NeuralNetwork Init() {
+NeuralNetwork init() {
     Neuron n, n1, n2, n3, n4;
     n.value = 0;
     n.value = 1;
@@ -38,7 +38,7 @@ NeuralNetwork Init() {
     return net;
 }
 
-void Print_Info(NeuralNetwork *network) {
+void print_info(NeuralNetwork *network) {
     printf("=================Network Information=================\n");
     // Print all links information
     printf("Link :\n");
@@ -55,7 +55,7 @@ void Print_Info(NeuralNetwork *network) {
     printf("=====================================================\n\n");
 }
 
-void Propagation(NeuralNetwork *network, int entry[], size_t len) {
+void propagation(NeuralNetwork *network, int entry[], size_t len) {
     // Check if there is enough entry or neuron
     if (len == 2) {
         // Place the entry data on the first layer
@@ -63,7 +63,7 @@ void Propagation(NeuralNetwork *network, int entry[], size_t len) {
             network->neurons[i].value = entry[i];
         }
         double val_neuron = 0;
-        // Propagation throught the neural network
+        // propagation throught the neural network
         for (int j = 2; j < 5; j++) {
             val_neuron = 0;
             for (int k = 0; k < 2; k++) {
@@ -74,11 +74,11 @@ void Propagation(NeuralNetwork *network, int entry[], size_t len) {
             network->neurons[j].value = sigmoide(val_neuron);
         }
     } else {
-        printf("Error in Propagation\n");
+        printf("Error in propagation\n");
     }
 }
 
-void Backpropagation(NeuralNetwork *network, int expected) 
+void backpropagation(NeuralNetwork *network, int expected)
 {
 	// Compute weight to output layer
 	// Compute new weight between neuron 2 and 4
@@ -142,21 +142,21 @@ void Backpropagation(NeuralNetwork *network, int expected)
 }
 
 // Machine learning function
-void Learn(NeuralNetwork *network, int entry[], int expected) {
-    Propagation(network, entry, 2);
-    Backpropagation(network, expected);
+void learn(NeuralNetwork *network, int entry[], int expected) {
+    propagation(network, entry, 2);
+    backpropagation(network, expected);
     printf("Output : %f\n", network->neurons[4].value);
 }
 
 // Pass through the neural network and return the output
-double Run(NeuralNetwork *network, int entry[], size_t len) {
-    Propagation(network, entry, len);
+double run(NeuralNetwork *network, int entry[], size_t len) {
+    propagation(network, entry, len);
     printf("Output : %f\n", network->neurons[4].value);
     return network->neurons[4].value;
 }
 
 // Save network into save_network.txt
-void Save_Neural_Network(NeuralNetwork *network) {
+void save_neural_network(NeuralNetwork *network) {
     FILE *file = NULL;
     // Set the file where to save data
     file = fopen("src/libs/neural_network/save_network.txt", "w");
@@ -173,7 +173,7 @@ void Save_Neural_Network(NeuralNetwork *network) {
 }
 
 // Get information from one neuron in save_network.txt
-Neuron Load_Neuron(FILE *file) {
+Neuron load_neuron(FILE *file) {
     double neuron_data[4];
     // Check if the file exist
     if (file == NULL) {
@@ -195,7 +195,7 @@ Neuron Load_Neuron(FILE *file) {
 }
 
 // Create a network with data from save_network.txt
-NeuralNetwork Load_Neural_Network() {
+NeuralNetwork load_neural_network() {
     FILE *file = NULL;
     // Get the file where network data is saved
     file = fopen("src/libs/neural_network/save_network.txt", "r");
@@ -208,7 +208,7 @@ NeuralNetwork Load_Neural_Network() {
         NeuralNetwork net;
         // Init all neurons
         for (int i = 0; i < 5; i++) {
-            net.neurons[i] = Load_Neuron(file);
+            net.neurons[i] = load_neuron(file);
         }
         net.nb_neurons = 5;
 		// Close file
