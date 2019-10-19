@@ -37,46 +37,33 @@ int main(){//int argc, char *argv[]) {
 //    }
 
 	NeuralNetwork *pointer = NULL, network;
-	network = Init();//Load_Neural_Network();
+	network = Load_Neural_Network();
 	pointer = &network;
 
 	int entry[2];
-	entry[0] = 1;
+	/*entry[0] = 1;
 	entry[1] = 0;
 
 	printf("\n=====================================\n\n");
-	for(int i =0;i<100000;i++)
+	for(int i =0;i<10000000;i++)
 	{
-		entry[0] = 0;//rand()%2;
-		entry[1] = 0;// rand()%2;
-		printf("Expected : %d\n",entry[0]!=entry[1]);
-		Learn(pointer,entry,entry[0]!=entry[1]);
-		printf("\n");
-
-        entry[0] = 1;//rand()%2;
-        entry[1] = 0;// rand()%2;
+        entry[0] = rand()%2;
+        entry[1] = rand()%2;
         printf("Expected : %d\n",entry[0]!=entry[1]);
         Learn(pointer,entry,entry[0]!=entry[1]);
         printf("\n");
+	}*/
 
-        entry[0] = 1;//rand()%2;
-        entry[1] = 1;// rand()%2;
-        printf("Expected : %d\n",entry[0]!=entry[1]);
-        Learn(pointer,entry,entry[0]!=entry[1]);
-        printf("\n");
-
-        entry[0] = 0;//rand()%2;
-        entry[1] = 1;// rand()%2;
-        printf("Expected : %d\n",entry[0]!=entry[1]);
-        Learn(pointer,entry,entry[0]!=entry[1]);
-        printf("\n");
-	}
+	Print_Info(pointer);
 
 	entry[0] = 1;
 	entry[1] = 0;
 	printf("\n");
 	Run(pointer,entry,2);
 
+	/*Save_Neural_Network(pointer);*/
+
+	Print_Info(pointer);
 
     //List paragraphs = image_segmentation("src/assets/image_white_bg.bmp");
     //print_list(paragraphs);
