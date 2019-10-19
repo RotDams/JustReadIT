@@ -15,6 +15,6 @@
  * Description:
  *      - Do the image segmentation an return the list of paragraphs
  * */
-List image_segmentation(char* image_path);
+List image_segmentation(char *image_path);
 
 #endif //JUSTREADIT_MAIN_H

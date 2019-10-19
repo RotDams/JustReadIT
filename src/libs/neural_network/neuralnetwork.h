@@ -1,0 +1,163 @@
+#ifndef NEURALNETWORK_H
+#define NEURALNETWORK_H
+
+// ================================
+// Type definition
+// ================================
+
+/* Neuron
+ * Definition of a neuron
+ * */
+typedef struct Neuron {
+    double value;
+    double bias;
+    double link[2];
+    size_t nb_link;
+} Neuron;
+
+/* NeuralNetwork
+ * Definition of a neural network
+ * */
+typedef struct NeuralNetwork {
+    float error;
+    Neuron neurons[5];
+    size_t nb_neurons;
+} NeuralNetwork;
+
+// ================================
+// Functions prototypes
+// ================================
+
+/* sigmoide
+ * Input:
+ *      - double => value to compute with sigmoide function
+ * Return:
+ *      - double => sigmoide(input)
+ *
+ * Description:
+ *      - Return the result of the function sigmoide applicate to input
+ * */
+double sigmmoide(double value);
+
+
+/* derivative
+ * Input:
+ *      - double => value to compute
+ * Return:
+ *      - double => value*(1-value)
+ *
+ * Description:
+ *      - Return the result of the function applicate to input
+ * */
+double derivative(double value);
+
+
+/* Init
+ * Return:
+ *      - NeuralNetwork => new neural network from scratch
+ *
+ * Description:
+ *      - Return a new neural network from scratch with default value
+ * */
+struct NeuralNetwork init();
+
+
+/* print_info
+ * Input:
+ *      - *network => pointer to a neural network
+ *
+ * Description:
+ *      - Write all neural network information to the console
+ * */
+void print_info(NeuralNetwork *network);
+
+
+/* propagation
+ * Input:
+ *      - *network => pointer to a neural network
+ *      - entry    => entry values of the neural network
+ *      - len      => size of the entry array
+ *
+ * Description:
+ *      - Compute the output of the neural network with entry values
+ * */
+void propagation(NeuralNetwork *network, int entry[], size_t len);
+
+
+/* backpropagation
+ * Input:
+ *      - *network => pointer to a neural network
+ *      - expected => output expected from neural network
+ *
+ * Description:
+ *      - Compute all new weights
+ * */
+void backpropagation(NeuralNetwork *network, int expected);
+
+
+/* learn
+ * Input:
+ *      - *network => pointer to a neural network
+ *      - entry[]  => entry values of the neural network
+ *      - expected => expected output after propagation
+ *
+ * Description:
+ *      - Function that combine propagation and backpropagation
+ * */
+void learn(NeuralNetwork *network, int entry[], int expected);
+
+
+/* run
+ * Input:
+ *      - *network => pointer to a neural network
+ *      - entry[]  => entry values of the neural network
+ *      - len => size of the entry array
+ * Return:
+ *      - double => the output of the neural network
+ *
+ * Description:
+ *      - Display in the console the result of the neural network
+ *          and returns this value
+ * */
+double run(NeuralNetwork *network, int entry[], size_t len);
+
+
+/* save_neural_network
+ * Input:
+ *      - *network => pointer to a neural network
+ *
+ * Description:
+ *      - Save all neural network information into save_network.txt
+ * */
+void save_neural_network(NeuralNetwork *network);
+
+
+/* load_neuron
+ * Input:
+ *      - *file => pointer to a file
+ * Return:
+ *      - Neuron => neuron create with information from save_network.txt
+ *
+ * Description:
+ *      - Read in save_network.txt information about one neuron
+ *          and return a neuron instanciated with this information
+ * */
+Neuron load_neuron(FILE *file);
+
+
+/* load_neuron
+ * Input:
+ *      - *file => pointer to a file
+ * Return:
+ *      - NeuralNetwork => neural network create with information
+ *          from save_network.txt
+ *
+ * Description:
+ *      - Read in save_network.txt all information about neurons
+ *          thanks to load_neuron function and return a neural network
+ *          instanciated
+ * */
+NeuralNetwork load_neural_network();
+
+
+#endif

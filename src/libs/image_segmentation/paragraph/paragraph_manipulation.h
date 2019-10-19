@@ -40,7 +40,4 @@ List get_paragraphs_and_lines(SDL_Surface *image, int paragraphJumpSpace);
 List get_paragraphs(SDL_Surface *image);
 
 
-
-
-
 #endif //JUSTREADIT_PARAGRAPH_MANIPULATION_H

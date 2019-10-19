@@ -15,7 +15,7 @@
  * Description:
  *      - Return a the ref of the pixel of an SDL_SURFACE
  * */
-Uint8* pixel_ref(SDL_Surface *surf, unsigned x, unsigned y);
+Uint8 *pixel_ref(SDL_Surface *surf, unsigned x, unsigned y);
 
 /* get_pixel
  * Input:
@@ -46,7 +46,7 @@ Uint32 get_pixel(SDL_Surface *surface, int x, int y);
  * Description:
  *      - Return a new image, which is a part of an other image
  * */
-SDL_Surface* cut_image(SDL_Surface *Source, int startX, int startY, int W, int H);
+SDL_Surface *cut_image(SDL_Surface *Source, int startX, int startY, int W, int H);
 
 
 /* is_blank_line
@@ -103,7 +103,7 @@ void put_pixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel);
  * Description:
  *      - Is use to correct the black pixels that are only one on the image
  * */
-SDL_Surface* correct_image(SDL_Surface *image,int Seuil);
+SDL_Surface *correct_image(SDL_Surface *image, int Seuil);
 
 
 #endif

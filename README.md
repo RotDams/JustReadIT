@@ -2,6 +2,7 @@
 
 # JustReadIt
 
+![epita](https://img.shields.io/badge/EPITA-project-brightgreen)
 ![c version](https://camo.githubusercontent.com/50863320f4d71daf90b585eb2a1fe6a6c4715cd2/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f632d7374616e646172642532306339392d626c75652e737667)
 ![version](https://img.shields.io/badge/Version-1.0.0-informational)
 
@@ -9,11 +10,11 @@ JustReadIt is a text recognition tool developed as part of EPITA's 3rd semester 
 
 This software allows to extract a text from an image, and this through 3 processes.
 
-- A segmentation of the image into paragraphs, lines, words and characters.
+- [x] A segmentation of the image into paragraphs, lines, words and characters.
 
-- A recognition of each character through a neural network.
+- [ ] A recognition of each character through a neural network.
 
-- A reconstruction of the word using a dictionary of existing words.
+- [ ] A reconstruction of the word using a dictionary of existing words.
 
 # Getting Started
 
@@ -38,8 +39,37 @@ $ git clone https://github.com/RotDams/JustReadIT
 ```
 $ cd JustReadIT
 $ make
-$ ./output.exe
 ```
+
+- A JustReadIt executable should be created.
+
+## Running
+
+Our program currently offers two main functions, segmentation and xor.
+
+### Segmentation
+
+Segmentation is based on an image, so it is important to provide the link from the image to the program.
+This is to be done via the path parameter.
+
+```
+$ ./JustReadIt --path public/my_image.bmp
+```
+
+*The keyword `--path` can be reduced to `-p`.*
+
+### XOR
+
+As XOR is only a step in discovering neural networks, it is not automatically launched.
+It is therefore necessary to use the `--xor' (or `-x`) flag.
+ 
+ Our function can also take 3 optional parameters.
+ 
+ - `--save` (or `-s`): if specify, the code will save the data of neural networks after working.
+ - `--load` (or `-l`): if specify, the code will load the saved data of neural networks before working.
+ - `--iteration x` (or `-i x`): if specify, the code will set the number of iteration to x. (default value: 1 000 000)
+ 
+
 
 # Credits
 
