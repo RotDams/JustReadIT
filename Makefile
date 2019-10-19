@@ -3,11 +3,11 @@ rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst 
 SOURCE      = $(call rwildcard, src/, *.c)
 OBJS        = $(SOURCE:%.c=_build/%.o)
 HEADER      = $(SOURCE:.c=.h)
-OUT         = output.exe
+OUT         = JustReadIT.exe
 CC          = gcc
 FLAGS       = -O0
 CFLAGS      = -Wall -Wextra -Werror -O3 -g
-SDL_FLAGS   = `sdl-config --cflags --libs`		# For windows and linux
+SDL_FLAGS   = `sdl-config --cflags --libs`
 
 
 all: $(OBJS)
