@@ -8,19 +8,17 @@
 /* Neuron
  * Definition of a neuron
  * */
-typedef struct Neuron
-{
-	double value;
-	double bias;
-	double link[2];
-	size_t nb_link;
+typedef struct Neuron {
+    double value;
+    double bias;
+    double link[2];
+    size_t nb_link;
 } Neuron;
 
 /* NeuralNetwork
  * Definition of a neural network
  * */
-typedef struct NeuralNetwork
-{
+typedef struct NeuralNetwork {
     float error;
     Neuron neurons[5];
     size_t nb_neurons;
@@ -83,7 +81,7 @@ void print_info(NeuralNetwork *network);
  * Description:
  *      - Compute the output of the neural network with entry values
  * */
-void propagation(NeuralNetwork *network, int entry[],size_t len);
+void propagation(NeuralNetwork *network, int entry[], size_t len);
 
 
 /* backpropagation
