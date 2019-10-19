@@ -207,31 +207,28 @@ Node get_element_by_index(List list, int i) {
 }
 
 void print_list(List list) {
-
-
-    if (list->elementType == LetterType){
-        printf("%s [%lu] ",KCYN,list->length);
+    if (list->elementType == LetterType) {
+        printf("%s [%lu] ", KCYN, list->length);
         return;
     }
-   // printf("[");
+    // printf("[");
 
-    if (list->elementType == ParagraphType){
-        printf("%sParagraphs    %sLines    %sWords     %sLetters\n\n",KRED,KYEL,KGRN,KCYN);
-        printf("%s[",KRED);
-    }
-    else if (list->elementType == LineType)
-        printf("%s[",KYEL);
+    if (list->elementType == ParagraphType) {
+        printf("%sParagraphs    %sLines    %sWords     %sLetters\n\n", KRED, KYEL, KGRN, KCYN);
+        printf("%s[", KRED);
+    } else if (list->elementType == LineType)
+        printf("%s[", KYEL);
     else if (list->elementType == WordType)
-        printf("%s\n[",KGRN);
+        printf("%s\n[", KGRN);
     else
-        printf("%s[\n",KCYN);
+        printf("%s[\n", KCYN);
 
     Node current_paragraph_node = *((Node *) (list->first));
 
     while (current_paragraph_node.value) {
 
 
-        if (list->elementType !=LetterType) {
+        if (list->elementType != LetterType) {
             print_list((List) current_paragraph_node.value);
         }
 
@@ -243,14 +240,13 @@ void print_list(List list) {
     }
 
     if (list->elementType == ParagraphType)
-        printf("%s]",KRED);
+        printf("%s]%s", KRED, KNRM);
     else if (list->elementType == LineType)
-        printf("%s]\n",KYEL);
+        printf("%s]\n", KYEL);
     else if (list->elementType == WordType)
-        printf("%s]",KGRN);
+        printf("%s]", KGRN);
     else
-        printf("%s]\n",KCYN);
-  //  printf("]\n");
+        printf("%s]\n", KCYN);
 }
 
 List clear_list(List list) {
