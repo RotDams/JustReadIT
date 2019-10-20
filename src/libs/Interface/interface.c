@@ -4,10 +4,10 @@
 
 void init_interface()
 {
-	GtkBuilder      *builder; 
-    GtkWidget       *window;
+	GtkBuilder *builder=NULL; 
+    GtkWidget *window=NULL;
 
-    gtk_init(&argc, &argv);
+    gtk_init();
 
     builder = gtk_builder_new();
     gtk_builder_add_from_file (builder, "interface.glade", NULL);
