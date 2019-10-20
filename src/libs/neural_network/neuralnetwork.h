@@ -1,5 +1,6 @@
 #ifndef NEURALNETWORK_H
 #define NEURALNETWORK_H
+#include "../list_manipulation/index.h"
 
 // ================================
 // Type definition
@@ -11,17 +12,21 @@
 typedef struct Neuron {
     double value;
     double bias;
-    double link[2];
-    size_t nb_link;
+    List links;
 } Neuron;
+
+/* Layers
+ * Definition of layer
+ * */
+typedef struct Layer {
+	List neurons;
+} Layers;
 
 /* NeuralNetwork
  * Definition of a neural network
  * */
 typedef struct NeuralNetwork {
-    float error;
-    Neuron neurons[5];
-    size_t nb_neurons;
+    List layers;
 } NeuralNetwork;
 
 // ================================
@@ -53,13 +58,18 @@ double derivative(double value);
 
 
 /* Init
+ * Input:
+ *      - nb_layer 			   => number of layers wanted in the neural network
+ *		- nb_neurons_per_layer => array containing the number of neuron
+ 			for each layer
+ *
  * Return:
  *      - NeuralNetwork => new neural network from scratch
  *
  * Description:
  *      - Return a new neural network from scratch with default value
  * */
-struct NeuralNetwork init();
+struct NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]);
 
 
 /* print_info

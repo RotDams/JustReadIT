@@ -13,65 +13,111 @@ double derivative(double value) {
 }
 
 // Initialize the network from scratch
-NeuralNetwork init() {
-    Neuron n, n1, n2, n3, n4;
-    n.value = 0;
-    n.value = 1;
-    n.bias = 0.2;
-    n.link[0] = 1;
-    n.link[1] = 1;
-    n.nb_link = 2;
-    n1 = n2 = n3 = n4 = n;
-    n1.bias = 0.1;
-    n2.bias = 0.7;
-    n3.bias = 0.9;
-    n4.bias = 0.1;
+NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]) {
 
+	// Definition of variables
+	List layers, neurons, links;
+    Neuron n;
     NeuralNetwork net;
-    net.error = 0.05;
-    net.neurons[0] = n;
-    net.neurons[1] = n1;
-    net.neurons[2] = n2;
-    net.neurons[3] = n3;
-    net.neurons[4] = n4;
-    net.nb_neurons = 5;
+    float random;
+
+    // Declaration of variables
+    layer = create_list();
+    n.value = 0;
+
+    for (size_t i = 0; i < nb_layer; i++)
+    {
+    	// Reboot the lists
+    	neurons = create_list();
+    	links = create_list();
+    	// Creation of a list of neurons
+    	for (size_t j = 0; j < nb_neurons_per_layer[i]; j++)
+    	{
+    		n.bias = (float)rand() / (float)1;
+    		if (i != 0)
+    		{
+    			// Creation of a list of random links
+    			for (size_t k = 0; i < nb_neurons_per_layer[i-1]; k++)
+    			{
+    				random = (float)rand() / (float)1;
+    				links = push_back_list(links,(void *)random,LinkType);
+    			}
+    			n.links = links;
+    		}
+    		neurons = push_back_list(neurons,(void *)n,NeuronType);
+    	}
+    	layers = push_back_list(layers,(void *)neurons,LayerType);
+    }
+    net.layers = layers;
     return net;
 }
 
 void print_info(NeuralNetwork *network) {
-    printf("=================Network Information=================\n");
-    // Print all links information
-    printf("Link :\n");
-    printf("%f, %f\n", network->neurons[2].link[0], network->neurons[2].link[1]);
-    printf("%f, %f\n", network->neurons[3].link[0], network->neurons[3].link[1]);
-    printf("%f, %f\n", network->neurons[4].link[0], network->neurons[4].link[1]);
+    printf("\n=================Network Information=================\n\n");
+    
+    Node* layer = *((Node *)network->layers->first);
+    Node* neuron = NULL;
+    Node* link = NULL;
+    // Print information of layers
+    for (int i = 0; i < network->layers->length; i++)
+    {
+    	neuron = layer->first;
+    	link = neurons->links->first;
+    	printf("Layer %i :\n\n",i);
+    	// Print information of neurons
+    	for (int j = 0; j < layer->length; j++)
+    	{
+    		printf("Neuron %i :\n",j);
+    		printf("Links : ");
+    		// Print links of neurons
+    		for (int k = 0; k < neurons->links->length; k++)
+    		{
+    			printf("%lf / \n", link);
+    			link = link->next;
+    		}
+    		printf("\n");
+    		neurons = neurons->next;
+    	}
+    	layer = layer->next;
+    }
 
-    // Print all neurons values
-    printf("Values :\n");
-    printf("%f, %f \n", network->neurons[0].value, network->neurons[1].value);
-    printf("%f, %f \n", network->neurons[2].value, network->neurons[3].value);
-    printf("%f \n", network->neurons[4].value);
-
-    printf("=====================================================\n\n");
+    printf("\n=====================================================\n\n");
 }
 
 void propagation(NeuralNetwork *network, int entry[], size_t len) {
+
+	int nb_inputs = network->layers->first->length;
+	Node* layer = network->layers->first;
+	Node* neuron = layer->first;
+	Node* link = neuron->link->first;
+	Node* previous_neuron = neuron;
     // Check if there is enough entry or neuron
-    if (len == 2) {
+    if (len == nb_inputs) {
         // Place the entry data on the first layer
-        for (int i = 0; i < 2; i++) {
-            network->neurons[i].value = entry[i];
+        for (int i = 0; i < nb_inputs; i++) {
+            neuron->value = entry[i];
+            neuron = neuron->next;
         }
         double val_neuron = 0;
-        // propagation throught the neural network
-        for (int j = 2; j < 5; j++) {
-            val_neuron = 0;
-            for (int k = 0; k < 2; k++) {
-                val_neuron += network->neurons[j - 1 - k - (j % 2)].value * network->neurons[j].link[(k + 1) % 2];
-            }
-            val_neuron += network->neurons[j].bias;
-            // Activation function
-            network->neurons[j].value = sigmoide(val_neuron);
+        // Propagation throught the neural network
+        for (int j = 1; j < network->layers->length; j++) {
+        	previous_neuron = layer->first;
+        	layer = layer->next;	
+        	neuron = layer->first;
+        	link = neuron->link->first;
+        	for (int k = 0; k < layer->length; k++) {
+            	val_neuron = 0;
+            	for (int l = 0; l < neuron->link->length; l++) {
+                	val_neuron += previous_neuron->value * link;
+                	link = link->next;
+                	previous_neuron = previous_neuron->next
+            	}
+            	val_neuron += neuron->bias;
+            	// Activation function
+            	neuron->value = sigmoide(val_neuron);
+
+            	neuron = neuron->next;
+        	}
         }
     } else {
         printf("Error in propagation\n");

@@ -17,7 +17,10 @@ typedef enum {
     ParagraphType,
     LineType,
     WordType,
-    LetterType
+    LetterType,
+    NeuronType,
+    LinkType,
+    LayerType
 } ListElementType;
 
 /* Node
