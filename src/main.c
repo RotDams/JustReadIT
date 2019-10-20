@@ -1,6 +1,7 @@
 #include <SDL/SDL.h>
 #include <unistd.h>
 #include "libs/image_segmentation/index.h"
+#include "libs/interface/interface.h"
 
 int main(){//int argc, char *argv[]) {
 
@@ -35,7 +36,8 @@ int main(){//int argc, char *argv[]) {
 //        return EXIT_FAILURE;
 //    }
 
-    List paragraphs = image_segmentation("src/assets/image_white_bg.bmp");
-    print_list(paragraphs);
+	init_interface();
+    //List paragraphs = image_segmentation("src/assets/image_white_bg.bmp");
+    //print_list(paragraphs);
     return 0;
 }
