@@ -276,7 +276,7 @@ Neuron load_neuron(FILE *file, size_t num_layer, size_t nb_neurons_per_layer[]) 
 
         fgetc(file);
         fgetc(file);
-        
+
         // Creation of the neuron with data from save_network information
         Neuron n;
         n.value = neuron_data[0];
@@ -297,6 +297,7 @@ List load_layer(FILE *file, int num_layer, size_t nb_neurons_per_layer[]) {
     	List layer;
     	Neuron n;
     	layer = create_list();
+    	// Creation of the layer with all data in save_network.txt
     	for (size_t i = 0; i < nb_neurons_per_layer[num_layer]; ++i)
     	{
     		n = load_neuron(file,i,nb_neurons_per_layer);

@@ -36,6 +36,7 @@ typedef struct NeuralNetwork {
 /* sigmoide
  * Input:
  *      - double => value to compute with sigmoide function
+ *
  * Return:
  *      - double => sigmoide(input)
  *
@@ -48,6 +49,7 @@ double sigmmoide(double value);
 /* derivative
  * Input:
  *      - double => value to compute
+ *
  * Return:
  *      - double => value*(1-value)
  *
@@ -61,7 +63,7 @@ double derivative(double value);
  * Input:
  *      - nb_layer 			   => number of layers wanted in the neural network
  *		- nb_neurons_per_layer => array containing the number of neuron
- 			for each layer
+ *			for each layer
  *
  * Return:
  *      - NeuralNetwork => new neural network from scratch
@@ -122,6 +124,7 @@ void learn(NeuralNetwork *network, int entry[], int expected);
  *      - *network => pointer to a neural network
  *      - entry[]  => entry values of the neural network
  *      - len => size of the entry array
+ *
  * Return:
  *      - double => the output of the neural network
  *
@@ -141,11 +144,27 @@ double run(NeuralNetwork *network, int entry[], size_t len);
  * */
 void save_neural_network(NeuralNetwork *network);
 
+
+/* load_link
+ * Input:
+ *      - *file => pointer to a file
+ *
+ * Return:
+ *      - double => neuron create with information from save_network.txt
+ *
+ * Description:
+ *      - Read in save_network.txt information about one link from 
+ *			one neuron and return a neuron instanciated with this information
+ * */
 double load_link(FILE *file);
+
 
 /* load_neuron
  * Input:
- *      - *file => pointer to a file
+ *      - *file 			   => pointer to a file
+ *		- num_layer 		   => number of the current loading layer
+ *		- nb_neurons_per_layer => array of number of neurons per layer
+ *
  * Return:
  *      - Neuron => neuron create with information from save_network.txt
  *
@@ -157,9 +176,11 @@ Neuron load_neuron(FILE *file, size_t num_layer, size_t nb_neurons_per_layer[]);
 
 List load_layer(FILE *file, int num_layer, size_t nb_neurons_per_layer[]);
 
-/* load_neuron
+/* load_neural_network
  * Input:
- *      - *file => pointer to a file
+ *      - nb_layer 			   => number of layers in the neural network
+ *		- nb_neurons_per_layer => array of number of neurons per layer
+ *
  * Return:
  *      - NeuralNetwork => neural network create with information
  *          from save_network.txt
