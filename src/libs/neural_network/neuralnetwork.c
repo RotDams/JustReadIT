@@ -124,7 +124,7 @@ void propagation(NeuralNetwork *network, int entry[], size_t len) {
     }
 }
 
-void backpropagation(NeuralNetwork *network, int expected) {
+void backpropagation(NeuralNetwork *network, int expected[], size_t len) {
     // Compute weight to output layer
     // Compute new weight between neuron 2 and 4
     double derivative_error = -(expected - network->neurons[4].value);
@@ -206,42 +206,108 @@ void save_neural_network(NeuralNetwork *network) {
     // Set the file where to save data
     file = fopen("src/libs/neural_network/save_network.txt", "w");
 
+    Node* layer = network->layers->first;
+	Node* neuron;
+	Node* link;
     // Write all info
-    for (size_t i = 0; i < network->nb_neurons; i++) {
-        fprintf(file, "Value :\n%f\n", network->neurons[i].value);
-        fprintf(file, "Links :\n%f; %f\n", network->neurons[i].link[0], network->neurons[i].link[1]);
-        fprintf(file, "Bias :\n%f\n\n", network->neurons[i].bias);
+    for (int i = 0; i < network->layers->length; i++) {
+    	neuron = layer->first;
+    	link = = neuron->link->first
+    	fprintf(file, "===============Layer %i===============\n\n",i);
+    	for (int j = 0; j < layer->length; j++)
+    	{
+    		fprintf(file, "Value :\n%f\n", neuron->value);
+    		fprintf(file, "Bias :\n%f\n", neuron->bias);
+    		fprintf(file, "Links :\n");
+    		for (int k = 0; k < count; k++)
+    		{
+    			fprintf(file,"%lf / ",link->value);
+    			link = link->next;
+    		}
+    		fprintf(file, "\n\n");
+    		neuron = neuron->next;
+    	}
+        layer = layer->next
     }
-
+    fprintf(file, "===============Credit===============\n\n");
+    fprintf(file, "JustReadIt was developed by damien.champeyroux,
+    	quentin.briolant, adrien.barens and sami.beyhum.\n");
     // Close the file
     fclose(file);
 }
 
+// Get information from one link of one neuron in save_network.txt
+double load_link(FILE *file) {
+	// Check if the pointer have been initialized
+	if (neuron==NULL || file==NULL)
+	{
+		printf("Error: fail to load link\n");
+        exit(EXIT_FAILURE);
+	} else {
+		// Get link data of a neuron
+		double stock_link;
+		fscanf(file,"%lf / ",stock_link);
+		return stock_link;
+	}
+}
+
 // Get information from one neuron in save_network.txt
-Neuron load_neuron(FILE *file) {
-    double neuron_data[4];
+Neuron load_neuron(FILE *file, size_t num_layer, size_t nb_neurons_per_layer[]) {
+	double neuron_data[2];
     // Check if the file exist
     if (file == NULL) {
         printf("Error: fail to load neuron\n");
         exit(EXIT_FAILURE);
     } else {
         // Get neuron data through thanks to a pattern
-        fscanf(file, "Value :\n%lf\nLinks :\n%lf; %lf\nBias :\n%lf\n\n", &neuron_data[0], &neuron_data[1],
-               &neuron_data[2], &neuron_data[3]);
+        fscanf(file, "Value :\n%lf\nBias :\n%lf\nLinks :\n", &neuron_data[0], &neuron_data[1]);
 
+        List links;
+      	links = create_list();
+      	double stock_link;
+        if (num_layer!=0)
+        {
+        	for (size_t i = 0; i < nb_neurons_per_layer[num_layer-1]; ++i)
+        	{
+        		stock_link = load_link(file);
+        		links = push_back_list(links,(void *)stock_link,LinkType);
+        	}
+        }
+
+        fgetc(file);
+        fgetc(file);
+        
         // Creation of the neuron with data from save_network information
         Neuron n;
         n.value = neuron_data[0];
-        n.link[0] = neuron_data[1];
-        n.link[1] = neuron_data[2];
-        n.bias = neuron_data[3];
+        n.bias = neuron_data[1];
+        n.link = links;
 
         return n;
     }
 }
 
+// Get information from a layer in save_network.txt
+List load_layer(FILE *file, int num_layer, size_t nb_neurons_per_layer[]) {
+	// Check if the file exist
+	if (file == NULL) {
+        printf("Error: fail to load neuron\n");
+        exit(EXIT_FAILURE);
+    } else {
+    	List layer;
+    	Neuron n;
+    	layer = create_list();
+    	for (size_t i = 0; i < nb_neurons_per_layer[num_layer]; ++i)
+    	{
+    		n = load_neuron(file,i,nb_neurons_per_layer);
+    		layer = push_back_list(layer,(void *)n,NeuronType);
+    	}
+    	return layer;
+    }
+}
+
 // Create a network with data from save_network.txt
-NeuralNetwork load_neural_network() {
+NeuralNetwork load_neural_network(size_t nb_layer, size_t nb_neurons_per_layer[]) {
     FILE *file = NULL;
     // Get the file where network data is saved
     file = fopen("src/libs/neural_network/save_network.txt", "r");
@@ -252,11 +318,13 @@ NeuralNetwork load_neural_network() {
     } else {
         // Creation of the network with all data in save_network.txt
         NeuralNetwork net;
-        // Init all neurons
-        for (int i = 0; i < 5; i++) {
-            net.neurons[i] = load_neuron(file);
+        net.layers = create_list();
+        List stock;
+        // Init all layer
+        for (size_t i = 0; i < nb_layer; i++) {
+        	stock = load_layer(file,i, nb_neurons_per_layer);
+        	net.layers = push_back_list(net.layer,(void *)stock,LayerType);
         }
-        net.nb_neurons = 5;
         // Close file
         fclose(file);
         return net;

@@ -141,6 +141,7 @@ double run(NeuralNetwork *network, int entry[], size_t len);
  * */
 void save_neural_network(NeuralNetwork *network);
 
+double load_link(FILE *file);
 
 /* load_neuron
  * Input:
@@ -152,8 +153,9 @@ void save_neural_network(NeuralNetwork *network);
  *      - Read in save_network.txt information about one neuron
  *          and return a neuron instanciated with this information
  * */
-Neuron load_neuron(FILE *file);
+Neuron load_neuron(FILE *file, size_t num_layer, size_t nb_neurons_per_layer[]);
 
+List load_layer(FILE *file, int num_layer, size_t nb_neurons_per_layer[]);
 
 /* load_neuron
  * Input:
@@ -167,7 +169,7 @@ Neuron load_neuron(FILE *file);
  *          thanks to load_neuron function and return a neural network
  *          instanciated
  * */
-NeuralNetwork load_neural_network();
+NeuralNetwork load_neural_network(size_t nb_layer, size_t nb_neurons_per_layer[]);
 
 
 #endif
