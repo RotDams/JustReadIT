@@ -58,10 +58,16 @@ $ ./JustReadIt --path public/my_image.bmp
 
 *The keyword `--path` can be reduced to `-p`.*
 
+You can also see the image during the segmentation. For this, you need to provide the `--dev` parameter. You can also just provide a `-d`.
+
+```
+$ ./JustReadIt --path public/my_image.bmp --dev
+```
+
 ### XOR
 
 As XOR is only a step in discovering neural networks, it is not automatically launched.
-It is therefore necessary to use the `--xor' (or `-x`) flag.
+It is therefore necessary to use the `--xor` (or `-x`) flag.
  
  Our function can also take 3 optional parameters.
  

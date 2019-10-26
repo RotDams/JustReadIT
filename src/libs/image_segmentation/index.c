@@ -1,8 +1,10 @@
 #include "index.h"
+#include "utils.h"
 
 //Keep the List of all bmp words
 List image_segmentation(char *image_path) {
-	SDL_Surface *image = extract_text(image_path, 2);
+    SDL_Surface *image = extract_text(image_path, 2);
+    show_image(image, 1);
 	List paragraphs = get_paragraphs(image);
 	return paragraphs;
 }

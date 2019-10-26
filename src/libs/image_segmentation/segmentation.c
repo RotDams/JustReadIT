@@ -1,11 +1,13 @@
 #include "segmentation.h"
-
+#include "utils.h"
 
 SDL_Surface *extract_text(char *source_location, int threshold) {
 	SDL_Surface *image;
 	Uint8 r, g, b;
 
 	image = SDL_LoadBMP(source_location);
+
+	show_image(image, 0);
 
 	if (image == NULL) {
 		printf("Fail with loading image");

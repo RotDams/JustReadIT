@@ -5,6 +5,12 @@
 #include "utils.h"
 
 
+// Type definition
+typedef struct PresentationState {
+    size_t size;
+    int data[];
+} PresentationState;
+
 /* image_segmentation
  * Input:
  *      - image_path  => char* (the path of the image)
