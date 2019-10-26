@@ -114,7 +114,7 @@ SDL_Surface *correct_image(SDL_Surface *image, int Seuil);
  * Description:
  *      - If dev mode is set to true, show image
  * */
-void show_image(SDL_Surface *image, size_t id);
+void show_image(SDL_Surface *image, int id);
 
 
 /* wait_for_keypressed
@@ -136,4 +136,6 @@ void wait_for_keypressed();
  * */
 SDL_Surface *display_image(SDL_Surface *img);
 
+
+void img_to_array(SDL_Surface *image, int length);
 #endif

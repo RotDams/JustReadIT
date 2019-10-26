@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (is_dev_mode) {
-        for (size_t i = 0; i < dev_mode.size; i++) {
+        for (int i = 0; i < dev_mode.size; i++) {
             dev_mode.data[i] = 1;
         }
 

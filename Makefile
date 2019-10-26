@@ -7,7 +7,7 @@ OUT         = JustReadIT.exe
 CC          = gcc
 FLAGS       = -O0
 CFLAGS      = -Wall -Wextra -Werror -O3 -g
-SDL_FLAGS   = `sdl-config --cflags --libs` -lSDL_image
+SDL_FLAGS   = `sdl-config --cflags --libs` -lSDL_image -lSDL_gfx
 
 
 all: $(OBJS)
