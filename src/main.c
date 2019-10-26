@@ -4,6 +4,10 @@
 #include "libs/neural_network/neuralnetwork.h"
 #include "libs/neural_network/index.h"
 
+PresentationState dev_mode = {
+        .size = 6,
+        .data = {0, 0, 0, 0, 0, 0}
+};
 
 int main(int argc, char *argv[]) {
 
@@ -17,11 +21,15 @@ int main(int argc, char *argv[]) {
 	int xor_load_data = 0;
 	int xor_save_data = 0;
 	int xor_nb_iteration = 1000000;
+	int is_dev_mode = 0;
 
 	// for each arg
 	int i = 1;
 	while (i < argc) {
-		if (strcmp(argv[i], "-x") == 0 || strcmp(argv[i], "--xor") == 0) {
+        if (strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--dev") == 0) {
+            is_dev_mode = 1;
+
+        } else if (strcmp(argv[i], "-x") == 0 || strcmp(argv[i], "--xor") == 0) {
 			is_xor = 1;
 
 		} else if (strcmp(argv[i], "-l") == 0 || strcmp(argv[i], "--load") == 0) {
@@ -47,6 +55,13 @@ int main(int argc, char *argv[]) {
 			xor_nb_iteration = strtol(argv[i], (char **) NULL, 10);
 		}
 		i++;
+	}
+
+	if (is_dev_mode) {
+        for (size_t i = 0; i < dev_mode.size; i++) {
+            dev_mode.data[i] = 1;
+        }
+
 	}
 
 	if (!is_xor) {

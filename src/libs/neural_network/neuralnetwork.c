@@ -180,8 +180,10 @@ Neuron load_neuron(FILE *file) {
 		exit(EXIT_FAILURE);
 	} else {
 		// Get neuron data through thanks to a pattern
-		fscanf(file, "Value :\n%lf\nLinks :\n%lf; %lf\nBias :\n%lf\n\n", &neuron_data[0], &neuron_data[1],
-				&neuron_data[2], &neuron_data[3]);
+		if (!fscanf(file, "Value :\n%lf\nLinks :\n%lf; %lf\nBias :\n%lf\n\n", &neuron_data[0], &neuron_data[1],
+				&neuron_data[2], &neuron_data[3])) {
+		    printf("error");
+		}
 
 		// Creation of the neuron with data from save_network information
 		Neuron n;
