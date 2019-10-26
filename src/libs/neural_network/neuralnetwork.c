@@ -125,65 +125,60 @@ void propagation(NeuralNetwork *network, int entry[], size_t len) {
 }
 
 void backpropagation(NeuralNetwork *network, int expected[], size_t len) {
-    // Compute weight to output layer
-    // Compute new weight between neuron 2 and 4
-    double derivative_error = -(expected - network->neurons[4].value);
-    double derivative_output = derivative(network->neurons[4].value);
-    double value_previous_neuron = network->neurons[2].value;
 
-    double derivative_weight = derivative_error * derivative_output * value_previous_neuron;
+	// Declaration of variables
+	Node* layer = network->layers->last;
+	Node* neuron = layer->first;
+	Node* link = neuron->link->first;
+	Node* previous_neuron = network->layers->last->previous;
+	Node* link_to_output;
+	Node* neuron_to_output;
+	double error_weight=0, error_val=0, derivative_neuron_val=0, error_tot=0;
 
-    double new_weight = network->neurons[4].link[0] - (0.5 * derivative_weight);
-    network->neurons[4].link[0] = new_weight;
+	// Compute weight to output layer
+	for (int i = 0; i < layer->length; i++)
+	{
+		for (int j = 0; j < layer->previous->length; j++)
+		{
+			error_val = (-(expected-(neuron->value)));
+			derivative_neuron_val = (neuron->value) * (1 - (neuron->value));
 
-    // Compute new weight between neuron 3 and 4
-    value_previous_neuron = network->neurons[3].value;
+			error_weight = error_val*previous_neuron**derivative_neuron_val;
+			link = link - (0.42 * error_weight);
 
-    derivative_weight = derivative_error * derivative_output * value_previous_neuron;
+			error_tot += (error_val * derivative_neuron_val) * link;
 
-    new_weight = network->neurons[4].link[1] - (0.5 * derivative_weight);
-    network->neurons[4].link[1] = new_weight;
+			// Change the link to compute
+			link = link->next;
+			previous_neuron = previous_neuron->next;
+		}
+		// Change the neuron to compute links
+		neuron = neuron->next;
+	}
 
-    // Compute weight to hidden layer
-    // Compute new weight between neuron 0 and 2
-    double layer_error = (derivative_error * derivative_output) * network->neurons[4].link[0];
-    double derivative_neuron = derivative(network->neurons[2].value);
-    value_previous_neuron = network->neurons[0].value;
+	// Compute weigth to hidden layer
+	// Set variables
+	neuron_to_output = layer->first;
+	link_to_output = neuron_to_output->links->first;
+	layer = layer->previous;
 
-    derivative_weight = layer_error * derivative_neuron * value_previous_neuron;
+	for (int i = 0; i < layer->length; ++i)
+	{
+		for (int j = 0; j < layer->previous->length; j++)
+		{
+			derivative_neuron_val = (neuron->value) * (1 - (neuron->value));
+			error_weight = error_tot * previous_neuron * derivative_neuron_val;
+			link = link - (0.42 * error_weight);
 
-    new_weight = network->neurons[2].link[0] - (0.5 * derivative_weight);
-    network->neurons[2].link[0] = new_weight;
-
-    // Compute new weight between neuron 1 and 2
-    layer_error = (derivative_error * derivative_output) * network->neurons[4].link[0];
-    derivative_neuron = derivative(network->neurons[2].value);
-    value_previous_neuron = network->neurons[1].value;
-
-    derivative_weight = layer_error * derivative_neuron * value_previous_neuron;
-
-    new_weight = network->neurons[2].link[1] - (0.5 * derivative_weight);
-    network->neurons[2].link[1] = new_weight;
-
-    // Compute new weight between neuron 0 and 3
-    layer_error = (derivative_error * derivative_output) * network->neurons[4].link[1];
-    derivative_neuron = derivative(network->neurons[3].value);
-    value_previous_neuron = network->neurons[0].value;
-
-    derivative_weight = layer_error * derivative_neuron * value_previous_neuron;
-
-    new_weight = network->neurons[3].link[0] - (0.5 * derivative_weight);
-    network->neurons[3].link[0] = new_weight;
-
-    // Compute new weight between neuron 1 and 3
-    layer_error = (derivative_error * derivative_output) * network->neurons[4].link[1];
-    derivative_neuron = derivative(network->neurons[3].value);
-    value_previous_neuron = network->neurons[1].value;
-
-    derivative_weight = layer_error * derivative_neuron * value_previous_neuron;
-
-    new_weight = network->neurons[3].link[1] - (0.5 * derivative_weight);
-    network->neurons[3].link[1] = new_weight;
+			// Change the link to compute
+			link = link->next;
+			previous_neuron = previous_neuron->next;
+		}
+		// Change the neuron to compute links
+		neuron = neuron->next;
+		neuron_to_output = neuron_to_output->next;
+		links_to_output = neuron_to_output->links->first;
+	}
 }
 
 // Machine learning function

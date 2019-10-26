@@ -71,7 +71,7 @@ double derivative(double value);
  * Description:
  *      - Return a new neural network from scratch with default value
  * */
-struct NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]);
+NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]);
 
 
 /* print_info
