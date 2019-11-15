@@ -3,7 +3,6 @@
 #include <math.h>
 #include <time.h>
 #include "neuralnetwork.h"
-#include "../list_manipulation/index.h"
 
 double sigmoide(double value) {
     return 1 / (1 + exp(-value));
@@ -20,7 +19,7 @@ NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]) {
     List layers, neurons, links;
     Neuron n;
     NeuralNetwork net;
-    float random = 0.5;
+    double r = 0.2;
 
     // Declaration of variables
     layers = create_list();
@@ -32,19 +31,21 @@ NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]) {
         links = create_list();
         // Creation of a list of neurons
         for (size_t j = 0; j < nb_neurons_per_layer[i - 1]; j++) {
-            n.bias = (float) rand() / (float) 1;
+            n.bias = (double) rand() / (double) 1;
             if (i != 0) {
                 // Creation of a list of random links
+                //              double links[nb_neurons_per_layer[i - 1]];
                 for (size_t k = 0; k < nb_neurons_per_layer[i - 1]; k++) {
-//                    random = (float) rand() / (float) 1;
-                    links = push_back_list(links, (void *) &random, LinkType);
-                    links = clear_list(links);
+                    //              links[k] = r;
+                    //r = (float) rand() / (float) 1;
+                    links = push_back_list(links, (double *) &r, LinkType);
                 }
                 n.links = links;
+                links = create_list();
             }
             neurons = push_back_list(neurons, &n, NeuronType);
         }
-        layers = push_back_list(layers, (void *) neurons, LayerType); //todo pas sur "&"
+        layers = push_back_list(layers, &neurons, LayerType); //todo pas sur "&"
     }
     net.layers = layers;
     return net;
@@ -55,15 +56,15 @@ void print_info(NeuralNetwork *network) {
 
     Node *layer_node = network->layers->first;
     List layer = layer_node->value;
-    Node *neuron_node = layer->first;
-    Neuron *neuron = neuron_node->value;
 
+    Node *neuron_node = layer->first;
+    Neuron neuron = *(Neuron *) (neuron_node->value);
     Node *link_node = NULL;
     double link = 0;
-//    if (neuron->links) {
-//        link_node = neuron->links->first;
-//        link = *(double *) link_node->value;
-//    }
+    if (neuron.links) {
+        link_node = neuron.links->first;
+        link = *(double *) link_node->value;
+    }
 
     //for (unsigned long i = 0; i < network->layers->length; i++) {
     int i = 0;
@@ -86,15 +87,16 @@ void print_info(NeuralNetwork *network) {
             //for (int k = 0; k < neuron->value->links->length; k++) {
             while (link_node) {
                 printf("%lf / \n", link);
-                link_node = link_node->next;
-                if (link_node)
+                if (neuron.links) {
+                    link_node = neuron.links->first;
                     link = *(double *) link_node->value;
+                }
             }
             printf("\n");
             //next neuron
             neuron_node = neuron_node->next;
             if (neuron_node)
-                neuron = neuron_node->value;
+                neuron = *(Neuron *) neuron_node->value;
 
 
         }
@@ -104,9 +106,9 @@ void print_info(NeuralNetwork *network) {
         if (layer_node) {
             layer = (List) layer_node->value;
             neuron_node = layer->first;
-            neuron = neuron_node->value;
-            if (neuron->links) {
-                link_node = neuron->links->first;
+            neuron = *(Neuron*) neuron_node->value;
+            if (neuron.links) {
+                link_node = neuron.links->first;
                 link = *(double *) link_node->value;
             }
         }

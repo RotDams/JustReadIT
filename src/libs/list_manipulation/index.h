@@ -1,5 +1,5 @@
-#ifndef JUSTREADIT_INDEX_H
-#define JUSTREADIT_INDEX_H
+#ifndef JUSTREADIT_LIST_INDEX_H
+#define JUSTREADIT_LIST_INDEX_H
 
 // ================================
 // Type definition
