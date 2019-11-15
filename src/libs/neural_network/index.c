@@ -3,7 +3,7 @@
 #include "index.h"
 #include "neuralnetwork.h"
 
-void xor_neural_network(int nb_iteration, int must_load, int must_save) {
+/*void xor_neural_network(int nb_iteration, int must_load, int must_save) {
     NeuralNetwork *pointer = NULL, network;
 
     if (must_load)
@@ -34,4 +34,4 @@ void xor_neural_network(int nb_iteration, int must_load, int must_save) {
         save_neural_network(pointer);
 
     print_info(pointer);
-}
+}*/

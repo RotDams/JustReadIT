@@ -2,12 +2,12 @@
 #include <unistd.h>
 #include "libs/image_segmentation/index.h"
 #include "libs/neural_network/neuralnetwork.h"
-#include "libs/neural_network/index.h"
+//#include "libs/neural_network/index.h"
 
 
 int main(int argc, char *argv[]) {
 
-    if (argc == 1) {
+    /*if (argc == 1) {
         printf("Error: Please specify the path of the image\nEx: ./output.exe -p \"my_image.bmp\"\n");
         return EXIT_FAILURE;
     }
@@ -59,7 +59,12 @@ int main(int argc, char *argv[]) {
         print_list(paragraphs);
     } else {
         xor_neural_network(xor_nb_iteration, xor_load_data, xor_save_data);
-    }
+    }*/
+    size_t nb_layer = 3;
+    size_t nb_neurons_per_layer[] = [256,32,26];
+    NeuralNetwork n = init(nb_layer,nb_neurons_per_layer);
+    NeuralNetwork *net = &n;
+    save_neural_network(net);
 
 
     return 0;
