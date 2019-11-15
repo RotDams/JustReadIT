@@ -60,7 +60,7 @@ void print_info(NeuralNetwork *network) {
     List layer = *(List*) layer_node->value;
 
 
-    Node *neuron_node = layer->first->next;
+    Node *neuron_node = layer->first;
     Neuron neuron = *(Neuron* ) (neuron_node->value);
     Node *link_node = NULL;
     double link = 0;
@@ -84,10 +84,11 @@ void print_info(NeuralNetwork *network) {
             // Print information of neurons
             printf("Neuron %d :\n", j);
             j++;
-            printf("Links : ");
+            printf("Links :\n ");
             // Print links of neurons
 
             //for (int k = 0; k < neuron->value->links->length; k++) {
+            link_node=neuron.links->first->value;
             while (link_node) {
                 printf("%lf / \n", link);
                 if (neuron.links) {
@@ -110,7 +111,7 @@ void print_info(NeuralNetwork *network) {
         if (layer_node) {
             layer = (List) layer_node->value;
             neuron_node = layer->first;
-            if (neuron_node->value){
+            if (neuron_node){
                 neuron = *(Neuron *) (neuron_node->value);
                 if (neuron.links) {
                     link_node = neuron.links->first;
