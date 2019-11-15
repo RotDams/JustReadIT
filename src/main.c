@@ -5,7 +5,7 @@
 //#include "libs/neural_network/index.h"
 
 
-int main(int argc, char *argv[]) {
+int main(){//int argc, char *argv[]) {
 
     /*if (argc == 1) {
         printf("Error: Please specify the path of the image\nEx: ./output.exe -p \"my_image.bmp\"\n");
@@ -61,10 +61,11 @@ int main(int argc, char *argv[]) {
         xor_neural_network(xor_nb_iteration, xor_load_data, xor_save_data);
     }*/
     size_t nb_layer = 3;
-    size_t nb_neurons_per_layer[] = [256,32,26];
-    NeuralNetwork n = init(nb_layer,nb_neurons_per_layer);
+    size_t nb_neurons_per_layer[] = {256, 32, 26};
+    NeuralNetwork n = init(nb_layer, nb_neurons_per_layer);
     NeuralNetwork *net = &n;
-    save_neural_network(net);
+    print_info(net);
+    //save_neural_network(net);
 
 
     return 0;
