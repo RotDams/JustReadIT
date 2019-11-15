@@ -25,16 +25,16 @@ NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]) {
     layers = create_list();
     n.value = 0;
 
-    for (size_t i = 0; i < nb_layer; i++) {
+    for (size_t i = 1; i <= nb_layer; i++) {
         // Reboot the lists
         neurons = create_list();
         links = create_list();
         // Creation of a list of neurons
-        for (size_t j = 0; j < nb_neurons_per_layer[i]; j++) {
+        for (size_t j = 0; j < nb_neurons_per_layer[i-1]; j++) {
             n.bias = (float) rand() / (float) 1;
             if (i != 0) {
                 // Creation of a list of random links
-                for (size_t k = 0; i < nb_neurons_per_layer[i - 1]; k++) {
+                for (size_t k = 0; k < nb_neurons_per_layer[i - 1]; k++) {
                     random = (float) rand() / (float) 1;
                     links = push_back_list(links, (void *) &random, LinkType);
                 }
