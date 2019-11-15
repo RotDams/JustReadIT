@@ -3,6 +3,7 @@
 #include <math.h>
 #include <time.h>
 #include "neuralnetwork.h"
+#include "../list_manipulation/index.h"
 
 double sigmoide(double value) {
     return 1 / (1 + exp(-value));
@@ -53,16 +54,16 @@ void print_info(NeuralNetwork *network) {
     printf("\n=================Network Information=================\n\n");
 
     Node *layer_node = network->layers->first;
-    List layer = (List) layer_node->value;
+    List layer = layer_node->value;
     Node *neuron_node = layer->first;
     Neuron *neuron = neuron_node->value;
 
     Node *link_node = NULL;
     double link = 0;
-    if (neuron->links) {
-        link_node = neuron->links->first;
-        link = *(double *) link_node->value;
-    }
+//    if (neuron->links) {
+//        link_node = neuron->links->first;
+//        link = *(double *) link_node->value;
+//    }
 
     //for (unsigned long i = 0; i < network->layers->length; i++) {
     int i = 0;
@@ -104,8 +105,10 @@ void print_info(NeuralNetwork *network) {
             layer = (List) layer_node->value;
             neuron_node = layer->first;
             neuron = neuron_node->value;
-            link_node = neuron->links->first;
-            link = *(double *) link_node->value;
+            if (neuron->links) {
+                link_node = neuron->links->first;
+                link = *(double *) link_node->value;
+            }
         }
 
     }
