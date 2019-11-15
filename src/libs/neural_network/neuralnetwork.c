@@ -19,7 +19,7 @@ NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]) {
     List layers, neurons, links;
     Neuron n;
     NeuralNetwork net;
-    float random;
+    float random = 0.5;
 
     // Declaration of variables
     layers = create_list();
@@ -35,14 +35,14 @@ NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]) {
             if (i != 0) {
                 // Creation of a list of random links
                 for (size_t k = 0; k < nb_neurons_per_layer[i - 1]; k++) {
-                    random = (float) rand() / (float) 1;
+//                    random = (float) rand() / (float) 1;
                     links = push_back_list(links, (void *) &random, LinkType);
                 }
                 n.links = links;
             }
-            neurons = push_back_list(neurons, (void *) &n, NeuronType);
+            neurons = push_back_list(neurons, &n, NeuronType);
         }
-        layers = push_back_list(layers, (void *) &neurons, LayerType); //todo pas sur "&"
+        layers = push_back_list(layers, (void *) neurons, LayerType); //todo pas sur "&"
     }
     net.layers = layers;
     return net;
@@ -56,19 +56,19 @@ void print_info(NeuralNetwork *network) {
     Node *neuron_node = layer->first;
     Neuron *neuron = neuron_node->value;
     Node *link_node = neuron->links->first;
-    double *link = link_node->value;
+    double link = *(double*) link_node->value;
 
     //for (unsigned long i = 0; i < network->layers->length; i++) {
     int i = 0;
     int j = 0;
-    while (layer) {
+    while (layer_node) {
 
         // Print information of layers
         printf("Layer %d :\n\n", i);//todo debug mode layer
         i++;
         j = 0;
 
-        while (neuron) {
+        while (neuron_node) {
 
             // Print information of neurons
             printf("Neuron %d :\n", j);
@@ -77,22 +77,31 @@ void print_info(NeuralNetwork *network) {
             // Print links of neurons
 
             //for (int k = 0; k < neuron->value->links->length; k++) {
-            while (link) {
-                printf("%lf / \n", *link);
+            while (link_node) {
+                printf("%lf / \n", link);
                 link_node = link_node->next;
-                link = link_node->value;
-
+                if (link_node)
+                    link = *(double*) link_node->value;
             }
             printf("\n");
             //next neuron
             neuron_node = neuron_node->next;
-            neuron = neuron_node->value;
+            if (neuron_node)
+                neuron = neuron_node->value;
 
 
         }
+        printf("\n");
         // next layer
         layer_node = layer_node->next;
-        layer = (List) layer_node->value;
+        if (layer_node){
+            layer = (List) layer_node->value;
+            neuron_node = layer->first;
+            neuron = neuron_node->value;
+            link_node = neuron->links->first;
+            link = *(double*) link_node->value;
+        }
+
     }
 
 
