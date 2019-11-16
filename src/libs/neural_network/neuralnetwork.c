@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+//#include <gmpxx.h>
 #include "neuralnetwork.h"
 
 double sigmoide(double value) {
@@ -17,7 +18,7 @@ NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]) {
 
     // Definition of variables
     List layers, neurons, links;
-   // Neuron n;
+    // Neuron n;
     NeuralNetwork net;
     double r = 0.2;
 
@@ -53,76 +54,136 @@ NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]) {
     return net;
 }
 
-void print_info(NeuralNetwork *network) {
+void print_info(NeuralNetwork network) {
     printf("\n=================Network Information=================\n\n");
 
-    Node *layer_node = network->layers->first;
-    List layer = *(List*) layer_node->value;
+
+    // Init all variables
+
+    List current_list_neurons;
+
+    Node current_neuron_in_list;
+    Neuron current_neuron;
+
+    Node current_link_in_list;
+    double current_link;
+
+    // ====== Init the first layer in current network=======
+
+    Node current_layer = *(Node*)(network.layers->first);
+    //----------------- All layers:-----------------------
+    for (unsigned long current_layer_index = 0; current_layer_index < network.layers->length; current_layer_index++) {
+
+        //  >print<
+
+        printf("\n\nLayer %lu:", current_layer_index);
 
 
-    Node *neuron_node = layer->first;
-    Neuron neuron = *(Neuron* ) (neuron_node->value);
-    Node *link_node = NULL;
-    double link = 0;
-    if (neuron.links) {
-        link_node = neuron.links->first;
-        link = *(double *) link_node->value;
-    }
+        // ====== Init the first neuron in current layer=======
+        current_list_neurons = *(List *) current_layer.value;
+        current_neuron_in_list = *(Node *) current_list_neurons->first;
+        current_neuron = *(Neuron *) (current_neuron_in_list.value);
 
-    //for (unsigned long i = 0; i < network->layers->length; i++) {
-    int i = 0;
-    int j = 0;
-    while (layer_node) {
+        //----------------- All neurons:-----------------------
+        for (unsigned long current_neuron_index = 0;
+             current_neuron_index < current_list_neurons->length; current_neuron_index++) {
 
-        // Print information of layers
-        printf("Layer %d :\n\n", i);//todo debug mode layer
-        i++;
-        j = 0;
+            //  >print<
+            printf("\nneuron %lu:", current_neuron_index);
 
-        while (neuron_node) {
+            // ====== Init the first link in current neuron======
+            current_link_in_list = *(Node *) current_neuron.links->first;
+            current_link = *(double *) (current_link_in_list.value);
 
-            // Print information of neurons
-            printf("Neuron %d :\n", j);
-            j++;
-            printf("Links :\n ");
-            // Print links of neurons
+            //----------------- All links:-----------------------
+            for (unsigned long current_link_index = 0;
+                 current_link_index < current_neuron.links->length; current_link_index++) {
 
-            //for (int k = 0; k < neuron->value->links->length; k++) {
-            link_node=neuron.links->first->value;
-            while (link_node) {
-                printf("%lf / \n", link);
-                if (neuron.links) {
-                    link_node = link_node->next;
-                    if (link_node)
-                        link = *(double *) link_node->value;
-                }
+                //  >print<
+                printf("\nlink %lu: %f", current_link_index,current_link);
+
+                // <<<<swap to the next link>>>>
+                current_link_in_list = *(Node *) current_link_in_list.next;
+                current_link = *(double *) (current_link_in_list.value);
+
             }
-            printf("\n");
-            //next neuron
-            neuron_node = neuron_node->next;
-            if (neuron_node)
-                neuron = *(Neuron *) neuron_node->value;
-
-
+            // <<<<swap to the next Neuron>>>>
+            current_neuron_in_list = *(Node *) current_neuron_in_list.next;
+            current_neuron = *(Neuron *) (current_neuron_in_list.value);
         }
-        printf("\n");
-        // next layer
-        layer_node = layer_node->next;
-        if (layer_node) {
-            layer = (List) layer_node->value;
-            neuron_node = layer->first;
-            if (neuron_node){
-                neuron = *(Neuron *) (neuron_node->value);
-                if (neuron.links) {
-                    link_node = neuron.links->first;
-                    link = *(double *) link_node->value;
-                }}
-        }
-
+        // <<<<swap to the next Layer>>>>
+        current_layer = *(Node *) (current_layer.next);
     }
-
 
     printf("\n=====================================================\n\n");
+//    Node *layer_node = network.layers->first;
+//    List layer = *(List*) layer_node->value;
+//
+//
+//    Node *neuron_node = layer->first;
+//    Neuron neuron = *(Neuron* ) (neuron_node->value);
+//    Node *link_node = NULL;
+//    double link = 0;
+//    if (neuron.links) {
+//        link_node = neuron.links->first;
+//        link = *(double *) link_node->value;
+//    }
+
+    //for (unsigned long i = 0; i < network->layers->length; i++) {
+//    int i = 0;
+//    int j = 0;
+//    while (layer_node) {
+//
+//        // Print information of layers
+//        printf("Layer %d :\n\n", i);//todo debug mode layer
+//        i++;
+//        j = 0;
+//
+//        while (neuron_node) {
+//
+//            // Print information of neurons
+//            printf("Neuron %d :\n", j);
+//            j++;
+//            printf("Links :\n ");
+//            // Print links of neurons
+//
+//            //for (int k = 0; k < neuron->value->links->length; k++) {
+//            link_node = neuron.links->first->value;
+//            for (unsigned long k = 1; k < neuron.links->length; k++) {
+//                printf("%lf / \n", link);
+//                if (neuron.links) {
+//                    link_node = link_node->next;
+//                    if (link_node)
+//                        link = *(double *) link_node->value;
+//                }
+//            }
+//            printf("\n");
+//            //next neuron
+//            neuron_node = neuron_node->next;
+//            if (neuron_node)
+//                neuron = *(Neuron *) neuron_node->value;
+//
+//
+//        }
+//        printf("\n");
+//        // next layer
+//        layer_node = layer_node->next;
+//        if (layer_node) {
+//            layer = (List) layer_node->value;
+//            neuron_node = layer->first;
+//            if (neuron_node) {
+//                neuron = *(Neuron *) (neuron_node->value);
+//                if (neuron.links) {
+//                    link_node = neuron.links->first;
+//                    link = *(double *) link_node->value;
+//                }
+//            }
+//        }
+//
+//    }
+
+
+
 }
 /*
 void propagation(NeuralNetwork *network, int entry[], size_t len) {

@@ -81,7 +81,7 @@ NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]);
  * Description:
  *      - Write all neural network information to the console
  * */
-void print_info(NeuralNetwork *network);
+void print_info(NeuralNetwork network);
 
 
 /* propagation

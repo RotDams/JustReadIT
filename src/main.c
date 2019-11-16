@@ -63,8 +63,8 @@ int main(){//int argc, char *argv[]) {
     size_t nb_layer = 3;
     size_t nb_neurons_per_layer[] = {10, 5, 3};
     NeuralNetwork n = init(nb_layer, nb_neurons_per_layer);
-    NeuralNetwork *net = &n;
-    print_info(net);
+  //  NeuralNetwork *net = &n;
+    print_info(n);
     //save_neural_network(net);
 
 
