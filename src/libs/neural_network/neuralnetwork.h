@@ -18,9 +18,9 @@ typedef struct Neuron {
 /* Layers
  * Definition of layer
  * */
-typedef struct Layer {
+/*typedef struct Layer {
 	List neurons;
-} Layers;
+} Layers;*/
 
 /* NeuralNetwork
  * Definition of a neural network
@@ -71,7 +71,7 @@ double derivative(double value);
  * Description:
  *      - Return a new neural network from scratch with default value
  * */
-NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]);
+void init(NeuralNetwork *net, size_t nb_layer, size_t nb_neurons_per_layer[]);
 
 
 /* print_info
@@ -81,7 +81,7 @@ NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]);
  * Description:
  *      - Write all neural network information to the console
  * */
-void print_info(NeuralNetwork network);
+void print_info(NeuralNetwork *network);
 
 
 /* propagation

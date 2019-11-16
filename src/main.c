@@ -61,11 +61,10 @@ int main(){//int argc, char *argv[]) {
         xor_neural_network(xor_nb_iteration, xor_load_data, xor_save_data);
     }*/
     size_t nb_layer = 3;
-    size_t nb_neurons_per_layer[] = {10, 5, 3};
-    NeuralNetwork n = init(nb_layer, nb_neurons_per_layer);
-  //  NeuralNetwork *net = &n;
-    print_info(n);
-    //save_neural_network(net);
+    size_t nb_neurons_per_layer[] = {3, 5, 3};
+    NeuralNetwork n;
+    init(&n, nb_layer, nb_neurons_per_layer);
+    printf("%lu", n.layers->length);
 
 
     return 0;

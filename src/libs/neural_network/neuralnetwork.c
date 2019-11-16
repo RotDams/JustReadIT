@@ -14,12 +14,12 @@ double derivative(double value) {
 }
 
 // Initialize the network from scratch
-NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]) {
+void init(NeuralNetwork *net, size_t nb_layer, size_t nb_neurons_per_layer[]) {
 
     // Definition of variables
-    List layers, neurons, links;
+    List layers, links;
     // Neuron n;
-    NeuralNetwork net;
+
     double r = 0.2;
 
     // Declaration of variables
@@ -28,7 +28,7 @@ NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]) {
 
     for (size_t i = 1; i <= nb_layer; i++) {
         // Reboot the lists
-        neurons = create_list();
+        List neurons = create_list();
         links = create_list();
         // Creation of a list of neurons
         for (size_t j = 0; j < nb_neurons_per_layer[i - 1]; j++) {
@@ -48,17 +48,18 @@ NeuralNetwork init(size_t nb_layer, size_t nb_neurons_per_layer[]) {
             }
             neurons = push_back_list(neurons, &n, NeuronType);
         }
-        layers = push_back_list(layers, (List *) &neurons, LayerType); //todo pas sur "&"
+        layers = push_back_list(layers, &neurons, LayerType); //todo pas sur "&"
     }
-    net.layers = layers;
-    return net;
+    net->layers = layers;
 }
 
-void print_info(NeuralNetwork network) {
+void print_info(NeuralNetwork *net) {
     printf("\n=================Network Information=================\n\n");
 
-
+    NeuralNetwork network = *(NeuralNetwork*)(&net);
     // Init all variables
+    List l = network.layers;
+    printf("%lu", l->length);
 
     List current_list_neurons;
 
