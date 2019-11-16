@@ -13,50 +13,75 @@ double derivative(double value) {
     return (value) * (1 - (value));
 }
 
+double *get_link() {
+    double* link = malloc(sizeof(double));
+    *link = 0.2;
+    return link;
+}
+
+Neuron *get_neuron(size_t nb_neurons_per_layer[], size_t index) {
+    Neuron *n = malloc(sizeof(Neuron));
+    n->bias = 0.5;
+    n->value = 0.1;
+    n->links = create_list();
+    if (index!=1) {
+        for (size_t i = 0; i < nb_neurons_per_layer[index - 1]; i++) {
+            n->links = push_back_list(n->links, (double *) get_link(), LinkType);
+        }
+    }
+    return n;
+}
+
+List get_neurons_list(size_t nb_neurons_per_layer[], size_t index) {
+    List neurons = create_list();
+
+        for (size_t i = 0; i < nb_neurons_per_layer[index - 1]; i++) {
+            neurons = push_back_list(neurons, get_neuron(nb_neurons_per_layer, index), NeuronType);
+        }
+    return neurons;
+}
+
+
 // Initialize the network from scratch
 void init(NeuralNetwork *net, size_t nb_layer, size_t nb_neurons_per_layer[]) {
 
     // Definition of variables
-    List layers, links;
-    // Neuron n;
+    net->layers = create_list();
 
-    double r = 0.2;
 
     // Declaration of variables
-    layers = create_list();
-
-
     for (size_t i = 1; i <= nb_layer; i++) {
-        // Reboot the lists
-        List neurons = create_list();
-        links = create_list();
-        // Creation of a list of neurons
-        for (size_t j = 0; j < nb_neurons_per_layer[i - 1]; j++) {
-            Neuron n;
-            n.value = 0;
-            n.bias = (double) rand() / (double) 1;
-            if (i != 0) {
-                // Creation of a list of random links
-                //              double links[nb_neurons_per_layer[i - 1]];
-                for (size_t k = 0; k < nb_neurons_per_layer[i - 1]; k++) {
-                    //              links[k] = r;
-                    //r = (float) rand() / (float) 1;
-                    links = push_back_list(links, (double *) &r, LinkType);
-                }
-                n.links = links;
-                links = create_list();
-            }
-            neurons = push_back_list(neurons, &n, NeuronType);
-        }
-        layers = push_back_list(layers, &neurons, LayerType); //todo pas sur "&"
+        net->layers = push_back_list(net->layers, get_neurons_list(nb_neurons_per_layer, i), LayerType);
     }
-    net->layers = layers;
+
+
+//    for (size_t i = 1; i <= nb_layer; i++) {
+//        // Reboot the lists
+//        List neurons = create_list();
+//        links = create_list();
+//        // Creation of a list of neurons
+//        for (size_t j = 0; j < nb_neurons_per_layer[i - 1]; j++) {
+//            Neuron n;
+//            n.value = 0;
+//            n.bias = (double) rand() / (double) 1;
+//            if (i != 0) {
+//                for (size_t k = 0; k < nb_neurons_per_layer[i - 1]; k++) {
+//                    links = push_back_list(links, (double *) &r, LinkType);
+//                }
+//                n.links = links;
+//                links = create_list();
+//            }
+//            neurons = push_back_list(neurons, &n, NeuronType);
+//        }
+//        layers = push_back_list(layers, &neurons, LayerType); //todo pas sur "&"
+//    }
+//    net->layers = layers;
 }
 
 void print_info(NeuralNetwork *net) {
     printf("\n=================Network Information=================\n\n");
 
-    NeuralNetwork network = *(NeuralNetwork*)(&net);
+    NeuralNetwork network = *(NeuralNetwork *) (&net);
     // Init all variables
     List l = network.layers;
     printf("%lu", l->length);
@@ -71,7 +96,7 @@ void print_info(NeuralNetwork *net) {
 
     // ====== Init the first layer in current network=======
 
-    Node current_layer = *(Node*)(network.layers->first);
+    Node current_layer = *(Node *) (network.layers->first);
     //----------------- All layers:-----------------------
     for (unsigned long current_layer_index = 0; current_layer_index < network.layers->length; current_layer_index++) {
 
@@ -101,7 +126,7 @@ void print_info(NeuralNetwork *net) {
                  current_link_index < current_neuron.links->length; current_link_index++) {
 
                 //  >print<
-                printf("\nlink %lu: %f", current_link_index,current_link);
+                printf("\nlink %lu: %f", current_link_index, current_link);
 
                 // <<<<swap to the next link>>>>
                 current_link_in_list = *(Node *) current_link_in_list.next;

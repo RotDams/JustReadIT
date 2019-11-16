@@ -61,9 +61,17 @@ int main(){//int argc, char *argv[]) {
         xor_neural_network(xor_nb_iteration, xor_load_data, xor_save_data);
     }*/
     size_t nb_layer = 3;
-    size_t nb_neurons_per_layer[] = {3, 5, 3};
+    size_t nb_neurons_per_layer[] = {10, 5, 2};
     NeuralNetwork n;
     init(&n, nb_layer, nb_neurons_per_layer);
+
+    List l = (List) (n.layers->first->value);
+    List l1 = (List) (n.layers->first->next->value);
+    List l2 = (List) (n.layers->first->next->next->value);
+
+    Neuron neu = *(Neuron*) (l->first->value);
+
+    print_info(&n);
     printf("%lu", n.layers->length);
 
 
