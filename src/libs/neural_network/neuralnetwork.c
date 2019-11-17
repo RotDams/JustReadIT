@@ -21,8 +21,8 @@ double *get_link() {
 
 Neuron *get_neuron(size_t nb_neurons_per_layer[], size_t index) {
     Neuron *n = malloc(sizeof(Neuron));
-    n->bias = 0.3;
-    n->value = 0.1;
+    n->bias = drand48();
+    n->value = drand48();
     n->links = create_list();
     if (index != 1) {
         for (size_t i = 0; i < nb_neurons_per_layer[index - 2]; i++) {
@@ -81,8 +81,8 @@ void print_info(NeuralNetwork *net) {
                        n.links->length);
 
                 for (unsigned long j = 1; j <= n.links->length; j++) {
-                    //printf("  (%lu) = %f   ", j, link_value);
-                    if (j != n.links->length - 1) {
+                    printf("  (%lu) = %f   ", j, link_value);
+                    if (j != n.links->length ) {
                         link_node = *(Node *) link_node.next;
                         link_value = *(double *) link_node.value;
                     }
@@ -120,21 +120,21 @@ void propagation(NeuralNetwork *network, double entry[], size_t len) {
     List layers = network->layers;
 
     //------------Layer1--------------------
-    Node previous_neurons = *(Node *) (layers->first);
-    List previous_list_neuron = (List) (previous_neurons.value);
+    Node *previous_neurons = (Node *) (layers->first);
+    List previous_list_neuron = (List) (previous_neurons->value);
 
-    Node previous_neuron = *(Node *) (previous_list_neuron->first);
-    Neuron *previous_n = (Neuron *) (previous_neuron.value);
+    Node *previous_neuron = (Node *) (previous_list_neuron->first);
+    Neuron *previous_n = (Neuron *) (previous_neuron->value);
 
     //-----------Layer2---------------------
-    Node neurons = *(Node *) (layers->first->next);
-    List list_neuron = (List) (neurons.value);
+    Node *neurons = (Node *) (layers->first->next);
+    List list_neuron = (List) (neurons->value);
 
-    Node current_neuron = *(Node *) (list_neuron->first);
-    Neuron *n = (Neuron *) (current_neuron.value);
+    Node *current_neuron = (Node *) (list_neuron->first);
+    Neuron *n = (Neuron *) (current_neuron->value);
 
-    Node link_node = *(Node *) (n->links->first);
-    double link_value = *(double *) link_node.value;
+    Node *link_node = (Node *) (n->links->first);
+    double link_value = *(double *) link_node->value;
     //------------------------------------
 
     // Check if there is enough entry or neuron
@@ -160,51 +160,51 @@ void propagation(NeuralNetwork *network, double entry[], size_t len) {
                     val_neuron += previous_n->value * link_value;
 
                     //next links in current layer
-                    if (link_node.next) {
-                        link_node = *(Node *) link_node.next;
-                        link_value = *(double *) link_node.value;
+                    if (link_node->next) {
+                        link_node = (Node *) link_node->next;
+                        link_value = *(double *) link_node->value;
                     }
 
                     //next neuron in previous layer
-                    if (previous_neuron.next) {
-                        previous_neuron = *(Node *) previous_neuron.next;
-                        previous_n = (Neuron *) (previous_neuron.value);
+                    if (previous_neuron->next) {
+                        previous_neuron = (Node *) previous_neuron->next;
+                        previous_n = (Neuron *) (previous_neuron->value);
                     }
                 }
                 val_neuron += n->bias;
                 // Activation function
                 n->value = sigmoide(val_neuron);
 
-                if (current_neuron.next) {
-                    current_neuron = *(Node *) current_neuron.next;
-                    n = (Neuron *) (current_neuron.value);
+                if (current_neuron->next) {
+                    current_neuron = (Node *) current_neuron->next;
+                    n = (Neuron *) (current_neuron->value);
                 }
 
-                link_node = *(Node *) n->links->first;
-                link_value = *(double *) link_node.value;
+                link_node = (Node *) n->links->first;
+                link_value = *(double *) link_node->value;
 
-                previous_neuron = *(Node *) (previous_list_neuron->first);
-                previous_n = (Neuron *) (previous_neuron.value);
+                previous_neuron = (Node *) (previous_list_neuron->first);
+                previous_n = (Neuron *) (previous_neuron->value);
             }
 
             //------------Next Layer (1)--------------------
-            previous_neurons = *(Node *) (previous_neurons.next);
-            previous_list_neuron = (List) (previous_neurons.value);
+            previous_neurons = (Node *) (previous_neurons->next);
+            previous_list_neuron = (List) (previous_neurons->value);
 
-            previous_neuron = *(Node *) (previous_list_neuron->first);
-            previous_n = (Neuron *) (previous_neuron.value);
+            previous_neuron = (Node *) (previous_list_neuron->first);
+            previous_n = (Neuron *) (previous_neuron->value);
 
             //-----------Next Layer (2)---------------------
-            if (neurons.next) {
-                neurons = *(Node *) (neurons.next);
-                list_neuron = (List) (neurons.value);
+            if (neurons->next) {
+                neurons = (Node *) (neurons->next);
+                list_neuron = (List) (neurons->value);
             }
 
-            current_neuron = *(Node *) (list_neuron->first);
-            n = (Neuron *) (current_neuron.value);
+            current_neuron = (Node *) (list_neuron->first);
+            n = (Neuron *) (current_neuron->value);
 
-            link_node = *(Node *) (n->links->first);
-            link_value = *(double *) link_node.value;
+            link_node = (Node *) (n->links->first);
+            link_value = *(double *) link_node->value;
             //------------------------------------
         }
     } else {
