@@ -15,7 +15,7 @@ double derivative(double value) {
 
 double *get_link() {
     double *link = malloc(sizeof(double));
-    *link = 0.2;
+    *link = ((float)random()/(float)7);
     return link;
 }
 
@@ -76,7 +76,7 @@ void print_info(NeuralNetwork *net) {
                 link_value = *(double *) link_node.value;
                 printf("Current Neuron: %lu : ( with %lu links)\n ----links:------\n", k, n.links->length);
 
-                for (int j = 1; j <= n.links->length; j++) {
+                for (unsigned long j = 1; j <= n.links->length; j++) {
                     printf("  (%lu) = %f   ", j, link_value);
                     if (j != n.links->length - 1) {
                         link_node = *(Node *) link_node.next;
