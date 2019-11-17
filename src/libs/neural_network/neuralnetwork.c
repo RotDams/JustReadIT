@@ -15,13 +15,13 @@ double derivative(double value) {
 
 double *get_link() {
     double *link = malloc(sizeof(double));
-    *link = ((float)random()/(float)7);
+    *link = drand48();
     return link;
 }
 
 Neuron *get_neuron(size_t nb_neurons_per_layer[], size_t index) {
     Neuron *n = malloc(sizeof(Neuron));
-    n->bias = 0.5;
+    n->bias = 0.3;
     n->value = 0.1;
     n->links = create_list();
     if (index != 1) {
