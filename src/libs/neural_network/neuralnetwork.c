@@ -213,7 +213,7 @@ void propagation(NeuralNetwork *network, double entry[], size_t len) {
 }
 
 
-void backpropagation(NeuralNetwork *network, size_t expected) {
+void backpropagation(NeuralNetwork *network, size_t expected[]) {
 
     // Declaration of variables
 
@@ -245,7 +245,7 @@ void backpropagation(NeuralNetwork *network, size_t expected) {
     for (unsigned long i = 0; i < ((List) (layers->last->value))->length; i++) {
 
         for (unsigned long j = 0; j < n->links->length; j++) {
-            error_val = (-(expected - (n->value)));
+            error_val = (-(expected[i] - (n->value)));
             derivative_neuron_val = (n->value) * (1 - (n->value));
 
             error_weight = error_val * previous_n->value * derivative_neuron_val;
@@ -379,7 +379,7 @@ void backpropagation(NeuralNetwork *network, size_t expected) {
 }
 
 // Machine learning function
-void learn(NeuralNetwork *network, double entry[], size_t len, size_t expected) {
+void learn(NeuralNetwork *network, double entry[], size_t len, size_t expected[]) {
     propagation(network, entry, len);
     backpropagation(network, expected);
 

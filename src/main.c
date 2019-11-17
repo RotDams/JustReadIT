@@ -66,17 +66,23 @@ int main() {//int argc, char *argv[]) {
     init(&n, nb_layer, nb_neurons_per_layer);
     //  print_info(&n);
     double k[] = {1, 0, 1, 0.3, 0.2, 0, 1, 0.3, 0, 1};
-
+//
+//    print_info(&n);
+//    run(&n,k,10);
+//    print_info(&n);
+    propagation(&n, k, 10);
     print_info(&n);
-    run(&n,k,10);
+    size_t d[]= {1, 0};
+    backpropagation(&n,d);
     print_info(&n);
-//    propagation(&n, k, 10);
 //
 //    print_info(&n);
 //    save_neural_network(&n);
 //    NeuralNetwork s;
 //    load_neural_network(&s);
 //    //print_info(&s);
+
+
 
 
     return 0;

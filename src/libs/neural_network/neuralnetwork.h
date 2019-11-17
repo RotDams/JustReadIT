@@ -104,7 +104,7 @@ void propagation(NeuralNetwork *network, double entry[], size_t len);
  * Description:
  *      - Compute all new weights
  * */
-void backpropagation(NeuralNetwork *network, size_t expected);
+void backpropagation(NeuralNetwork *network, size_t expected[]);
 
 
 /* learn
@@ -116,7 +116,7 @@ void backpropagation(NeuralNetwork *network, size_t expected);
  * Description:
  *      - Function that combine propagation and backpropagation
  * */
-void learn(NeuralNetwork *network, double entry[],size_t len, size_t expected);
+void learn(NeuralNetwork *network, double entry[],size_t len, size_t expected[]);
 
 
 /* run
