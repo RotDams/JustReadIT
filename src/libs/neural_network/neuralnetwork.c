@@ -81,7 +81,7 @@ void print_info(NeuralNetwork *net) {
                        n.links->length);
 
                 for (unsigned long j = 1; j <= n.links->length; j++) {
-                    printf("  (%lu) = %f   ", j, link_value);
+                    printf("  (%lu) = %.30f   ", j, link_value);
                     if (j != n.links->length) {
                         link_node = *(Node *) link_node.next;
                         link_value = *(double *) link_node.value;
@@ -452,14 +452,14 @@ void save_neural_network(NeuralNetwork *net) {
                 link_value = *(double *) link_node.value;
 
 
-                fprintf(file, "Value :\n%f\n", n.value);
-                fprintf(file, "Bias :\n%f\n", n.bias);
+                fprintf(file, "Value :\n%.30f\n", n.value);
+                fprintf(file, "Bias :\n%.30f\n", n.bias);
                 fprintf(file, "Links :\n");
 
                 for (unsigned long j = 1; j <= n.links->length; j++) {
 
 
-                    fprintf(file, "%lf / ", link_value);
+                    fprintf(file, "%.30f / ", link_value);
                     if (j != n.links->length) {
                         link_node = *(Node *) link_node.next;
                         link_value = *(double *) link_node.value;
@@ -474,8 +474,8 @@ void save_neural_network(NeuralNetwork *net) {
             }
         else
             for (unsigned long k = 1; k <= list_neuron->length; k++) {
-                fprintf(file, "Value :\n%f\n", n.value);
-                fprintf(file, "Bias :\n%f\n", n.bias);
+                fprintf(file, "Value :\n%.30f\n", n.value);
+                fprintf(file, "Bias :\n%.30f\n", n.bias);
                 // fprintf(file, "Links :\n");
 
                 if (current_n.next) {

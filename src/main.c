@@ -74,13 +74,19 @@ int main() {//int argc, char *argv[]) {
     print_info(&n);
     size_t d[]= {1, 0};
     backpropagation(&n,d);
+    save_neural_network(&n);
+//    for (int i = 0; i <100000 ; i++) {
+//        learn(&n,k,10,d);
+//    }
     print_info(&n);
+   // print_info(&n);
+
 //
 //    print_info(&n);
 //    save_neural_network(&n);
-//    NeuralNetwork s;
-//    load_neural_network(&s);
-//    //print_info(&s);
+    NeuralNetwork s;
+    load_neural_network(&s);
+    print_info(&s);
 
 
 
