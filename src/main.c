@@ -67,7 +67,8 @@ int main(){//int argc, char *argv[]) {
   //  print_info(&n);
     double k[] = {1,0,1,0.3,0.2,0,1,0.3,0,1};
     propagation(&n,k,10);
-    print_info(&n);
+   // print_info(&n);
+   save_neural_network(&n);
 
 
     return 0;

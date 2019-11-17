@@ -82,7 +82,7 @@ void print_info(NeuralNetwork *net) {
 
                 for (unsigned long j = 1; j <= n.links->length; j++) {
                     printf("  (%lu) = %f   ", j, link_value);
-                    if (j != n.links->length ) {
+                    if (j != n.links->length) {
                         link_node = *(Node *) link_node.next;
                         link_value = *(double *) link_node.value;
                     }
@@ -211,6 +211,7 @@ void propagation(NeuralNetwork *network, double entry[], size_t len) {
         printf("Error in propagation\n");
     }
 }
+
 /*
 void backpropagation(NeuralNetwork *network, int expected[], size_t len) {
 
@@ -310,7 +311,7 @@ void save_neural_network(NeuralNetwork *network) {
     // Write all info
     for (int i = 0; i < network->layers->length; i++) {
         neuron = layer->first;
-        link = = neuron->link->first
+        link = neuron->link->first
         fprintf(file, "===============Layer %i===============\n\n", i);
         for (int j = 0; j < layer->length; j++) {
             fprintf(file, "Value :\n%f\n", neuron->value);
@@ -323,18 +324,96 @@ void save_neural_network(NeuralNetwork *network) {
             fprintf(file, "\n\n");
             neuron = neuron->next;
         }
-        layer = layer->next
+        layer = layer->next;
     }
+
     fprintf(file, "===============Credit===============\n\n");
-    fprintf(file, "JustReadIt was developed by damien.champeyroux,
-    quentin.briolant, adrien.barens
-    and
-    sami.beyhum.\n
+    fprintf(file, "JustReadIt was developed by damien.champeyroux,\
+    quentin.briolant, adrien.barens\
+    and\
+    sami.beyhum.\n\
     ");
     // Close the file
     fclose(file);
 }
+*/
+void save_neural_network(NeuralNetwork *net) {
+    List layers = net->layers;
 
+    Node neurons = *(Node *) (layers->first);
+    List list_neuron = (List) (neurons.value);
+
+    Node link_node;
+    double link_value;
+
+    Neuron n;
+    FILE *file = fopen("src/libs/neural_network/save_network.txt", "w");
+    fprintf(file, "layers: %lu\n", net->layers->length);
+    List current_layers = net->layers;
+
+    Node current_neurons = *(Node *) (layers->first);
+    fprintf(file, "neurons: ");
+    for (unsigned long i = 1; i <= layers->length; i++) {
+        fprintf(file, "%lu ", ((List) (current_neurons.value))->length);
+        if (current_neurons.next)
+            current_neurons = *(Node *) current_neurons.next;
+    }
+    for (unsigned long i = 1; i <= layers->length; i++) {
+        fprintf(file, "\n= Layer %lu =\n\n", i);
+        Node current_n = *(Node *) (list_neuron->first);
+        n = *(Neuron *) (current_n.value);
+        if (n.links)
+            for (unsigned long k = 1; k <= list_neuron->length; k++) {
+
+                link_node = *(Node *) (n.links->first);
+                link_value = *(double *) link_node.value;
+
+
+                fprintf(file, "Value :\n%f\n", n.value);
+                fprintf(file, "Bias :\n%f\n", n.bias);
+                fprintf(file, "Links :\n");
+
+                for (unsigned long j = 1; j <= n.links->length; j++) {
+
+
+                    fprintf(file, "%lf / ", link_value);
+                    if (j != n.links->length) {
+                        link_node = *(Node *) link_node.next;
+                        link_value = *(double *) link_node.value;
+                    }
+
+                }
+                fprintf(file, "\n");
+                if (current_n.next) {
+                    current_n = *(Node *) (current_n.next);
+                    n = *(Neuron *) (current_n.value);
+                }
+            }
+        else
+            for (unsigned long k = 1; k <= list_neuron->length; k++) {
+                fprintf(file, "Value :\n%f\n", n.value);
+                fprintf(file, "Bias :\n%f\n", n.bias);
+                fprintf(file, "Links :\n");
+
+                if (current_n.next) {
+                    current_n = *(Node *) (current_n.next);
+                    n = *(Neuron *) (current_n.value);
+                }
+                fprintf(file, "\n");
+            }
+        if (neurons.next) {
+            neurons = *(Node *) neurons.next;
+            list_neuron = (List) (neurons.value);
+        }
+
+    }
+    fprintf(file, "===============Credit===============\n\n");
+    fprintf(file,
+            "JustReadIt was developed by damien.champeyroux, quentin.briolant, adrien.barens and sami.beyhum.\n\n");
+    // Close the file
+    fclose(file);
+}
+/*
 // Get information from one link of one neuron in save_network.txt
 double load_link(FILE *file) {
     // Check if the pointer have been initialized
