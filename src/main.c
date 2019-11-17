@@ -64,15 +64,7 @@ int main(){//int argc, char *argv[]) {
     size_t nb_neurons_per_layer[] = {10, 5, 2};
     NeuralNetwork n;
     init(&n, nb_layer, nb_neurons_per_layer);
-
-    List l = (List) (n.layers->first->value);
-    List l1 = (List) (n.layers->first->next->value);
-    List l2 = (List) (n.layers->first->next->next->value);
-
-    Neuron neu = *(Neuron*) (l->first->value);
-
     print_info(&n);
-    printf("%lu", n.layers->length);
 
 
     return 0;
