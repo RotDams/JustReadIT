@@ -93,7 +93,7 @@ void print_info(NeuralNetwork *network);
  * Description:
  *      - Compute the output of the neural network with entry values
  * */
-void propagation(NeuralNetwork *network, int entry[], size_t len);
+void propagation(NeuralNetwork *network, double entry[], size_t len);
 
 
 /* backpropagation

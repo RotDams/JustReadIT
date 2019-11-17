@@ -64,6 +64,9 @@ int main(){//int argc, char *argv[]) {
     size_t nb_neurons_per_layer[] = {10, 5, 2};
     NeuralNetwork n;
     init(&n, nb_layer, nb_neurons_per_layer);
+  //  print_info(&n);
+    double k[] = {1,0,1,0.3,0.2,0,1,0.3,0,1};
+    propagation(&n,k,10);
     print_info(&n);
 
 
