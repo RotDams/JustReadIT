@@ -352,9 +352,9 @@ void save_neural_network(NeuralNetwork *net) {
     List current_layers = net->layers;
 
     Node current_neurons = *(Node *) (layers->first);
-    fprintf(file, "neurons: ");
+    fprintf(file, "neurons:");
     for (unsigned long i = 1; i <= layers->length; i++) {
-        fprintf(file, "%lu ", ((List) (current_neurons.value))->length);
+        fprintf(file, " %lu", ((List) (current_neurons.value))->length);
         if (current_neurons.next)
             current_neurons = *(Node *) current_neurons.next;
     }
@@ -383,7 +383,7 @@ void save_neural_network(NeuralNetwork *net) {
                     }
 
                 }
-                fprintf(file, "\n");
+                fprintf(file, "\n\n");
                 if (current_n.next) {
                     current_n = *(Node *) (current_n.next);
                     n = *(Neuron *) (current_n.value);
@@ -393,7 +393,7 @@ void save_neural_network(NeuralNetwork *net) {
             for (unsigned long k = 1; k <= list_neuron->length; k++) {
                 fprintf(file, "Value :\n%f\n", n.value);
                 fprintf(file, "Bias :\n%f\n", n.bias);
-                fprintf(file, "Links :\n");
+               // fprintf(file, "Links :\n");
 
                 if (current_n.next) {
                     current_n = *(Node *) (current_n.next);
@@ -413,6 +413,7 @@ void save_neural_network(NeuralNetwork *net) {
     // Close the file
     fclose(file);
 }
+
 /*
 // Get information from one link of one neuron in save_network.txt
 double load_link(FILE *file) {
@@ -507,3 +508,65 @@ NeuralNetwork load_neural_network(size_t nb_layer, size_t nb_neurons_per_layer[]
     // Close file
     fclose(file);
 }*/
+double *set_new_link(FILE *file) {
+    double *link = malloc(sizeof(double));
+    fscanf(file, "%lf / ", link);
+    return link;
+}
+
+Neuron *set_new_neuron(size_t nb_neurons_per_layer[], size_t index, FILE *file) {
+    Neuron *n = malloc(sizeof(Neuron));
+    fscanf(file, "Value :\n%lf\nBias :\n%lf\n",&n->value,&n->bias);
+    n->links = create_list();
+    if (index != 1) {
+        fscanf(file, "Links :\n");
+            for (size_t i = 0; i < nb_neurons_per_layer[index - 2]; i++) {
+                n->links = push_back_list(n->links, (double *) set_new_link(file), LinkType);
+            }
+    }
+    fscanf(file,"\n");
+    return n;
+}
+
+List set_new_neurons_list(size_t nb_neurons_per_layer[], size_t index, FILE *file) {
+    List neurons = create_list();
+
+    for (size_t i = 0; i < nb_neurons_per_layer[index - 1]; i++) {
+        neurons = push_back_list(neurons, set_new_neuron(nb_neurons_per_layer, index, file), NeuronType);
+    }
+    return neurons;
+}
+
+
+// Initialize the network from scratch
+void load_neural_network(NeuralNetwork *net) {
+    FILE *file = NULL;
+    // Get the file where network data is saved
+    file = fopen("src/libs/neural_network/save_network.txt", "r");
+    // Check if the file exist
+    if (file == NULL) {
+        printf("Error: fail to load neural network\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Definition of variables
+    net->layers = create_list();
+    size_t nb_layer = 0;
+    fscanf(file, "layers: %zi\n", &nb_layer);
+    size_t nb_neurons_per_layer[3];
+
+
+    fscanf(file, "neurons:");
+    int k = 0;
+    while (fscanf(file, " %zi", &nb_neurons_per_layer[k]))
+        k++;
+
+
+    int trash;
+
+    // Declaration of variables
+    for (size_t i = 1; i <= nb_layer; i++) {
+        fscanf(file,"= Layer %d =\n\n",&trash);
+        net->layers = push_back_list(net->layers, set_new_neurons_list(nb_neurons_per_layer, i, file), LayerType);
+    }
+}

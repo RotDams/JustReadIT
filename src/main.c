@@ -69,6 +69,9 @@ int main(){//int argc, char *argv[]) {
     propagation(&n,k,10);
    // print_info(&n);
    save_neural_network(&n);
+   NeuralNetwork s;
+   load_neural_network(&s);
+   print_info(&s);
 
 
     return 0;
