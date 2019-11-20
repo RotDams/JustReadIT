@@ -60,26 +60,26 @@ int main() {//int argc, char *argv[]) {
     } else {
         xor_neural_network(xor_nb_iteration, xor_load_data, xor_save_data);
     }*/
-    size_t nb_layer = 3;
-    size_t nb_neurons_per_layer[] = {2, 2, 2};
-    NeuralNetwork n;
-    init(&n, nb_layer, nb_neurons_per_layer);
+//    size_t nb_layer = 3;
+//    size_t nb_neurons_per_layer[] = {2, 2, 2};
+//    NeuralNetwork n;
+//    init(&n, nb_layer, nb_neurons_per_layer);
     //  print_info(&n);
-    double k[] = {1, 0};
+//    double k[] = {1, 0};
 //
 //    print_info(&n);
 //    run(&n,k,10);
-    print_info(&n);
-    propagation(&n, k, 2);
-    print_info(&n);
-    size_t d[]= {0, 1};
-    backpropagation(&n,d);
+//    print_info(&n);
+//    propagation(&n, k, 2);
+//    print_info(&n);
+//    size_t d[]= {0, 1};
+//    backpropagation(&n,d);
 //    save_neural_network(&n);
 //    for (int i = 0; i <100000 ; i++) {
 //        learn(&n,k,10,d);
 //    }
-    print_info(&n);
-   // print_info(&n);
+//    print_info(&n);
+    // print_info(&n);
 
 //
 //    print_info(&n);
@@ -88,8 +88,31 @@ int main() {//int argc, char *argv[]) {
 //    load_neural_network(&s);
 //    print_info(&s);
 
+    size_t nb_layer = 3;
+    size_t nb_neurons_per_layer[] = {2, 2, 1};
+    NeuralNetwork n;
+    init(&n, nb_layer, nb_neurons_per_layer);
+    //  print_info(&n);
+//
+//    print_info(&n);
+//    run(&n,k,10);
 
+    NeuralNetwork *pointer = &n;
 
+    double entry[2];
+    entry[0] = rand() % 2;
+    entry[1] = rand() % 2;
+    size_t expected[1];
+
+    printf("\n=====================================\n\n");
+    for (int i = 0; i < 10000; i++) {
+        entry[0] = 0;
+        entry[1] = 1;
+        printf("Expected : %d\n", entry[0] != entry[1]);
+        expected[0] = entry[0] != entry[1];
+        learn(pointer, entry, 2, expected);
+        printf("\n");
+    }
 
     return 0;
 
