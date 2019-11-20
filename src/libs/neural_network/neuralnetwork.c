@@ -305,16 +305,28 @@ void backpropagation(NeuralNetwork *network, size_t expected[]) {
     previous_n = (Neuron *) (previous_neuron->value);
 
     double layer_error;
-
+    size_t nb_link = 0;
 
     for (size_t i = 0; i < layers->length - 2; i++) {
+        // Compute layer_error
+        layer_error = 0;
+        for (size_t l = 0; l < list_neuron->length; l++) {
+            for (size_t x = 0; x < nb_link; x++) {
+                node_link_to_output = neuron_to_output->links->first;
+            }
+            link_to_output = *(double *) (node_link_to_output->value);
+            layer_error += link_to_output * ((neuron_to_output->value *(1-neuron_to_output->value))*(-(expected[i]-neuron_to_output->value)));
+            nb_link++;
+            node_neuron_to_output = node_neuron_to_output->next;
+            neuron_to_output = (Neuron *) (node_neuron_to_output->value);
+        }
         for (size_t k = 0; k < list_neuron->length; k++) {
             for (size_t j = 0; j < n->links->length; j++) {
 
                 derivative_neuron_val = (n->value) * (1 - (n->value));
 
-                layer_error = link_to_output *
-                              ((neuron_to_output->value * (1 - neuron_to_output->value)) * derivative_neuron_val);
+                /*layer_error = link_to_output *
+                              ((neuron_to_output->value * (1 - neuron_to_output->value)) * derivative_neuron_val);*/
                 error_weight = layer_error * previous_n->value * derivative_neuron_val;
                 link_value = link_value - (0.42 * error_weight);
 
@@ -344,23 +356,27 @@ void backpropagation(NeuralNetwork *network, size_t expected[]) {
             previous_neuron = (Node *) (previous_list_neuron->first);
             previous_n = (Neuron *) (previous_neuron->value);
 
-            // Change the neuron to compute links
+            /*// Change the neuron to compute links
             if (node_neuron_to_output->next) {
                 node_neuron_to_output = node_neuron_to_output->next;
                 neuron_to_output = (Neuron *) (node_neuron_to_output->value);
                 node_link_to_output = neuron_to_output->links->first;
                 link_to_output = *(double *) (node_link_to_output->value);
-            }
+            }*/
 
 
         }
         if (previous_neurons->previous) {
+
+            /*node_neuron_to_output = node_neuron_to_output->next;
+            neuron_to_output = (Neuron *) (node_neuron_to_output->value);
+            node_link_to_output = neuron_to_output->links->first;*/
+
             previous_neurons = previous_neurons->previous;
             previous_list_neuron = (List) (previous_neurons->value);
 
             previous_neuron = (Node *) (previous_list_neuron->first);
             previous_n = (Neuron *) (previous_neuron->value);
-
 
             //-------------
             neurons = neurons->previous;

@@ -61,20 +61,20 @@ int main() {//int argc, char *argv[]) {
         xor_neural_network(xor_nb_iteration, xor_load_data, xor_save_data);
     }*/
     size_t nb_layer = 3;
-    size_t nb_neurons_per_layer[] = {10, 5, 2};
+    size_t nb_neurons_per_layer[] = {2, 2, 2};
     NeuralNetwork n;
     init(&n, nb_layer, nb_neurons_per_layer);
     //  print_info(&n);
-    double k[] = {1, 0, 1, 0.3, 0.2, 0, 1, 0.3, 0, 1};
+    double k[] = {1, 0};
 //
 //    print_info(&n);
 //    run(&n,k,10);
-//    print_info(&n);
-    propagation(&n, k, 10);
     print_info(&n);
-    size_t d[]= {1, 0};
+    propagation(&n, k, 2);
+    print_info(&n);
+    size_t d[]= {0, 1};
     backpropagation(&n,d);
-    save_neural_network(&n);
+//    save_neural_network(&n);
 //    for (int i = 0; i <100000 ; i++) {
 //        learn(&n,k,10,d);
 //    }
@@ -84,9 +84,9 @@ int main() {//int argc, char *argv[]) {
 //
 //    print_info(&n);
 //    save_neural_network(&n);
-    NeuralNetwork s;
-    load_neural_network(&s);
-    print_info(&s);
+//    NeuralNetwork s;
+//    load_neural_network(&s);
+//    print_info(&s);
 
 
 
