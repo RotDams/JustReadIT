@@ -190,7 +190,7 @@ List pop_front_list(List list) {
     return list;
 }
 
-Node get_element_by_index(List list, int i) {
+Node* get_element_by_index(List list, int i) {
     if ((unsigned long) i >= list->length) {
         fprintf(stderr, "Error: the i is out the range of the ");
         exit(EXIT_FAILURE);
@@ -203,7 +203,7 @@ Node get_element_by_index(List list, int i) {
         i--;
     }
 
-    return *node;
+    return node;
 }
 
 void print_list(List list) {

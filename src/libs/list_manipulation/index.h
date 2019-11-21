@@ -167,7 +167,7 @@ List pop_front_list(List list);
  * Description:
  *      - return an element by its id
  * */
-Node get_element_by_index(List list, int i);
+Node *get_element_by_index(List list, int i);
 
 /* print_list
  * Input:
