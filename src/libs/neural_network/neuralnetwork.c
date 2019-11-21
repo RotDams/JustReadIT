@@ -364,13 +364,17 @@ void backpropagation(NeuralNetwork *network, size_t expected[]) {
 
                     Node *temp_next_neuron = layer_end_list->first;
                     Neuron *temp_next_neuron_value;
+                    double link_er =0;
                     for (size_t l = 0; l < layer_end_list->length; l++) {
                         temp_next_neuron_value = (Neuron *) temp_next_neuron->value;
-                        error_tot += (temp_neuron_value->value * (1 - temp_neuron_value->value)) *
-                                     (-(expected[k] - temp_neuron_value->value) * *(double*) (get_element_by_index(temp_next_neuron_value->links, j).value));
+
+                        link_er += *(double*) (get_element_by_index(temp_next_neuron_value->links, j).value);
 
                         temp_next_neuron = temp_next_neuron->next;
                     }
+                    error_tot += (temp_neuron_value->value * (1 - temp_neuron_value->value)) *
+                                 (-(expected[k] - temp_neuron_value->value) * link_er);
+
                     temp_neuron = temp_neuron->next;
                 }
 
