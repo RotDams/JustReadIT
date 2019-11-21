@@ -97,20 +97,19 @@ int main() {//int argc, char *argv[]) {
 //    print_info(&n);
 //    run(&n,k,10);
 
-    NeuralNetwork *pointer = &n;
 
     double entry[2];
-    entry[0] = rand() % 2;
-    entry[1] = rand() % 2;
+    entry[0] = random() % 2;
+    entry[1] = random() % 2;
     size_t expected[1];
 
     printf("\n=====================================\n\n");
-    for (int i = 0; i < 10000; i++) {
-        entry[0] = 0;
-        entry[1] = 1;
+    for (int i = 0; i < 1000000; i++) {
+        entry[0] = random() %2;
+        entry[1] = random() %2;
         printf("Expected : %d\n", entry[0] != entry[1]);
         expected[0] = entry[0] != entry[1];
-        learn(pointer, entry, 2, expected);
+        learn(&n, entry, 2, expected);
         printf("\n");
     }
 
