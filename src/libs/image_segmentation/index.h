@@ -7,7 +7,7 @@
 
 // Type definition
 typedef struct PresentationState {
-    size_t size;
+    int size;
     int data[];
 } PresentationState;
 

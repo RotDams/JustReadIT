@@ -1,7 +1,9 @@
 #include <err.h>
+#include <math.h>
 #include "../../main.h"
 #include "utils.h"
 #include "SDL/SDL_image.h"
+#include "SDL/SDL_rotozoom.h"
 
 
 Uint8 *pixel_ref(SDL_Surface *surf, unsigned x, unsigned y) {
@@ -174,15 +176,18 @@ SDL_Surface *correct_image(SDL_Surface *image, int Seuil) {
 }
 
 
-void show_image(SDL_Surface *image, size_t id) {
+void show_image(SDL_Surface *image, int id) {
     // TODO https://stackoverflow.com/questions/3741055/inputs-in-sdl-on-key-pressed
     extern PresentationState dev_mode;
 
-    if (id >= dev_mode.size || !dev_mode.data[id]) {
+    if ( id != -1 && (id >= dev_mode.size || !dev_mode.data[id])) {
         return;
+    } else {
+        if (id != -1)
+            dev_mode.data[id] = 0;
     }
 
-    dev_mode.data[id] = 0;
+
 
     SDL_Surface* screen_surface;
 
@@ -191,6 +196,10 @@ void show_image(SDL_Surface *image, size_t id) {
     wait_for_keypressed();
 
     SDL_FreeSurface(screen_surface);
+
+    if (id == 5) {
+        img_to_array(image, 28);
+    }
 }
 
 void wait_for_keypressed()
@@ -232,4 +241,46 @@ SDL_Surface* display_image(SDL_Surface *img)
 
     // return the screen for further uses
     return screen;
+}
+
+
+void img_to_array(SDL_Surface *image, int length) {
+    // Get the max dimension between height and width
+    int max = fmax(image->h, image->w);
+
+    // Calculate ratio (to pass to the length pixel)
+    double ratio = (double) length / (double) max;
+
+    // Get the new image
+    image = rotozoomSurface(image, 0, ratio,1);
+
+    // Create the new array
+    double array[length * length];
+
+    Uint8 r,g,b;
+    for (int i = 0; i < length; i++) {
+        for (int j = 0; j < length; j++) {
+            if (i >= image->h || j >= image->h) {
+                array[i*length + j] = 0;
+            } else {
+                Uint32 pixel = (get_pixel(image, i,j));
+                SDL_GetRGB(pixel, image->format, &r,&b,&g);
+                double average = (double) ((255 - r) + (255 - g) - (255 - b)) / (double) 3;
+                array[i*length + j] = (double) average / 255;
+            }
+        }
+    }
+
+    printf("%f\n", array[0]);
+
+    for (int i = 0; i < image->w; i++) {
+        for (int j = 0; j < image->h; j++) {
+            Uint32 pixel = (get_pixel(image, i,j));
+            SDL_GetRGB(pixel, image->format, &r,&b,&g);
+            if (r > 200)
+                printf("%d\n", r);
+        }
+    }
+
+    show_image(image, -1);
 }
