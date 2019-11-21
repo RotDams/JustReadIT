@@ -263,7 +263,7 @@ void img_to_array(SDL_Surface *image, int length) {
             if (i >= image->h || j >= image->h) {
                 array[i*length + j] = 0;
             } else {
-                Uint32 pixel = fabs(get_pixel(image, i,j));
+                Uint32 pixel = (get_pixel(image, i,j));
                 SDL_GetRGB(pixel, image->format, &r,&b,&g);
                 double average = (double) ((255 - r) + (255 - g) - (255 - b)) / (double) 3;
                 array[i*length + j] = (double) average / 255;
@@ -275,7 +275,7 @@ void img_to_array(SDL_Surface *image, int length) {
 
     for (int i = 0; i < image->w; i++) {
         for (int j = 0; j < image->h; j++) {
-            Uint32 pixel = fabs(get_pixel(image, i,j));
+            Uint32 pixel = (get_pixel(image, i,j));
             SDL_GetRGB(pixel, image->format, &r,&b,&g);
             if (r > 200)
                 printf("%d\n", r);
