@@ -8,23 +8,23 @@ struct result {
     double theta;
 };
 
-struct result *winner (int maxRho, int maxIndexTheta, int maxIndexRho, int acc[maxIndexTheta][maxIndexRho]) {
+struct result *winner(int maxRho, int maxIndexTheta, int maxIndexRho, int acc[maxIndexTheta][maxIndexRho]) {
     double max = 0;
     double winrho = 0;
     double wintheta = 0;
 
-    for(int r=0;r<maxIndexRho;r++) {
-        for(int t=0;t<maxIndexTheta;t++) {
-            if (acc[t][r]<max) continue;
-            max=acc[t][r];
-            winrho=r;
-            wintheta=t;
+    for (int r = 0; r < maxIndexRho; r++) {
+        for (int t = 0; t < maxIndexTheta; t++) {
+            if (acc[t][r] < max) continue;
+            max = acc[t][r];
+            winrho = r;
+            wintheta = t;
         }
     }
 
     // indexes -> (rho,theta)
-    double rho   = ((double)winrho/maxIndexRho - 0.5)*maxRho;
-    double theta = 1.5621178940501734278001322309137322008610 - ((double)wintheta/maxIndexTheta)*M_PI;
+    double rho = ((double) winrho / maxIndexRho - 0.5) * maxRho;
+    double theta = 1.5621178940501734278001322309137322008610 - ((double) wintheta / maxIndexTheta) * M_PI;
 
     struct result *r = malloc(sizeof(struct result));
     r->rho = rho;
@@ -33,17 +33,18 @@ struct result *winner (int maxRho, int maxIndexTheta, int maxIndexRho, int acc[m
 }
 
 
-void vote(int x, int y, int Width, int Height, int maxRho, int maxIndexTheta, int maxIndexRho, int acc[maxIndexTheta][maxIndexRho], SDL_Surface *img) {
+void vote(int x, int y, int maxRho, int maxIndexTheta, int maxIndexRho, int acc[maxIndexTheta][maxIndexRho],
+          SDL_Surface *img) {
     int savedX = x, savedY = y;
 
-    for(int indexTheta=0; indexTheta<maxIndexTheta; indexTheta+=1) {
-        double theta = ((double)indexTheta/maxIndexTheta)* M_PI;
+    for (int indexTheta = 0; indexTheta < maxIndexTheta; indexTheta += 1) {
+        double theta = ((double) indexTheta / maxIndexTheta) * M_PI;
 
         // compute corresponding rho value
-        double rho = x* cos(theta) + y* sin(theta);
+        double rho = x * cos(theta) + y * sin(theta);
 
         // rho -> index
-        int indexRho   = (int) (0.5 + (rho/maxRho + 0.5)*maxIndexRho );
+        int indexRho = (int) (0.5 + (rho / maxRho + 0.5) * maxIndexRho);
 
         // increment accumulator
         Uint8 r, g, b;
@@ -68,18 +69,12 @@ double find_angle(SDL_Surface *image) {
     }
     for (int x = 0; x < Width; x++) {
         for (int y = 0; y < Height; y++) {
-            vote(x, y, Width, Height, maxRho, maxIndexTheta, maxIndexRho, acc, image);
+            vote(x, y, maxRho, maxIndexTheta, maxIndexRho, acc, image);
         }
     }
 
     struct result *r = winner(maxRho, maxIndexTheta, maxIndexRho, acc);
-    printf("theta: %.40f\n",
-           r->theta);
-    printf("rho: %f\n",
-           r->rho);
-
     double angle = r->theta * 180 / M_PI;
-    printf("Angle: %f\n", angle);
 
     if (r->theta > 0) {
         return angle;
@@ -90,10 +85,6 @@ double find_angle(SDL_Surface *image) {
 }
 
 
-
-
-
-
 SDL_Surface *extract_text(char *source_location, int threshold) {
     SDL_Surface *image;
     Uint8 r, g, b;
@@ -101,7 +92,7 @@ SDL_Surface *extract_text(char *source_location, int threshold) {
     image = SDL_LoadBMP(source_location);
 
     put_in_black_and_white(image);
-    image = SDL_RotationCentralN(image, 12066 );
+    image = SDL_RotationCentralN(image, 12066);
     show_image(image, -1);
     double angle = find_angle(image);
     image = SDL_RotationCentralN(image, -angle);
