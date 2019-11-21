@@ -272,14 +272,6 @@ void img_to_array(SDL_Surface *image, int length) {
     }
 
     printf("%f\n", array[0]);
-    /*
-    for (int i = 0; i < image->w; i++) {
-        for (int j = 0; j < image->h; j++) {
-            Uint32 pixel = (get_pixel(image, i,j));
-            SDL_GetRGB(pixel, image->format, &r,&b,&g);
-        }
-    }
-    */
     show_image(image, -1);
 }
 
