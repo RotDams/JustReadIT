@@ -9,6 +9,10 @@ SDL_Surface *extract_text(char *source_location, int threshold) {
 
 	show_image(image, 0);
 
+    put_in_black_and_white(image);
+
+    show_image(image, -1);
+
 	if (image == NULL) {
 		printf("Fail with loading image");
 		return NULL;

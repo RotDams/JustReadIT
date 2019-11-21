@@ -284,3 +284,21 @@ void img_to_array(SDL_Surface *image, int length) {
 
     show_image(image, -1);
 }
+
+void put_in_black_and_white(SDL_Surface *image) {
+    Uint8 aver, r, g, b;;
+    Uint32 pixel;
+    for (int i = 0; i < image->w; i++) {
+        for (int j = 0; j < image->h; j++) {
+            pixel = get_pixel(image, i, j);
+
+            SDL_GetRGB(pixel, image->format, &r, &g, &b);
+
+            aver = 0.3*r + 0.59*g + 0.11*b;
+
+            pixel = SDL_MapRGB(image->format, aver, aver, aver);
+
+            put_pixel(image, i, j, pixel);
+        }
+    }
+}
