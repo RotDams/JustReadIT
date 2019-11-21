@@ -181,189 +181,37 @@ void propagation(NeuralNetwork *network, double entry[], size_t len) {
 
 void backpropagation(NeuralNetwork *network, size_t expected[]) {
 
-    // Declaration of variables
-
-    // Init list des layers
-    List layers = network->layers;
-
-    //------------Layer1--------------------
-    // layer end-1 :
-    Node *layer_end_1 = (layers->last->previous);
-    List layer_end_1_list = (List) (layer_end_1->value);
-
-    // Neuron 0 of layer end-1:
-    Node *previous_neuron = (layer_end_1_list->first);
-    Neuron *previous_n;
-
-    //-----------Layer2---------------------
-
-    // layer end :
-    Node *layer_end = (layers->last);
-    List layer_end_list = (List) (layer_end->value);
-
-    // Neuron 0 of layer end
-    Node *current_neuron = (Node *) (layer_end_list->first);
-    Neuron *n;
-
-    // link value of neuron in last layer
-    Node *link_node;
-    double *link_value;
-    //------------------------------------
-
-    // error init to 0
-    double error_weight = 0, error_val = 0, derivative_neuron_val = 0, error_tot = 0;
-
-    // range : all layer_end il last layer
-    for (unsigned long i = 0; i < ((List) (layers->last->value))->length; i++) {
-
-        // Take the current Neuron in the layer
-        n = (Neuron *) (current_neuron->value);
-        // Take the first link of the Neuron
-        link_node = n->links->first;
-
-        // Calcul of the error
-        error_val = (-(expected[i] - (n->value)));
-
-        // range : all links in the current neuron
-        for (unsigned long j = 0; j < n->links->length; j++) {
-
-            // Init the value of the current link
-            link_value = (double *) link_node->value;
-            // Init the value of the previous layer_end
-            previous_n = (Neuron *) (previous_neuron->value);
+    List last_layer = (List)(network->layers->last->value);
+    Node* current_neuron_last = last_layer->first;
+    List layer_end_2 = (List) network->layers->last->previous->value;
 
 
-            derivative_neuron_val = (n->value) * (1 - (n->value));
+    double error_neuron,derivate_neuron;
+    for (size_t i_neurons = 0; i_neurons < last_layer->length; ++i_neurons) {
+        Neuron *neuron_last = (Neuron*)(current_neuron_last->value);
 
-            error_weight = error_val * previous_n->value * derivative_neuron_val;
+        error_neuron = - (expected[i_neurons] - neuron_last->value);
+        derivate_neuron = neuron_last->value * (1 - neuron_last->value);
 
-            *link_value = *(double *) link_value - (0.42 * error_weight);
+        Node *current_link = neuron_last->links->first;
+
+        Node* current_neuron_end_2 = layer_end_2->first;
+        for (int i_links = 0; i_links < neuron_last->links->length; ++i_links) {
+            double* link_last = (double *) current_link->value;
+
+            Neuron* neuron_end_2 = (Neuron*) current_neuron_end_2->value;
 
 
-            // Next link and next previous neuron
-            link_node = link_node->next;
-            previous_neuron = previous_neuron->next;
 
+            *link_last = *link_last - ( error_neuron * derivate_neuron * neuron_end_2->value);
+
+
+            current_neuron_end_2 = current_neuron_end_2->next;
+            current_link = current_link->next;
         }
-
-        // Take next neuron and reset previous neuron to first
-        current_neuron = current_neuron->next;
-        previous_neuron = (layer_end_1_list->first);
-
+        current_neuron_last = current_neuron_last->next;
     }
 
-    //-----------Layer2---------------------
-
-    List last_layer_list = network->layers->last->value;
-    // Take the layer end-1
-    layer_end = (Node *) (layers->last->previous);
-    layer_end_list = (List) (layer_end->value);
-
-    // Take the first neuron in this layer
-    current_neuron = (Node *) (layer_end_list->first);
-    n = (Neuron *) (current_neuron->value);
-
-    // take the first link of the neuron
-    link_node = (Node *) (n->links->first);
-
-    //------------Layer1--------------------
-    // Take the layer end-2
-    layer_end_1 = (layer_end->previous);
-    layer_end_1_list = (List) (layer_end_1->value);
-
-    // Take the first neuron of the layer end-2
-    previous_neuron = (layer_end_1_list->first);
-
-    // variable error of 1 layer
-
-    // range: all layers
-    for (size_t i = 0; i < layers->length - 2; i++) {
-
-        // init the layer of this layer to 0
-
-        // Take the current list of layer_end
-        layer_end_1_list = (List) (layer_end_1->value);
-
-        // Take the first neuron in the list
-        layer_end_list = (List) (layer_end->value);
-
-        // Init to the first neuron
-        previous_neuron = (layer_end_1_list->first);
-        // Init to the first neuron
-        current_neuron = (layer_end_list->first);
-        // Init to the first link
-        link_node = n->links->first;
-
-        // range : all layer_end in the current layer
-        for (size_t k = 0; k < layer_end_list->length; k++) {
-
-            // take the value of the current neuron
-            n = (Neuron *) (current_neuron->value);
-            // init to the first link
-            link_node = n->links->first;
-            // init to the first neuron of the layer end - 2
-            previous_neuron = (Node *) (layer_end_1_list->first);
-
-            // range : all links in the neuron
-            for (size_t j = 0; j < n->links->length; j++) {
-
-                // Take the value of the neuron
-                previous_n = (Neuron *) (previous_neuron->value);
-                // Take the value of the current link
-                link_value = (double *) link_node->value;
-
-                // Calul
-                derivative_neuron_val = (n->value) * (1 - (n->value));
-
-                // Calcul of the error tot
-
-                error_tot = 0;
-                Node *temp_neuron = last_layer_list->first;
-                Neuron *temp_neuron_value;
-
-                for (size_t k = 0; k < last_layer_list->length; k++) {
-
-                    temp_neuron_value = (Neuron *) (temp_neuron->value);
-
-                    Node *temp_next_neuron = layer_end_list->first;
-                    Neuron *temp_next_neuron_value;
-
-                    double link_er = 0;
-                    for (size_t l = 0; l < layer_end_list->length; l++) {
-                        temp_next_neuron_value = (Neuron *) temp_next_neuron->value;
-
-                        link_er += *(double *) (get_element_by_index(temp_next_neuron_value->links, k).value);
-
-                        temp_next_neuron = temp_next_neuron->next;
-                    }
-                    error_tot += (temp_neuron_value->value * (1 - temp_neuron_value->value)) *
-                                 (-(expected[k] - temp_neuron_value->value) * link_er);
-
-                    temp_neuron = temp_neuron->next;
-                }
-
-
-                error_weight = error_tot * previous_n->value * derivative_neuron_val;
-                *(double *) link_node->value = *(double *) link_value - (0.42 * error_weight);
-
-
-                // next link of the current neuron
-                link_node = link_node->next;
-                // Take the next neuron of the layer end - 2
-                previous_neuron = previous_neuron->next;
-
-            }
-
-            // Take the next neuron of layer end -1
-            current_neuron = current_neuron->next;
-
-        }
-
-        // Swap to the layer before (end -2 (-1))
-        layer_end_1 = layer_end_1->previous;
-        // Swap to the layer before (end -1 (-1))
-        layer_end = layer_end->previous;
-    }
 }
 
 
@@ -372,7 +220,7 @@ void learn(NeuralNetwork *network, double entry[], size_t len, size_t expected[]
     print_info(network);
     printf("\n\n\n\n\n");
     propagation(network, entry, len);
-   // backpropagation(network, expected);
+    backpropagation(network, expected);
 
     double max_proba = 0;
     Node *output_neurons = ((List) (network->layers->last->value))->first;
