@@ -113,33 +113,41 @@ void print_info(NeuralNetwork *net) {
 
 void propagation(NeuralNetwork *network, double entry[], size_t len) {
 
+    // number of neuron in the first layer
     size_t nb_inputs = ((List) (network->layers->first->value))->length;
-
 
     List layers = network->layers;
 
     //------------Layer1--------------------
+    // Take the First layer
     Node *previous_neurons = (Node *) (layers->first);
     List previous_list_neuron = (List) (previous_neurons->value);
 
+    // Take the first neuron of this layer
     Node *previous_neuron = (Node *) (previous_list_neuron->first);
     Neuron *previous_n = (Neuron *) (previous_neuron->value);
 
     //-----------Layer2---------------------
+    // Take the second layer
     Node *neurons = layers->first->next;
     List list_neuron = (List) (neurons->value);
 
+    // Take the first neuron of this layer
     Node *current_neuron = list_neuron->first;
     Neuron *n = (Neuron *) (current_neuron->value);
 
+    // Take the first link of this neuron
     Node *link_node = n->links->first;
     double *link_value = (double *) link_node->value;
     //------------------------------------
 
     // Check if there is enough entry or neuron
     if (len == nb_inputs) {
-        Node previous_neuron_init = *(Node *) (((List) (network->layers->first->value))->first);
+
+        // take the first neuron of the first layer
+        Node previous_neuron_init = *(((List) (network->layers->first->value))->first);
         Neuron *previous_n_init = (Neuron *) (previous_neuron_init.value);
+
         // Place the entry data on the first layer
         for (size_t i = 0; i < nb_inputs; i++) {
             previous_n_init->value = entry[i];
@@ -147,63 +155,68 @@ void propagation(NeuralNetwork *network, double entry[], size_t len) {
                 previous_neuron_init = *(Node *) previous_neuron_init.next;
                 previous_n_init = (Neuron *) (previous_neuron_init.value);
             }
-
         }
         double val_neuron = 0;
         // Propagation throught the neural network
+
         for (size_t j = 1; j < network->layers->length; j++) {
-//
+
+            //Take the value of neurons in previous layer
+            previous_list_neuron = (List) (previous_neurons->value);
+            //Take the value of the current neuron in previous layer
+            previous_n = (Neuron *) (previous_neuron->value);
+
+            //Take the value of neurons in this layer
+            list_neuron = (List) (neurons->value);
+
             for (size_t k = 0; k < list_neuron->length; k++) {
+                //init
                 val_neuron = 0;
+                //Take the value of the current neuron
+                n = (Neuron *) (current_neuron->value);
+
+
                 for (size_t l = 0; l < n->links->length; l++) {
+                    //Take the value of the current link of this neuron
+                    link_value = (double *) link_node->value;
+                    //Take the value of neuton of the previous layer
+                    previous_n = (Neuron *) (previous_neuron->value);
+
+                    //Calcul
                     val_neuron += previous_n->value * *link_value;
 
                     //next links in current layer
-                    if (link_node->next) {
-                        link_node = (Node *) link_node->next;
-                        link_value = (double *) link_node->value;
-                    }
-
+                    link_node =  link_node->next;
                     //next neuron in previous layer
-                    if (previous_neuron->next) {
-                        previous_neuron = (Node *) previous_neuron->next;
-                        previous_n = (Neuron *) (previous_neuron->value);
-                    }
+                    previous_neuron = previous_neuron->next;
                 }
+
                 val_neuron += n->bias;
-                // Activation function
+                // Change neuron value
                 n->value = sigmoide(val_neuron);
 
-                if (current_neuron->next) {
-                    current_neuron = (Node *) current_neuron->next;
-                    n = (Neuron *) (current_neuron->value);
-                }
+                //Take the next neuron
+                current_neuron = current_neuron->next;
+                // pick the first link of this neuron
+                link_node = n->links->first;
 
-                link_node = (Node *) n->links->first;
-                link_value = (double *) link_node->value;
-
-                previous_neuron = (Node *) (previous_list_neuron->first);
-                previous_n = (Neuron *) (previous_neuron->value);
+                //Take the first neuron in the previous layer
+                previous_neuron = previous_list_neuron->first;
             }
 
-            //------------Next Layer (1)--------------------
-            previous_neurons = (Node *) (previous_neurons->next);
-            previous_list_neuron = (List) (previous_neurons->value);
+            // Swap to the next layers (previous)
+            previous_neurons = previous_neurons->next;
+            // take the first neuron of this layer
+            previous_neuron = previous_list_neuron->first;
 
-            previous_neuron = (Node *) (previous_list_neuron->first);
-            previous_n = (Neuron *) (previous_neuron->value);
 
-            //-----------Next Layer (2)---------------------
-            if (neurons->next) {
-                neurons = (Node *) (neurons->next);
-                list_neuron = (List) (neurons->value);
-            }
+            // Swap to the next layers (current)
+            neurons = neurons->next;
+            // take the first neuron of this layer
+            current_neuron = list_neuron->first;
+            // take the first link of this neuron
+            link_node = n->links->first;
 
-            current_neuron = (Node *) (list_neuron->first);
-            n = (Neuron *) (current_neuron->value);
-
-            link_node = (Node *) (n->links->first);
-            link_value = (double *) link_node->value;
             //------------------------------------
         }
     } else {
