@@ -137,5 +137,16 @@ void wait_for_keypressed();
 SDL_Surface *display_image(SDL_Surface *img);
 
 
+/* put_in_black_and_white
+ *
+ * Input:
+ *      - *image        => SDL_SURFACE (source image)
+ *
+ * Description:
+ *      - Put the image in black and white
+ * */
+void put_in_black_and_white(SDL_Surface *image);
+
+
 void img_to_array(SDL_Surface *image, int length);
 #endif
