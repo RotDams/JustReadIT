@@ -6,8 +6,8 @@ HEADER      = $(SOURCE:.c=.h)
 OUT         = output.exe
 CC          = gcc
 FLAGS       = -O0
-CFLAGS      = -Wall -Wextra -Werror -O3 -g
-SDL_FLAGS   = `sdl-config --cflags --libs`		# For windows and linux
+CFLAGS      = -Wall -Wextra -Werror -O3 -g `pkg-config --cflags gtk+-3.0`
+SDL_FLAGS   = `sdl-config --cflags --libs` `pkg-config --libs gtk+-3.0`
 
 
 all: $(OBJS)
