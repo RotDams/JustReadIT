@@ -72,6 +72,7 @@ int main(int argc, char *argv[]) {
 
 		List paragraphs = image_segmentation(path);
 		print_list(paragraphs);
+
 	} else {
 		xor_neural_network(xor_nb_iteration, xor_load_data, xor_save_data);
 	}

@@ -28,4 +28,6 @@ SDL_Surface *extract_text(char *source_location, int threshold);
  * */
 SDL_Surface *get_all_text(SDL_Surface *image, int Seuil);
 
+SDL_Surface *SDL_RotationCentralN(SDL_Surface *origine, float angle);
+
 #endif
