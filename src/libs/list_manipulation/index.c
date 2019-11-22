@@ -198,7 +198,7 @@ Node* get_element_by_index(List list, int i) {
 
     Node *node = list->first;
 
-    while (i < 0) {
+    while (i > 0) {
         node = node->next;
         i--;
     }

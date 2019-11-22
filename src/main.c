@@ -99,18 +99,10 @@ int main() {//int argc, char *argv[]) {
 
 
     double entry[2];
-    size_t expected[1];
+    double expected[1];
 
     printf("\n=====================================\n\n");
     for (int i = 0; i < 1000000; i++) {
-        entry[0] =1;
-        entry[1] = 1;
-        printf("%f\n",entry[0]);
-        printf("%f\n",entry[1]);
-        printf("Expected : %d\n", entry[0] != entry[1]);
-        expected[0] = entry[0] != entry[1];
-        learn(&n, entry, 2, expected);
-        printf("\n");
         entry[0] =1;
         entry[1] = 0;
         printf("%f\n",entry[0]);
@@ -119,7 +111,32 @@ int main() {//int argc, char *argv[]) {
         expected[0] = entry[0] != entry[1];
         learn(&n, entry, 2, expected);
         printf("\n");
+        entry[0] = 0;
+        entry[1] = 0;
+        printf("%f\n",entry[0]);
+        printf("%f\n",entry[1]);
+        printf("Expected : %d\n", entry[0] != entry[1]);
+        expected[0] = entry[0] != entry[1];
+        learn(&n, entry, 2, expected);
+        printf("\n");
+        entry[0] =0;
+        entry[1] = 1;
+        printf("%f\n",entry[0]);
+        printf("%f\n",entry[1]);
+        printf("Expected : %d\n", entry[0] != entry[1]);
+        expected[0] = entry[0] != entry[1];
+        learn(&n, entry, 2, expected);
+        printf("\n");
+        entry[0] = 1;
+        entry[1] = 1;
+        printf("%f\n",entry[0]);
+        printf("%f\n",entry[1]);
+        printf("Expected : %d\n", entry[0] != entry[1]);
+        expected[0] = entry[0] != entry[1];
+        learn(&n, entry, 2, expected);
+        printf("\n");
     }
+    print_info(&n);
 
     return 0;
 
