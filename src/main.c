@@ -102,9 +102,17 @@ int main() {//int argc, char *argv[]) {
     size_t expected[1];
 
     printf("\n=====================================\n\n");
-    for (int i = 0; i < 100; i++) {
-        entry[0] = random()% 2;
-        entry[1] = random() % 2;
+    for (int i = 0; i < 1000000; i++) {
+        entry[0] =1;
+        entry[1] = 1;
+        printf("%f\n",entry[0]);
+        printf("%f\n",entry[1]);
+        printf("Expected : %d\n", entry[0] != entry[1]);
+        expected[0] = entry[0] != entry[1];
+        learn(&n, entry, 2, expected);
+        printf("\n");
+        entry[0] =1;
+        entry[1] = 0;
         printf("%f\n",entry[0]);
         printf("%f\n",entry[1]);
         printf("Expected : %d\n", entry[0] != entry[1]);
