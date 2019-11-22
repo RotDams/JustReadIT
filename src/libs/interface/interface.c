@@ -8,12 +8,14 @@ GtkButton *btn_run;
 GtkButton *btn_credits;
 GtkBuilder *builder;
 GtkFileChooser *fileChooserButton;
+GtkImage   *img_selected;
 GtkEntry *gtkEntry;
 
 void btn_run_clicked() {
     printf("btn_run_clicked, we must call here the segmentation.\n");
     printf("%s\n", gtk_file_chooser_get_filename(fileChooserButton));
     printf("%s\n\n", gtk_entry_get_text(gtkEntry));
+    gtk_image_set_from_file(img_selected, gtk_file_chooser_get_filename(fileChooserButton));
 }
 
 void btn_credits_clicked() {
@@ -22,6 +24,7 @@ void btn_credits_clicked() {
 
 void selection_changed() {
     printf("selection_changed\n\n");
+    gtk_image_set_from_file(img_selected, gtk_file_chooser_get_filename(fileChooserButton));
 }
 
 void init_interface(int argc, char *argv[]) {
@@ -41,7 +44,7 @@ void init_interface(int argc, char *argv[]) {
     // Get the file choose
     fileChooserButton = GTK_FILE_CHOOSER(gtk_builder_get_object(builder, "file_chooser"));
     gtkEntry = GTK_ENTRY(gtk_builder_get_object(builder, "output_entry"));
-
+    img_selected = GTK_IMAGE(gtk_builder_get_object(builder, "img_selected"));
 
     // Connects windows and buttons
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
