@@ -138,6 +138,7 @@ void propagation(NeuralNetwork *network, double entry[], size_t len) {
     }
 
 
+    print_info(network);
     Node *current_layer_1 = network->layers->first;
     Node *current_layer_2 = network->layers->first->next;
 
@@ -159,13 +160,17 @@ void propagation(NeuralNetwork *network, double entry[], size_t len) {
 
             double y = 0;
 
+            Node* current_link = neuron_layer2->links->first;
+
             // range : all links to neurons 'i_neurons_2'
             for (size_t i_neurons_1 = 0; i_neurons_1 < layer_1->length; i_neurons_1++) {
                 Neuron *neuron_layer1 = (Neuron *) current_neuron_layer1->value;
-                y += neuron_layer1->value * *(double *) (get_element_by_index(neuron_layer2->links, i_neurons_2)->value);
+                double* link = (double*)current_link->value;
+                y += neuron_layer1->value * *link;
 
                 // next
                 current_neuron_layer1 = current_neuron_layer1->next;
+                current_link = current_link->next;
             }
             // next
             neuron_layer2->value = sigmoide(y);
@@ -262,6 +267,9 @@ void backpropagation2(NeuralNetwork *network, size_t expected[]) {
 void learn(NeuralNetwork *network, double entry[], size_t len, size_t expected[]) {
    // print_info(network);
    // printf("\n\n\n\n\n");
+   // print_info(network);
+    printf("\n\n\n\n\n");
+
     propagation(network, entry, len);
     backpropagation1(network, expected);
     backpropagation2(network, expected);
@@ -278,9 +286,8 @@ void learn(NeuralNetwork *network, double entry[], size_t len, size_t expected[]
         }
         output_neurons = output_neurons->next;
     }
-  //  print_info(network);
-    //printf("\n\n\n\n\n");
     printf("Output : %.30lf\n", max_proba);
+
 }
 
 // Pass through the neural network and return the output
