@@ -3,9 +3,9 @@
 #include "libs/image_segmentation/index.h"
 #include "libs/interface/interface.h"
 
-int main(){//int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
 
-	init_interface();
+	init_interface(argc, argv);
 
     return 0;
 }

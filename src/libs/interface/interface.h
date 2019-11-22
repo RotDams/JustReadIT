@@ -1,8 +1,8 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
-void init_interface();
+void init_interface(int argc, char *argv[]);
 
-void on_window_main_destroy();
+
 
 #endif

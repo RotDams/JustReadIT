@@ -11,11 +11,11 @@ SDL_FLAGS   = `sdl-config --cflags --libs` `pkg-config --libs gtk+-3.0`
 
 
 all: $(OBJS)
-	$(CC) $(FLAGS) -g $(OBJS) -o $(OUT) $(SDL_FLAGS)
+	$(CC) $(FLAGS) -g $(OBJS) -o $(OUT) $(SDL_FLAGS) -rdynamic
 
 _build/%.o: %.c
 	mkdir -p $(dir $@)
-	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $(^:_build=)
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $(^:_build=) -rdynamic
 
 clean:
 	rm -fr $(OBJS) $(OUT) _build/ *.jpg
