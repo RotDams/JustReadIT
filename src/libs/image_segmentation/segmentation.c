@@ -12,6 +12,11 @@ SDL_Surface *extract_text(char *source_location, int threshold) {
     show_image(image, -1);
     put_in_black_and_white(image);
     show_image(image, -1);
+    image = SDL_RotateImage(image, 30);
+    show_image(image, -1);
+    double angle = find_angle(image);
+    image = SDL_RotateImage(image, -angle);
+    show_image(image, -1);
 
     if (image == NULL) {
         printf("Fail with loading image");
