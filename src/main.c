@@ -105,6 +105,7 @@ int main() {//int argc, char *argv[]) {
     for (int i = 0; i < 1000000; i++) {
         entry[0] = random()%2;
         entry[1] = random() %2;
+        printf("\n\n\n\n\n\n");
         printf("%f\n",entry[0]);
         printf("%f\n",entry[1]);
         printf("Expected : %d\n", entry[0] != entry[1]);
