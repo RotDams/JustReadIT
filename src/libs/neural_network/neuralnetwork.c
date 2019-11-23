@@ -171,7 +171,7 @@ void propagation(NeuralNetwork *network, double entry[], size_t len) {
                 current_neuron_layer1 = current_neuron_layer1->next;
                 current_link = current_link->next;
             }
-            // y += neuron_layer2->bias;
+             y += neuron_layer2->bias;
             // next
             neuron_layer2->value = sigmoide(y);
             current_neuron_layer2 = current_neuron_layer2->next;
@@ -196,7 +196,7 @@ void backpropagation1(NeuralNetwork *network, double expected[]) {
     for (size_t i_neurons = 0; i_neurons < last_layer->length; i_neurons++) {
         Neuron *neuron_last = (Neuron *) (current_neuron_last->value);
 
-        error_neuron = (expected[i_neurons] - neuron_last->value);
+        error_neuron = -(expected[i_neurons] - neuron_last->value);
         derivate_neuron = neuron_last->value * (1 - neuron_last->value);
 
         Node *current_link = neuron_last->links->first;
@@ -211,7 +211,7 @@ void backpropagation1(NeuralNetwork *network, double expected[]) {
             double value_n_2 = ((Neuron *) get_element_by_index(layer_end_2, i_links)->value)->value;
 
             //neuron_end_2
-            *link_last = *link_last - (3 * error_neuron * derivate_neuron * value_n_2);
+            *link_last = *link_last - (0.4 * error_neuron * derivate_neuron * value_n_2);
 
             current_neuron_end_2 = current_neuron_end_2->next;
             current_link = current_link->next;
@@ -264,7 +264,7 @@ void backpropagation2(NeuralNetwork *network, double expected[]) {
 
             double previous_value = previous_neuron->value;
             double neuron_l2_value = neuron_layer_2->value;
-            *link_2 -= (3 * error_n *  ( neuron_l2_value* (1 - neuron_l2_value)) * previous_value);
+            *link_2 -= (0.4 * error_n *  ( neuron_l2_value* (1 - neuron_l2_value)) * previous_value);
 
             current_link_2 = current_link_2->next;
         }
