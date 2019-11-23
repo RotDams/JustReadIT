@@ -31,6 +31,12 @@ void vote(int x, int y, int maxRho, int maxIndexTheta, int maxIndexRho, int acc[
           SDL_Surface *img) {
     int savedX = x, savedY = y;
 
+    Uint8 r, g, b;
+    SDL_GetRGB(get_pixel(img, savedX, savedY), img->format, &r, &g, &b);
+
+    if (!(r < 15 && g < 15 && b < 15))
+        return;
+
     for (int indexTheta = 0; indexTheta < maxIndexTheta; indexTheta += 1) {
         double theta = ((double) indexTheta / maxIndexTheta) * M_PI;
 
@@ -41,9 +47,8 @@ void vote(int x, int y, int maxRho, int maxIndexTheta, int maxIndexRho, int acc[
         int indexRho = (int) (0.5 + (rho / maxRho + 0.5) * maxIndexRho);
 
         // increment accumulator
-        Uint8 r, g, b;
-        SDL_GetRGB(get_pixel(img, savedX, savedY), img->format, &r, &g, &b);
-        if (r < 15 && g < 15 && b < 15)
+
+
             acc[indexTheta][indexRho]++;
     }
 }
