@@ -165,13 +165,13 @@ void propagation(NeuralNetwork *network, double entry[], size_t len) {
             for (size_t i_neurons_1 = 0; i_neurons_1 < layer_1->length; i_neurons_1++) {
                 Neuron *neuron_layer1 = (Neuron *) current_neuron_layer1->value;
                 double *link = (double *) current_link->value;
-                y += neuron_layer1->value * *link;
+                y += neuron_layer1->value * *link+ neuron_layer2->bias;
 
                 // next
                 current_neuron_layer1 = current_neuron_layer1->next;
                 current_link = current_link->next;
             }
-            y += neuron_layer2->bias;
+         //   y += neuron_layer2->bias;
             // next
             neuron_layer2->value = sigmoide(y);
             current_neuron_layer2 = current_neuron_layer2->next;
@@ -211,7 +211,7 @@ void backpropagation1(NeuralNetwork *network, double expected[]) {
             double value_n_2 = ((Neuron *) get_element_by_index(layer_end_2, i_links)->value)->value;
 
             //neuron_end_2
-            *link_last = *link_last - (3 * error_neuron * derivate_neuron * value_n_2);
+            *link_last = *link_last - (3.4 * error_neuron * derivate_neuron * value_n_2);
 
             current_neuron_end_2 = current_neuron_end_2->next;
             current_link = current_link->next;
@@ -233,7 +233,7 @@ void backpropagation2(NeuralNetwork *network, double expected[]) {
     Node* current_last_neuron = layer3->first;
     for (int i_last = 0; i_last < layer3->length; i_last++) {
         double last_n = ((Neuron*) current_last_neuron->value)->value;
-        derivate_error += - (expected[i_last] - last_n);
+        derivate_error += - (expected[i_last] - last_n) *(expected[i_last] - last_n) ;
 
         current_last_neuron= current_last_neuron->next;
     }
@@ -267,10 +267,9 @@ void backpropagation2(NeuralNetwork *network, double expected[]) {
 
             double derivate_weight = layer_error *derivativ_neuron * previous_neuron;
 
-            double new_weight =*link_2 - (3 * derivate_weight);
+            double new_weight =*link_2 - (3.4 * derivate_weight);
 
             *link_2 = new_weight;
-
 
            // *link_2 -= 0.4 * derivate_weight;
 
