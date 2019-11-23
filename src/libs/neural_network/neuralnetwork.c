@@ -16,7 +16,7 @@ double derivative(double value) {
 
 double *get_link() {
     double *link = malloc(sizeof(double));
-    *link = drand48();
+    *link =1;
     return link;
 }
 
@@ -171,7 +171,7 @@ void propagation(NeuralNetwork *network, double entry[], size_t len) {
                 current_neuron_layer1 = current_neuron_layer1->next;
                 current_link = current_link->next;
             }
-            y += neuron_layer2->bias;
+           // y += neuron_layer2->bias;
             // next
             neuron_layer2->value = sigmoide(y);
             current_neuron_layer2 = current_neuron_layer2->next;

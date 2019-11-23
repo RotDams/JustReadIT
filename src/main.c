@@ -89,7 +89,7 @@ int main() {//int argc, char *argv[]) {
 //    print_info(&s);
 
     size_t nb_layer = 3;
-    size_t nb_neurons_per_layer[] = {2, 13, 2};
+    size_t nb_neurons_per_layer[] = {2, 18, 2};
     NeuralNetwork n;
     init(&n, nb_layer, nb_neurons_per_layer);
     //  print_info(&n);
