@@ -229,17 +229,24 @@ void backpropagation2(NeuralNetwork *network, double expected[]) {
     Node *current_neuron_layer_2 = layer2->first;
 
     double derivate_error=0;
+    double derivate_out = 0;
 
     Node* current_last_neuron = layer3->first;
+    Node* current_neuron = layer3->first;
+
     for (int i_last = 0; i_last < layer3->length; i_last++) {
+        Neuron* n = (Neuron*) current_neuron->value;
         double last_n = ((Neuron*) current_last_neuron->value)->value;
         derivate_error += - (expected[i_last] - last_n) *(expected[i_last] - last_n) ;
 
+        derivate_out += derivative(n->value);
         current_last_neuron= current_last_neuron->next;
+        current_neuron=current_neuron->next;
     }
 
     //todo a check
-    double derivate_out = derivative(((Neuron*)(layer3->first->value))->value);
+
+    //double
 
 
 
@@ -296,15 +303,19 @@ void learn(NeuralNetwork *network, double entry[], size_t len, double expected[]
     Node *output_neurons = ((List) (network->layers->last->value))->first;
     Neuron *n;
 
+    size_t i_index = 0;
     for (unsigned long i = 0; i < ((List) (network->layers->last->value))->length; i++) {
         //print_info(network);
         n = (Neuron *) (output_neurons->value);
+        printf("Output : %.30lf\n", n->value);
         if (max_proba < n->value) {
             max_proba = n->value;
+            i_index =i;
         }
         output_neurons = output_neurons->next;
     }
-    printf("Output : %.30lf\n", max_proba);
+    //printf("Output : %.30lf\n", max_proba);
+
 
 }
 

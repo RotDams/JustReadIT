@@ -89,7 +89,7 @@ int main() {//int argc, char *argv[]) {
 //    print_info(&s);
 
     size_t nb_layer = 3;
-    size_t nb_neurons_per_layer[] = {2, 13, 1};
+    size_t nb_neurons_per_layer[] = {2, 13, 2};
     NeuralNetwork n;
     init(&n, nb_layer, nb_neurons_per_layer);
     //  print_info(&n);
@@ -99,7 +99,7 @@ int main() {//int argc, char *argv[]) {
 
 
     double entry[2];
-    double expected[1];
+    double expected[2];
 
     printf("\n=====================================\n\n");
     for (int i = 0; i < 1000000; i++) {
@@ -109,7 +109,9 @@ int main() {//int argc, char *argv[]) {
         printf("%f\n",entry[0]);
         printf("%f\n",entry[1]);
         printf("Expected : %d\n", entry[0] != entry[1]);
+        printf("Expected : %d\n", entry[0] == entry[1]);
         expected[0] = entry[0] != entry[1];
+        expected[1] = entry[0] == entry[1];
         learn(&n, entry, 2, expected);
         printf("\n");
 //        entry[0] = 1;
