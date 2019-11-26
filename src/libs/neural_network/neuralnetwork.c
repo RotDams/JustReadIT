@@ -230,18 +230,27 @@ void backpropagation2(NeuralNetwork *network, double expected[]) {
 
     double derivate_error=0;
     double derivate_out = 0;
+    double layer_errors[layer2->length];
+    double error_tot = 0;
 
     Node* current_last_neuron = layer3->first;
-    Node* current_neuron = layer3->first;
+    double link;
 
-    for (int i_last = 0; i_last < layer3->length; i_last++) {
-        Neuron* n = (Neuron*) current_neuron->value;
-        double last_n = ((Neuron*) current_last_neuron->value)->value;
-        derivate_error += - (expected[i_last] - last_n) *(expected[i_last] - last_n) ;
+    for (int i = 0; i < layer2->length; i++) {
+        for (int i_last = 0; i_last < layer3->length; i_last++) {
+            double last_n = ((Neuron*) current_last_neuron->value)->value;
+            List current_link = ((Neuron*)(current_last_neuron->value))->links;
+            derivate_error = - ((expected[i_last] - last_n)*(expected[i_last] - last_n));
 
-        derivate_out += derivative(n->value);
-        current_last_neuron= current_last_neuron->next;
-        current_neuron=current_neuron->next;
+            derivate_out = derivative(last_n);
+
+            link = *(double*)get_element_by_index(current_link,i)->value;
+            error_tot += derivate_error * derivate_out * link;
+
+            current_last_neuron= current_last_neuron->next;
+        }
+        current_last_neuron = layer3->first;
+        layer_errors[i] = error_tot;
     }
 
     //todo a check
@@ -272,7 +281,7 @@ void backpropagation2(NeuralNetwork *network, double expected[]) {
 
             double layer_error =(derivative_error * derivate_output)* last_link;
 
-            double derivate_weight = layer_error *derivativ_neuron * previous_neuron;
+            double derivate_weight = layer_errors[i_layer_2] *derivativ_neuron * previous_neuron;
 
             double new_weight =*link_2 - (3.4 * derivate_weight);
 
