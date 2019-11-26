@@ -14,7 +14,7 @@
     <property name="resizable">False</property>
     <property name="default_width">800</property>
     <property name="default_height">500</property>
-    <property name="icon">public/epita.png</property>
+    <property name="icon">../../../public/epita.png</property>
     <child>
       <placeholder/>
     </child>
@@ -48,7 +48,7 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">public/epita.png</property>
+                <property name="pixbuf">../../../public/epita.png</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -59,7 +59,7 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">public/epita.png</property>
+                <property name="pixbuf">../../../public/epita.png</property>
                 <property name="icon_size">1</property>
               </object>
               <packing>

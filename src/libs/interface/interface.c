@@ -3,8 +3,13 @@
 #include <gtk/gtk.h>
 #include "interface.h"
 
+// The all window
 GtkWidget *window;
+
+// The btn run and its widget
 GtkButton *btn_run;
+GtkWidget *btn_run_widget;
+
 GtkButton *btn_credits;
 GtkBuilder *builder;
 GtkFileChooser *fileChooserButton;
@@ -25,6 +30,7 @@ void btn_credits_clicked() {
 void selection_changed() {
     printf("selection_changed\n\n");
     gtk_image_set_from_file(img_selected, gtk_file_chooser_get_filename(fileChooserButton));
+    gtk_widget_set_sensitive((btn_run_widget), TRUE);
 }
 
 void init_interface(int argc, char *argv[]) {
@@ -39,12 +45,16 @@ void init_interface(int argc, char *argv[]) {
 
     // Get the  buttons
     btn_run = GTK_BUTTON(gtk_builder_get_object(builder, "btn_run"));
+    btn_run_widget = GTK_WIDGET(gtk_builder_get_object(builder, "btn_run"));
     btn_credits = GTK_BUTTON(gtk_builder_get_object(builder, "btn_credits"));
+    gtk_widget_set_sensitive((btn_run_widget), FALSE);
 
     // Get the file choose
     fileChooserButton = GTK_FILE_CHOOSER(gtk_builder_get_object(builder, "file_chooser"));
     gtkEntry = GTK_ENTRY(gtk_builder_get_object(builder, "output_entry"));
     img_selected = GTK_IMAGE(gtk_builder_get_object(builder, "img_selected"));
+
+
 
     // Connects windows and buttons
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
