@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 
     init_interface(argc, argv);
     return 0;
-    
+
 	if (argc == 1) {
 		printf("Error: Please specify the some arguments:\n -p to do the segmentation\n -x to active the xor\n -l to load the xor file\n -s to save the xor configuration\n -i x to set the number of iteration of the xor (default: x = 10 000)\n");
 		return EXIT_FAILURE;
