@@ -17,6 +17,8 @@ GtkFileChooser *fileChooserButton;
 GtkImage   *img_selected;
 GtkTextView *textView;
 
+GtkButton *btn_result_cancel;
+
 void btn_run_clicked() {
     // Get the path from the btn
     char *path = gtk_file_chooser_get_filename(fileChooserButton);
@@ -42,6 +44,11 @@ void btn_credits_clicked() {
     printf("btn_credits_clicked, we must show credits.\n\n");
 }
 
+void btn_result_cancel_clicked() {
+    gtk_widget_hide(result_window);
+    gtk_widget_show(main_window);
+}
+
 void selection_changed() {
     printf("selection_changed\n\n");
     gtk_image_set_from_file(img_selected, gtk_file_chooser_get_filename(fileChooserButton));
@@ -62,6 +69,7 @@ void init_interface(int argc, char *argv[]) {
     // Get the  buttons
     btn_run = GTK_BUTTON(gtk_builder_get_object(builder, "btn_run"));
     btn_credits = GTK_BUTTON(gtk_builder_get_object(builder, "btn_credits"));
+    btn_result_cancel = GTK_BUTTON(gtk_builder_get_object(builder, "btn_result_cancel"));
     gtk_widget_set_sensitive(GTK_WIDGET(btn_run), FALSE);
     textView = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "text_view"));
     // Get the file choose
@@ -74,6 +82,7 @@ void init_interface(int argc, char *argv[]) {
     g_signal_connect(btn_run, "clicked", G_CALLBACK(btn_run_clicked), NULL);
     g_signal_connect(btn_credits, "clicked", G_CALLBACK(btn_credits_clicked), NULL);
     g_signal_connect(fileChooserButton, "selection_changed", G_CALLBACK(selection_changed), NULL);
+    g_signal_connect(btn_result_cancel, "clicked", G_CALLBACK(btn_result_cancel_clicked), NULL);
 
     gtk_builder_connect_signals(builder, NULL);
     gtk_widget_show(main_window);
