@@ -32,7 +32,9 @@ void build_line(List words, char **content) {
         build_word((List) word->value, &new_content);
 
         *content = strcat(*content, new_content);
-        *content = strcat(*content, " ");
+
+        if (word->next != NULL)
+            *content = strcat(*content, " ");
 
         // Get the next elements
         word = word->next;
@@ -62,7 +64,9 @@ char *build_text(char *path) {
         build_paragraph((List) paragraph->value, &new_content);
 
         content = strcat(content, new_content);
-        content = strcat(content, "\n");
+
+        if (paragraph->next != NULL)
+            content = strcat(content, "\n\n");
 
         paragraph = paragraph->next;
     }

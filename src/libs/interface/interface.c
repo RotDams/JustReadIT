@@ -67,6 +67,8 @@ void btn_result_save_clicked() {
         FILE *ptr = fopen(filename, "w");
         fprintf(ptr, "%s", content);
         fclose(ptr);
+        gtk_widget_hide(result_window);
+        gtk_widget_show(main_window);
     }
 
 }
