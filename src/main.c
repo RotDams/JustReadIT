@@ -92,7 +92,7 @@ int main() {//int argc, char *argv[]) {
     size_t nb_input = 16;
     size_t nb_output = 8;
     size_t hidden = (nb_input*nb_input) / (3*nb_input*nb_output) +1 ;
-    size_t nb_neurons_per_layer[] = {nb_input, 12 , nb_output};
+    size_t nb_neurons_per_layer[] = {16, 2 , 8};
     NeuralNetwork n;
     init(&n, nb_layer, nb_neurons_per_layer);
     //  print_info(&n);
@@ -125,66 +125,6 @@ int main() {//int argc, char *argv[]) {
         expected[1] = entry[0] == entry[1];
         learn(&n, entry, nb_input, expected);
         printf("\n");
-
-        entry[0] = 0;
-        entry[1] = 0;
-        printf("\n\n\n\n\n\n");
-        printf("%f\n",entry[0]);
-        printf("%f\n",entry[1]);
-        printf("Expected : %d\n", entry[0] != entry[1]);
-        printf("Expected : %d\n", entry[0] == entry[1]);
-        expected[0] = entry[0] != entry[1];
-        expected[1] = entry[0] == entry[1];
-        learn(&n, entry, nb_input, expected);
-        printf("\n");
-
-        entry[0] = 1;
-        entry[1] = 0;
-        printf("\n\n\n\n\n\n");
-        printf("%f\n",entry[0]);
-        printf("%f\n",entry[1]);
-        printf("Expected : %d\n", entry[0] != entry[1]);
-        printf("Expected : %d\n", entry[0] == entry[1]);
-        expected[0] = entry[0] != entry[1];
-        expected[1] = entry[0] == entry[1];
-        learn(&n, entry, nb_input, expected);
-        printf("\n");
-
-        entry[0] = 1;
-        entry[1] = 1;
-        printf("\n\n\n\n\n\n");
-        printf("%f\n",entry[0]);
-        printf("%f\n",entry[1]);
-        printf("Expected : %d\n", entry[0] != entry[1]);
-        printf("Expected : %d\n", entry[0] == entry[1]);
-        expected[0] = entry[0] != entry[1];
-        expected[1] = entry[0] == entry[1];
-        learn(&n, entry, nb_input, expected);
-        printf("\n");
-//        entry[0] = 1;
-//        entry[1] = 1;
-//        printf("%f\n",entry[0]);
-//        printf("%f\n",entry[1]);
-//        printf("Expected : %d\n", entry[0] != entry[1]);
-//        expected[0] = entry[0] != entry[1];
-//        learn(&n, entry, 2, expected);
-//        printf("\n");
-//        entry[0] =0;
-//        entry[1] = 1;
-//        printf("%f\n",entry[0]);
-//        printf("%f\n",entry[1]);
-//        printf("Expected : %d\n", entry[0] != entry[1]);
-//        expected[0] = entry[0] != entry[1];
-//        learn(&n, entry, 2, expected);
-//        printf("\n");
-//        entry[0] = 1;
-//        entry[1] = 1;
-//        printf("%f\n",entry[0]);
-//        printf("%f\n",entry[1]);
-//        printf("Expected : %d\n", entry[0] != entry[1]);
-//        expected[0] = entry[0] != entry[1];
-//        learn(&n, entry, 2, expected);
-//        printf("\n");
     }
     print_info(&n);
 
