@@ -94,7 +94,7 @@ void print_info(NeuralNetwork *network);
  * Description:
  *      - Compute the output of the neural network with entry values
  * */
-void propagation(NeuralNetwork *network, double entry[], size_t len);
+void propagation(NeuralNetwork *network, double entry[]);
 
 
 /* backpropagation
@@ -105,7 +105,7 @@ void propagation(NeuralNetwork *network, double entry[], size_t len);
  * Description:
  *      - Compute all new weights
  * */
-void backpropagation(NeuralNetwork *network, double expected[]);
+void backpropagation(NeuralNetwork *network);
 
 
 /* learn
@@ -117,7 +117,7 @@ void backpropagation(NeuralNetwork *network, double expected[]);
  * Description:
  *      - Function that combine propagation and backpropagation
  * */
-void learn(NeuralNetwork *network, double entry[],size_t len, double expected[]);
+void learn(NeuralNetwork *network, double entry[], double expected[]);
 
 
 /* run

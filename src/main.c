@@ -88,11 +88,11 @@ int main() {//int argc, char *argv[]) {
 //    load_neural_network(&s);
 //    print_info(&s);
 
-    size_t nb_layer = 3;
-    size_t nb_input = 16;
-    size_t nb_output = 8;
+    size_t nb_layer = 4;
+    size_t nb_input = 110;
+    size_t nb_output = 26;
     size_t hidden = (nb_input*nb_input) / (3*nb_input*nb_output) +1 ;
-    size_t nb_neurons_per_layer[] = {4, 5 , 3};
+    size_t nb_neurons_per_layer[] = {nb_input,30,30 , nb_output};
     NeuralNetwork n;
     init(&n, nb_layer, nb_neurons_per_layer);
     //  print_info(&n);
@@ -100,43 +100,51 @@ int main() {//int argc, char *argv[]) {
 //    print_info(&n);
 //    run(&n,k,10);
 
-    double entry[4];
-    double expected[3];
+    double entry[110];
+    double expected[26];
 
-    for (int j = 0; j <4 ; j++) {
-        entry[j] = 0;
+    for (int j = 0; j <110 ; j++) {
+        entry[j]=0;
     }
-    for (int j = 0; j <3 ; j++) {
-        expected[j] = 0;
+    for (int j = 0; j <26 ; j++) {
+        expected[j]=0;
     }
 
 
-
+//    List l =(List) n.layers->first->next->value;
+//    Neuron* ne = (Neuron*) l->first->value;
+//    *(double*)ne->links->first->value = 0.5;
+//    *(double*)ne->links->first->next->value = 1.5;
+//    ne = (Neuron*) l->first->next->value;
+//    *(double*)ne->links->first->value = -1;
+//    *(double*)ne->links->first->next->value = -2;
+//
+//     l =(List) n.layers->first->next->next->value;
+//     ne = (Neuron*) l->first->value;
+//    *(double*)ne->links->first->value = 1;
+//    *(double*)ne->links->first->next->value = 3;
+//    ne = (Neuron*) l->first->next->value;
+//    *(double*)ne->links->first->value = -1;
+//    *(double*)ne->links->first->next->value = -4;
+//
+//    l =(List) n.layers->first->next->next->next->value;
+//    ne = (Neuron*) l->first->value;
+//    *(double*)ne->links->first->value = 1;
+//    *(double*)ne->links->first->next->value = -3;
     printf("\n=====================================\n\n");
     for (int i = 0; i < 1000000; i++) {
-        entry[0] = 0;
-        entry[1] = 1;
+        entry[0] = random() %2;
+        entry[1] = random() %2;
         printf("\n\n\n\n\n\n");
         printf("%f\n",entry[0]);
         printf("%f\n",entry[1]);
         printf("Expected : %d\n", entry[0] != entry[1]);
         printf("Expected : %d\n", entry[0] == entry[1]);
-        expected[0] = entry[0] != entry[1];
-        expected[1] = entry[0] == entry[1];
-        learn(&n, entry, nb_input, expected);
+        expected[0] =  entry[0] != entry[1];
+        expected[1] =  entry[0] == entry[1];
+        learn(&n, entry, expected);
         printf("\n");
 
-        entry[0] = 1;
-        entry[1] = 1;
-        printf("\n\n\n\n\n\n");
-        printf("%f\n",entry[0]);
-        printf("%f\n",entry[1]);
-        printf("Expected : %d\n", entry[0] != entry[1]);
-        printf("Expected : %d\n", entry[0] == entry[1]);
-        expected[0] = entry[0] != entry[1];
-        expected[1] = entry[0] == entry[1];
-        learn(&n, entry, nb_input, expected);
-        printf("\n");
     }
     print_info(&n);
 

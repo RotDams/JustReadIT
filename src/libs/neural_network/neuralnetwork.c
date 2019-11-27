@@ -16,14 +16,14 @@ double derivative(double value) {
 
 double *get_link() {
     double *link = malloc(sizeof(double));
-    *link =1;
+    *link = ((double) (random() % 10)) / 10;
     return link;
 }
 
 Neuron *get_neuron(size_t nb_neurons_per_layer[], size_t index) {
     Neuron *n = malloc(sizeof(Neuron));
-    n->bias = 2;
-    n->value = 0;
+    n->bias = ((double) (random() % 10)) / 10;
+    n->value = ((double) (random() % 10)) / 10;
     n->error = 0;
     n->links = create_list();
     if (index != 1) {
@@ -115,35 +115,35 @@ void print_info(NeuralNetwork *net) {
 }
 
 
-void propagation(NeuralNetwork *network, double entry[], size_t len) {
+void propagation(NeuralNetwork *network, double entry[]) {
     //Init of values
-    Node* current_first = ((List)network->layers->first->value)->first;
-    for (size_t i_first = 0; i_first < ((List)(network->layers->first->value))->length ; i_first++) {
-        Neuron* first =(Neuron*) current_first->value;
+    Node *current_first = ((List) network->layers->first->value)->first;
+    for (size_t i_first = 0; i_first < ((List) (network->layers->first->value))->length; i_first++) {
+        Neuron *first = (Neuron *) current_first->value;
         first->value = entry[i_first];
         current_first = current_first->next;
     }
 
     // Propagation of the information
-    Node* current_layer1 = network->layers->first;
-    Node* current_layer2 = current_layer1->next;
+    Node *current_layer1 = network->layers->first;
+    Node *current_layer2 = current_layer1->next;
 
-    for (size_t i_of_layers = 0; i_of_layers < network->layers->length-1; i_of_layers++) {
-        List layer_1 =(List) current_layer1->value;
-        List layer_2 =(List) current_layer2->value;
+    for (size_t i_of_layers = 0; i_of_layers < network->layers->length - 1; i_of_layers++) {
+        List layer_1 = (List) current_layer1->value;
+        List layer_2 = (List) current_layer2->value;
 
-        Node* current_neuron_2 =layer_2->first;
+        Node *current_neuron_2 = layer_2->first;
         for (size_t i_layer2 = 0; i_layer2 < layer_2->length; i_layer2++) {
             double value_neuron = 0;
-            Neuron* neuron_2 = (Neuron*) current_neuron_2->value;
+            Neuron *neuron_2 = (Neuron *) current_neuron_2->value;
 
 
-            Node* current_neuron_1 = layer_1->first;
-            Node* current_link_2 = neuron_2->links->first;
+            Node *current_neuron_1 = layer_1->first;
+            Node *current_link_2 = neuron_2->links->first;
 
             for (size_t i_links_2 = 0; i_links_2 < neuron_2->links->length; i_links_2++) {
-                double link_value = *(double*)current_link_2->value;
-                Neuron* neuron_1 =(Neuron*) current_neuron_1->value;
+                double link_value = *(double *) current_link_2->value;
+                Neuron *neuron_1 = (Neuron *) current_neuron_1->value;
 
                 value_neuron += link_value * neuron_1->value;
 
@@ -160,99 +160,102 @@ void propagation(NeuralNetwork *network, double entry[], size_t len) {
     }
 }
 
+void backpropagation(NeuralNetwork *network) {
+    double coef = 0.1;
 
-void backpropagation1(NeuralNetwork *network, double expected[]) {
+    Node *current_layer_2 = network->layers->last;
+    Node *current_layer_1 = current_layer_2->previous;
 
-    Node* current_layer2 = network->layers->last;
-    Node* current_layer1 = current_layer2->previous;
-    List layer_2 = (List) current_layer2->value;
-    List layer_1 = (List) current_layer1->value;
-    Node* current_neuron_2 = layer_2->first;
-
-    for (size_t i_last_layer = 0; i_last_layer < layer_2->length; i_last_layer++) {
-        Neuron* neuron_2 = (Neuron*) current_neuron_2->value;
-        Node* current_neuron_1 = layer_1->first;
-
-        neuron_2->error =-(expected[i_last_layer] - neuron_2->value);
-
-        Node* current_link = neuron_2->links->first;
-        for (size_t i_links = 0; i_links < neuron_2->links->length ; i_links++) {
-            Neuron* neuron_1 = (Neuron*) current_neuron_1->value;
-            double *link = (double*)current_link->value;
-            double link_value = neuron_2->error * (neuron_2->value * (1-neuron_2->value)) * neuron_1->value;
-
-            *link = *link - (0.5 * link_value);
-            current_link = current_link->next;
-            current_neuron_1 = current_neuron_1-> next;
-        }
-
-        current_neuron_2 = current_neuron_2->next;
-    }
-}
-
-void backpropagation2(NeuralNetwork *network, double expected[]) {
-    Node* current_layer_3 = network->layers->last;
-    Node* current_layer_2 = current_layer_3->previous;
-    Node* current_layer_1 = current_layer_2->previous;
-
-    for (int i_of_layers = 0; i_of_layers < network->layers->length - 2; i_of_layers++) {
+    for (int i_layers = 0; i_layers < network->layers->length - 1; i_layers++) {
         List layer_1 = (List) current_layer_1->value;
         List layer_2 = (List) current_layer_2->value;
-        List layer_3 = (List)current_layer_3->value;
 
         Node *current_neuron_2 = layer_2->first;
-
-        for (size_t i_neuron_2 = 0; i_neuron_2 < layer_2->length ; i_neuron_2++) {
-
-            Neuron* neuron_2 = (Neuron*) current_neuron_2->value;
-            // cal
-            double sum_of_error = 0;
-            Node *current_neuron_3 = layer_3->first;
-
-            for (size_t i_neuro_3 = 0; i_neuro_3 < layer_3->length; i_neuro_3++) {
-                Neuron *neuron_3 = (Neuron*) current_neuron_3->value;
-
-                double link_value = *(double*)(get_element_by_index(neuron_3->links,i_neuron_2)->value);
-                sum_of_error+= neuron_3->error * (neuron_3->value * (1-neuron_3->value)) *link_value;
-                current_neuron_3 = current_neuron_3->next;
-            }
-
-            double derivate_current_neuron_2 = neuron_2->value * (1 - neuron_2->value);
-
+        for (int i_neuron_2 = 0; i_neuron_2 < layer_2->length; i_neuron_2++) {
+            Neuron* neuron_2 =(Neuron*) current_neuron_2->value;
 
             Node* current_neuron_1 = layer_1->first;
             Node* current_link_2 = neuron_2->links->first;
+            for (int i_link_2 = 0; i_link_2 < neuron_2->links->length; i_link_2++) {
+                Neuron *neuron_1 = (Neuron*) current_neuron_1->value;
+                double *link_2 = (double*)current_link_2->value;
 
-            for (size_t i_layer_1 = 0; i_layer_1 < neuron_2->links->length; i_layer_1++) {
-                Neuron* neuron_1 = (Neuron*)current_neuron_1->value;
-                double* link_2 =(double*) current_link_2->value;
+                double tot = *link_2+ coef* neuron_1->value * neuron_2->error;
+                *link_2 = tot;
 
-                *link_2 -= 0.5 * sum_of_error * derivate_current_neuron_2 * neuron_1->value;
-
+                current_link_2= current_link_2->next;
                 current_neuron_1 = current_neuron_1->next;
-                current_link_2 = current_link_2->next;
             }
+
 
             current_neuron_2 = current_neuron_2->next;
         }
 
-        current_layer_1 = current_layer_1->next;
-        current_layer_2 = current_layer_2->next;
-        current_layer_3 = current_layer_3->next;
+        current_layer_1 = current_layer_1->previous;
+        current_layer_2 = current_layer_2->previous;
+    }
+
+}
+
+// Pass through the neural network and return the output
+
+void update_error(NeuralNetwork *network, double expected[]) {
+
+    // Delta error of the last layer
+    Node *current_layer_2 = network->layers->last;
+    List layer_2 = (List) current_layer_2->value;
+    Node *current_neuron_2 = layer_2->first;
+    for (size_t i_neuron = 0; i_neuron < layer_2->length; i_neuron++) {
+        Neuron *neuron_2 = (Neuron *) current_neuron_2->value;
+        neuron_2->error = expected[i_neuron] - neuron_2->value;
+        // printf("\n%.5f",expected[i_neuron] - neuron_2->value);
+        current_neuron_2 = current_neuron_2->next;
+    }
+
+
+    current_layer_2 = network->layers->last;
+    Node *current_layer_1 = current_layer_2->previous;
+
+    for (int i_layers = 0; i_layers < network->layers->length - 2; i_layers++) {
+        layer_2 = (List) current_layer_2->value;
+        List layer_1 = (List) current_layer_1->value;
+        Node *current_neuron_1 = layer_1->first;
+        for (int i_neuron_1 = 0; i_neuron_1 < layer_1->length; i_neuron_1++) {
+            Neuron *neuron_1 = (Neuron *) current_neuron_1->value;
+            double derivate_neuron = neuron_1->value * (1 - neuron_1->value);
+
+            double error_propagation = 0;
+            Node *current_neuron_2 = layer_2->first;
+            for (int i_neuron_2 = 0; i_neuron_2 < layer_2->length; i_neuron_2++) {
+                Neuron *neuron_2 = (Neuron *) current_neuron_2->value;
+                double link_2 = *(double *) (get_element_by_index(neuron_2->links, i_neuron_1)->value);
+
+                error_propagation += link_2 * neuron_2->error;
+                current_neuron_2 = current_neuron_2->next;
+            }
+            // printf("\n%.5f",derivate_neuron * error_propagation);
+            neuron_1->error = derivate_neuron * error_propagation;
+
+            current_neuron_1 = current_neuron_1->next;
+        }
+        current_layer_1 = current_layer_1->previous;
+        current_layer_2 = current_layer_2->previous;
+
     }
 }
 
-
 // Machine learning function
-void learn(NeuralNetwork *network, double entry[], size_t len, double expected[]) {
+void learn(NeuralNetwork *network, double entry[], double expected[]) {
     // print_info(network);
 
 
     // print_info(network);
 
-    propagation(network, entry, len);
-    backpropagation1(network, expected);
-    backpropagation2(network, expected);
+    propagation(network, entry);
+    update_error(network, expected);
+    backpropagation(network);
+    // backpropagation1(network, expected);
+    //  backpropagation2(network, expected);
 
     double max_proba = 0;
     Node *output_neurons = ((List) (network->layers->last->value))->first;
@@ -265,7 +268,7 @@ void learn(NeuralNetwork *network, double entry[], size_t len, double expected[]
         printf("Output : %.30lf\n", n->value);
         if (max_proba < n->value) {
             max_proba = n->value;
-            i_index =i;
+            i_index = i;
         }
         output_neurons = output_neurons->next;
     }
@@ -274,10 +277,8 @@ void learn(NeuralNetwork *network, double entry[], size_t len, double expected[]
 
 }
 
-// Pass through the neural network and return the output
-
 size_t run(NeuralNetwork *network, double entry[], size_t len) {
-    propagation(network, entry, len);
+    propagation(network, entry);
     double max_proba = 0;
     size_t letter = 0;
     Node *output_neurons = ((List) (network->layers->last->value))->first;
