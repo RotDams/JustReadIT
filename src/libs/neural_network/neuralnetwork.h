@@ -12,6 +12,7 @@
 typedef struct Neuron {
     double value;
     double bias;
+    double error;
     List links;
 } Neuron;
 
