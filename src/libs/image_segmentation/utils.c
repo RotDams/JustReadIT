@@ -272,7 +272,6 @@ void img_to_array(SDL_Surface *image, int length) {
     }
 
     printf("%f\n", array[0]);
-    show_image(image, -1);
 }
 
 void put_in_black_and_white(SDL_Surface *image) {

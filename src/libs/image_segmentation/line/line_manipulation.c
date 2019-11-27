@@ -17,11 +17,14 @@ int get_words_space(SDL_Surface *image) {
         } else {
             if (count > max_count)
                 max_count = count;
-            if (count < min_count)
+            if (count < min_count && count != 0)
                 min_count = count;
             count = 0;
         }
     } // return the new limite
+    printf("%d - %d\n", min_count, max_count);
+    if (min_count >= max_count - 5)
+        return 666;
     return max_count - (min_count) / 2;
 }
 
@@ -47,7 +50,6 @@ List get_letters(SDL_Surface *image) {
             } else {
                 // Push the letter into the list
                 SDL_Surface *new_img = cut_image(image, save_index, 0, x - save_index, image->h);
-                show_image(new_img, 5);
                 letters_list = push_back_list(letters_list,
                                               (void *) new_img,
                                               LetterType);
@@ -87,7 +89,6 @@ List get_words_and_letters(SDL_Surface *image) {
             // Change the word to List of letters
             // and push it into the List
             SDL_Surface *new_img = cut_image(image, save_index, 0, x - save_index, image->h);
-            show_image(new_img, 4);
             words_list = push_back_list(words_list,
                                         (void *) get_letters(new_img),
                                         WordType);

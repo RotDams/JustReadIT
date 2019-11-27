@@ -1,5 +1,6 @@
 #include <SDL/SDL.h>
 #include <unistd.h>
+#include "libs/image_segmentation/rotation.h"
 #include "libs/interface/interface.h"
 #include "libs/image_segmentation/index.h"
 #include "libs/neural_network/neuralnetwork.h"
@@ -12,12 +13,9 @@ PresentationState dev_mode = {
 
 int main(int argc, char *argv[]) {
 
-
     // Check if we want the interface
-    if (argc == 1) {
-        init_interface(argc, argv);
-        return 0;
-    }
+    init_interface(argc, argv);
+    return 0;
 
     // Else, we will call the program with arguments
 
@@ -54,8 +52,9 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    List paragraphs = image_segmentation(path);
-    print_list(paragraphs);
+
+//    List paragraphs = image_segmentation(path);
+    //  print_list(paragraphs);
 
 
 
