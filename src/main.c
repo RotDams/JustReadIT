@@ -21,6 +21,7 @@ double *get_matrix(SDL_Surface *image) {
     }
     return array;
 }
+
 int main() {//int argc, char *argv[]) {
 
     /*if (argc == 1) {
@@ -110,14 +111,14 @@ int main() {//int argc, char *argv[]) {
     SDL_Surface *l_D = SDL_LoadBMP("src/D.bmp");
     SDL_Surface *l_E = SDL_LoadBMP("src/E.bmp");
 
-    size_t nb_layer = 3;
-    size_t nb_input = l_A->h * l_A->w;
+    size_t nb_layer = 4;
+    size_t nb_input = l_A->h*l_A->w;
     size_t nb_output = 5;
 
     size_t hidden1 = 100;
-    size_t nb_neurons_per_layer[] = {nb_input, hidden1, nb_output};
+    size_t nb_neurons_per_layer[] = {nb_input, hidden1, hidden1, nb_output};
     NeuralNetwork n;
-    init(&n, nb_layer, nb_neurons_per_layer);
+    //init(&n, nb_layer, nb_neurons_per_layer);
 
     double *entry_A = get_matrix(l_A);
     double *entry_B = get_matrix(l_B);
@@ -132,64 +133,54 @@ int main() {//int argc, char *argv[]) {
     double latter_D[] = {0, 0, 0, 1, 0};
     double latter_E[] = {0, 0, 0, 0, 1};
 
-    //load_neural_network(&n);
-    for (int i = 0; i < 1000000; i++) {
+    double coef = 0.1;
+    load_neural_network(&n);
+    int k = 0;
+    for (int i = 1; i < 1000000; i++) {
         size_t result = 0;
-        int k = random() % 5;
+        k = random() % 5;
         switch (k) {
             case 0:
 
-                result = learn(&n, entry_A, latter_A);
+                result = learn(&n, entry_A, latter_A,coef);
                 printf("Expected: A\n");
                 break;
             case 1:
 
-                result = learn(&n, entry_B, latter_B);
+                result = learn(&n, entry_B, latter_B,coef);
                 printf("Expected: B\n");
                 break;
             case 2:
 
-                result = learn(&n, entry_C, latter_C);
+                result = learn(&n, entry_C, latter_C,coef);
                 printf("Expected: C\n");
                 break;
             case 3:
 
-                result = learn(&n, entry_D, latter_D);
+                result = learn(&n, entry_D, latter_D,coef);
                 printf("Expected: D\n");
                 break;
             default:
 
-                result = learn(&n, entry_E, latter_E);
+                result = learn(&n, entry_E, latter_E,coef);
                 printf("Expected: E\n");
                 break;
         }
 
 
-        printf("result : ");
-        switch (result) {
-            case 0:
-                printf("A\n");
-                break;
-            case 1:
-                printf("B\n");
-                break;
-            case 2:
-                printf("C\n");
-                break;
-            case 3:
-                printf("D\n");
-                break;
-            default:
-                printf("E\n");
-                break;
-        }
+        printf("result : %c \n\n\n",'A'+(char)result);
 
-        if (i % 10000 ==0){
+
+        if (i%5==0)
+            backpropagation(&n,coef);
+        if (i % 10000 == 0) {
             print_info(&n);
             save_neural_network(&n);
         }
-
     }
+
+    printf("%c",'A'+ (char)run(&n,entry_A));
+    //print_info(&n);
     save_neural_network(&n);
 
 }
