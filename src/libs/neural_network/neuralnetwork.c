@@ -229,7 +229,7 @@ void update_error(NeuralNetwork *network, double expected[]) {
 }
 
 // Machine learning function
-void learn(NeuralNetwork *network, double entry[], double expected[]) {
+size_t learn(NeuralNetwork *network, double entry[], double expected[]) {
     // print_info(network);
 
 
@@ -257,6 +257,7 @@ void learn(NeuralNetwork *network, double entry[], double expected[]) {
         output_neurons = output_neurons->next;
     }
     //printf("Output : %.30lf\n", max_proba);
+    return i_index;
 
 
 }
@@ -396,7 +397,7 @@ void load_neural_network(NeuralNetwork *net) {
     net->layers = create_list();
     size_t nb_layer = 0;
     fscanf(file, "layers: %zi\n", &nb_layer);
-    size_t nb_neurons_per_layer[3];
+    size_t nb_neurons_per_layer[nb_layer];
 
 
     fscanf(file, "neurons:");

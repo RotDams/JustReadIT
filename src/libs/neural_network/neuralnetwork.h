@@ -118,7 +118,7 @@ void backpropagation(NeuralNetwork *network);
  * Description:
  *      - Function that combine propagation and backpropagation
  * */
-void learn(NeuralNetwork *network, double entry[], double expected[]);
+size_t learn(NeuralNetwork *network, double entry[], double expected[]);
 
 
 /* run

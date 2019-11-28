@@ -4,7 +4,23 @@
 #include "libs/neural_network/neuralnetwork.h"
 //#include "libs/neural_network/index.h"
 
+double *get_matrix(SDL_Surface *image) {
+    int len = image->w * image->h;
+    double *array = malloc(sizeof(double) * len);
 
+    Uint8 r, g, b;
+    for (int i = 0; i < image->h; i++) {
+        for (int j = 0; j < image->w; j++) {
+            Uint32 pixel = (get_pixel(image, i, j));
+            SDL_GetRGB(pixel, image->format, &r, &b, &g);
+            if (r < 15 && b < 15 && g < 15)
+                array[i * image->w + j] = 1;
+            else
+                array[i * image->w + j] = 0;
+        }
+    }
+    return array;
+}
 int main() {//int argc, char *argv[]) {
 
     /*if (argc == 1) {
@@ -88,69 +104,92 @@ int main() {//int argc, char *argv[]) {
 //    load_neural_network(&s);
 //    print_info(&s);
 
+    SDL_Surface *l_A = SDL_LoadBMP("src/A.bmp");
+    SDL_Surface *l_B = SDL_LoadBMP("src/B.bmp");
+    SDL_Surface *l_C = SDL_LoadBMP("src/C.bmp");
+    SDL_Surface *l_D = SDL_LoadBMP("src/D.bmp");
+    SDL_Surface *l_E = SDL_LoadBMP("src/E.bmp");
+
     size_t nb_layer = 3;
-    size_t nb_input = 3;
-    size_t nb_output = 3;
-    size_t hidden = (nb_input*nb_input) / (3*nb_input*nb_output) +1 ;
-    size_t nb_neurons_per_layer[] = {nb_input,10 , nb_output};
+    size_t nb_input = l_A->h * l_A->w;
+    size_t nb_output = 5;
+
+    size_t hidden1 = 100;
+    size_t nb_neurons_per_layer[] = {nb_input, hidden1, nb_output};
     NeuralNetwork n;
-    //init(&n, nb_layer, nb_neurons_per_layer);
+    init(&n, nb_layer, nb_neurons_per_layer);
 
-    //print_info(&n);
-    //  print_info(&n);
-//
-//    print_info(&n);
-//    run(&n,k,10);
-
-    double entry[3];
-    double expected[3];
-
-    for (int j = 0; j <3 ; j++) {
-        entry[j]=0;
-    }
-    for (int j = 0; j <3 ; j++) {
-        expected[j]=0;
-    }
+    double *entry_A = get_matrix(l_A);
+    double *entry_B = get_matrix(l_B);
+    double *entry_C = get_matrix(l_C);
+    double *entry_D = get_matrix(l_D);
+    double *entry_E = get_matrix(l_E);
 
 
-//    List l =(List) n.layers->first->next->value;
-//    Neuron* ne = (Neuron*) l->first->value;
-//    *(double*)ne->links->first->value = 0.5;
-//    *(double*)ne->links->first->next->value = 1.5;
-//    ne = (Neuron*) l->first->next->value;
-//    *(double*)ne->links->first->value = -1;
-//    *(double*)ne->links->first->next->value = -2;
-//
-//     l =(List) n.layers->first->next->next->value;
-//     ne = (Neuron*) l->first->value;
-//    *(double*)ne->links->first->value = 1;
-//    *(double*)ne->links->first->next->value = 3;
-//    ne = (Neuron*) l->first->next->value;
-//    *(double*)ne->links->first->value = -1;
-//    *(double*)ne->links->first->next->value = -4;
-//
-//    l =(List) n.layers->first->next->next->next->value;
-//    ne = (Neuron*) l->first->value;
-//    *(double*)ne->links->first->value = 1;
-//    *(double*)ne->links->first->next->value = -3;
-//    printf("\n=====================================\n\n");
-    load_neural_network(&n);
-    for (int i = 0; i < 10000; i++) {
-        entry[0] = random() %2;
-        entry[1] = random() %2;
-        printf("\n\n\n\n\n\n");
-        printf("%f\n",entry[0]);
-        printf("%f\n",entry[1]);
-        printf("Expected : %d\n", entry[0] != entry[1]);
-        printf("Expected : %d\n", entry[0] == entry[1]);
-        expected[0] =  entry[0] != entry[1];
-        expected[1] =  entry[0] == entry[1];
-        learn(&n, entry, expected);
-        printf("\n");
+    double latter_A[] = {1, 0, 0, 0, 0};
+    double latter_B[] = {0, 1, 0, 0, 0};
+    double latter_C[] = {0, 0, 1, 0, 0};
+    double latter_D[] = {0, 0, 0, 1, 0};
+    double latter_E[] = {0, 0, 0, 0, 1};
+
+    //load_neural_network(&n);
+    for (int i = 0; i < 1000000; i++) {
+        size_t result = 0;
+        int k = random() % 5;
+        switch (k) {
+            case 0:
+
+                result = learn(&n, entry_A, latter_A);
+                printf("Expected: A\n");
+                break;
+            case 1:
+
+                result = learn(&n, entry_B, latter_B);
+                printf("Expected: B\n");
+                break;
+            case 2:
+
+                result = learn(&n, entry_C, latter_C);
+                printf("Expected: C\n");
+                break;
+            case 3:
+
+                result = learn(&n, entry_D, latter_D);
+                printf("Expected: D\n");
+                break;
+            default:
+
+                result = learn(&n, entry_E, latter_E);
+                printf("Expected: E\n");
+                break;
+        }
+
+
+        printf("result : ");
+        switch (result) {
+            case 0:
+                printf("A\n");
+                break;
+            case 1:
+                printf("B\n");
+                break;
+            case 2:
+                printf("C\n");
+                break;
+            case 3:
+                printf("D\n");
+                break;
+            default:
+                printf("E\n");
+                break;
+        }
+
+        if (i % 10000 ==0){
+            print_info(&n);
+            save_neural_network(&n);
+        }
 
     }
     save_neural_network(&n);
-//
-//    return 0;
 
 }
