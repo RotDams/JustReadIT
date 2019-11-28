@@ -14,10 +14,11 @@ double derivative(double value) {
     return (value) * (1 - (value));
 }
 
-double *get_link() {
-    double *link = malloc(sizeof(double));
-    *link = ((double) (random() % 10)) / 10;
-    return link;
+double get_link() {
+    //double *link = malloc(sizeof(double));
+    //*link = ((double) (random() % 10)) / 10;
+    //return link;
+    return ((double) (random() % 10)) / 10;
 }
 
 Neuron *get_neuron(size_t nb_neurons_per_layer[], size_t index) {
@@ -25,10 +26,13 @@ Neuron *get_neuron(size_t nb_neurons_per_layer[], size_t index) {
     n->bias = ((double) (random() % 10)) / 10;
     n->value = ((double) (random() % 10)) / 10;
     n->error = 0;
-    n->links = create_list();
+    double *link = malloc(sizeof(double) * nb_neurons_per_layer[index - 2]);
+    n->links = link;
+    n->nb_link = 0;
     if (index != 1) {
+        n->nb_link = nb_neurons_per_layer[index - 2];
         for (size_t i = 0; i < nb_neurons_per_layer[index - 2]; i++) {
-            n->links = push_back_list(n->links, (double *) get_link(), LinkType);
+            n->links[i] = get_link();
         }
     }
     return n;
@@ -38,7 +42,8 @@ List get_neurons_list(size_t nb_neurons_per_layer[], size_t index) {
     List neurons = create_list();
 
     for (size_t i = 0; i < nb_neurons_per_layer[index - 1]; i++) {
-        neurons = push_back_list(neurons, get_neuron(nb_neurons_per_layer, index), NeuronType);
+        Neuron *k = get_neuron(nb_neurons_per_layer, index);
+        neurons = push_back_list(neurons, k, NeuronType);
     }
     return neurons;
 }
@@ -62,55 +67,37 @@ void print_info(NeuralNetwork *net) {
     List layers = net->layers;
     printf("number of layers : %lu\n", layers->length);
 
-    Node neurons = *(Node *) (layers->first);
-    List list_neuron = (List) (neurons.value);
-
-    Node link_node;
-    double link_value;
-
-    Neuron n;
+    Node *neurons = (layers->first);
+    List list_neuron;
+    Neuron *n;
 
     for (unsigned long i = 1; i <= layers->length; i++) {
-        printf("\n===============layer: %lu===============(with %lu neurons)\n", i, ((List) (neurons.value))->length);
-        Node current_n = *(Node *) (list_neuron->first);
-        n = *(Neuron *) (current_n.value);
+        printf("\n===============layer: %lu===============(with %lu neurons)\n", i, ((List) (neurons->value))->length);
+        list_neuron = (List) (neurons->value);
 
-        if (n.links)
+        Node *current_n = (list_neuron->first);
+        n = (Neuron *) (current_n->value);
+
+        if (n->links)
             for (unsigned long k = 1; k <= list_neuron->length; k++) {
-                link_node = *(Node *) (n.links->first);
-                link_value = *(double *) link_node.value;
+                n = (Neuron *) (current_n->value);
+                printf("Current Neuron: %lu : value = %lf ( with %lu links)\n ----links:------\n", k, n->value,
+                       n->nb_link);
 
-                printf("Current Neuron: %lu : value = %lf ( with %lu links)\n ----links:------\n", k, n.value,
-                       n.links->length);
-
-                for (unsigned long j = 1; j <= n.links->length; j++) {
-                    printf("  (%lu) = %.30f   ", j, link_value);
-                    if (j != n.links->length) {
-                        link_node = *(Node *) link_node.next;
-                        link_value = *(double *) link_node.value;
-                    }
-
+                for (unsigned long j = 0; j < n->nb_link; j++) {
+                    printf("  (%lu) = %.30f   ", j, n->links[j]);
                 }
                 printf("\n");
-                if (current_n.next) {
-                    current_n = *(Node *) (current_n.next);
-                    n = *(Neuron *) (current_n.value);
-                }
+                current_n = current_n->next;
             }
         else
             for (unsigned long k = 1; k <= list_neuron->length; k++) {
-                printf("Current Neuron: %lu : value = %lf  ( with %lu links)\n", k, n.value, (unsigned long) 0);
-                if (current_n.next) {
-                    current_n = *(Node *) (current_n.next);
-                    n = *(Neuron *) (current_n.value);
-                }
+                n = (Neuron *) (current_n->value);
+                printf("Current Neuron: %lu : value = %lf  ( with %lu links)\n", k, n->value, (unsigned long) 0);
+                current_n = (current_n->next);
             }
 
-        if (neurons.next) {
-            neurons = *(Node *) neurons.next;
-            list_neuron = (List) (neurons.value);
-        }
-
+        neurons = neurons->next;
     }
 }
 
@@ -139,15 +126,12 @@ void propagation(NeuralNetwork *network, double entry[]) {
 
 
             Node *current_neuron_1 = layer_1->first;
-            Node *current_link_2 = neuron_2->links->first;
 
-            for (size_t i_links_2 = 0; i_links_2 < neuron_2->links->length; i_links_2++) {
-                double link_value = *(double *) current_link_2->value;
+            for (size_t i_links_2 = 0; i_links_2 < neuron_2->nb_link; i_links_2++) {
                 Neuron *neuron_1 = (Neuron *) current_neuron_1->value;
 
-                value_neuron += link_value * neuron_1->value;
+                value_neuron += neuron_2->links[i_links_2] * neuron_1->value;
 
-                current_link_2 = current_link_2->next;
                 current_neuron_1 = current_neuron_1->next;
             }
 
@@ -166,24 +150,21 @@ void backpropagation(NeuralNetwork *network) {
     Node *current_layer_2 = network->layers->last;
     Node *current_layer_1 = current_layer_2->previous;
 
-    for (int i_layers = 0; i_layers < network->layers->length - 1; i_layers++) {
+    for (size_t i_layers = 0; i_layers < network->layers->length - 1; i_layers++) {
         List layer_1 = (List) current_layer_1->value;
         List layer_2 = (List) current_layer_2->value;
 
         Node *current_neuron_2 = layer_2->first;
-        for (int i_neuron_2 = 0; i_neuron_2 < layer_2->length; i_neuron_2++) {
-            Neuron* neuron_2 =(Neuron*) current_neuron_2->value;
+        for (size_t i_neuron_2 = 0; i_neuron_2 < layer_2->length; i_neuron_2++) {
+            Neuron *neuron_2 = (Neuron *) current_neuron_2->value;
 
-            Node* current_neuron_1 = layer_1->first;
-            Node* current_link_2 = neuron_2->links->first;
-            for (int i_link_2 = 0; i_link_2 < neuron_2->links->length; i_link_2++) {
-                Neuron *neuron_1 = (Neuron*) current_neuron_1->value;
-                double *link_2 = (double*)current_link_2->value;
+            Node *current_neuron_1 = layer_1->first;
+            for (size_t i_link_2 = 0; i_link_2 < neuron_2->nb_link; i_link_2++) {
+                Neuron *neuron_1 = (Neuron *) current_neuron_1->value;
 
-                double tot = *link_2+ coef* neuron_1->value * neuron_2->error;
-                *link_2 = tot;
+                double tot = neuron_2->links[i_link_2] + coef * neuron_1->value * neuron_2->error;
+                neuron_2->links[i_link_2] = tot;
 
-                current_link_2= current_link_2->next;
                 current_neuron_1 = current_neuron_1->next;
             }
 
@@ -226,9 +207,12 @@ void update_error(NeuralNetwork *network, double expected[]) {
 
             double error_propagation = 0;
             Node *current_neuron_2 = layer_2->first;
+
             for (int i_neuron_2 = 0; i_neuron_2 < layer_2->length; i_neuron_2++) {
                 Neuron *neuron_2 = (Neuron *) current_neuron_2->value;
-                double link_2 = *(double *) (get_element_by_index(neuron_2->links, i_neuron_1)->value);
+
+                // double link_2 = *(double *) (get_element_by_index(neuron_2->links, i_neuron_1)->value);
+                double link_2 = neuron_2->links[i_neuron_1];
 
                 error_propagation += link_2 * neuron_2->error;
                 current_neuron_2 = current_neuron_2->next;
@@ -300,13 +284,13 @@ size_t run(NeuralNetwork *network, double entry[], size_t len) {
 void save_neural_network(NeuralNetwork *net) {
     List layers = net->layers;
 
-    Node neurons = *(Node *) (layers->first);
-    List list_neuron = (List) (neurons.value);
+    Node *neurons = (Node *) (layers->first);
+    List list_neuron;
 
-    Node link_node;
-    double link_value;
+    Node *link_node;
+    double *link_value;
 
-    Neuron n;
+    Neuron *n;
     FILE *file = fopen("src/libs/neural_network/save_network.txt", "w");
     fprintf(file, "layers: %lu\n", net->layers->length);
     // List current_layers = net->layers;
@@ -319,52 +303,41 @@ void save_neural_network(NeuralNetwork *net) {
             current_neurons = *(Node *) current_neurons.next;
     }
     for (unsigned long i = 1; i <= layers->length; i++) {
+        list_neuron = (List) (neurons->value);
         fprintf(file, "\n= Layer %lu =\n\n", i);
-        Node current_n = *(Node *) (list_neuron->first);
-        n = *(Neuron *) (current_n.value);
-        if (n.links)
+        Node *current_n = list_neuron->first;
+        n = (Neuron *) (current_n->value);
+        if (n->nb_link !=0)
             for (unsigned long k = 1; k <= list_neuron->length; k++) {
-
-                link_node = *(Node *) (n.links->first);
-                link_value = *(double *) link_node.value;
+                n = (Neuron *) (current_n->value);
 
 
-                fprintf(file, "Value :\n%.30f\n", n.value);
-                fprintf(file, "Bias :\n%.30f\n", n.bias);
+                fprintf(file, "Value :\n%.30f\n", n->value);
+                fprintf(file, "Bias :\n%.30f\n", n->bias);
                 fprintf(file, "Links :\n");
 
-                for (unsigned long j = 1; j <= n.links->length; j++) {
+                for (unsigned long j = 1; j <= n->nb_link; j++) {
 
-
-                    fprintf(file, "%.30f / ", link_value);
-                    if (j != n.links->length) {
-                        link_node = *(Node *) link_node.next;
-                        link_value = *(double *) link_node.value;
-                    }
-
+                    fprintf(file, "%.30f / ", n->links[j]);
                 }
                 fprintf(file, "\n\n");
-                if (current_n.next) {
-                    current_n = *(Node *) (current_n.next);
-                    n = *(Neuron *) (current_n.value);
-                }
-            }
-        else
-            for (unsigned long k = 1; k <= list_neuron->length; k++) {
-                fprintf(file, "Value :\n%.30f\n", n.value);
-                fprintf(file, "Bias :\n%.30f\n", n.bias);
-                // fprintf(file, "Links :\n");
+                current_n = current_n->next;
 
-                if (current_n.next) {
-                    current_n = *(Node *) (current_n.next);
-                    n = *(Neuron *) (current_n.value);
+            }
+        else {
+            for (unsigned long k = 1; k <= list_neuron->length; k++) {
+                fprintf(file, "Value :\n%.30f\n", n->value);
+                fprintf(file, "Bias :\n%.30f\n", n->bias);
+
+                if (current_n->next) {
+                    current_n = (current_n->next);
+                    n = (Neuron *) (current_n->value);
                 }
                 fprintf(file, "\n");
             }
-        if (neurons.next) {
-            neurons = *(Node *) neurons.next;
-            list_neuron = (List) (neurons.value);
         }
+        neurons = neurons->next;
+
 
     }
     fprintf(file, "===============Credit===============\n\n");
@@ -384,11 +357,14 @@ double *set_new_link(FILE *file) {
 Neuron *set_new_neuron(size_t nb_neurons_per_layer[], size_t index, FILE *file) {
     Neuron *n = malloc(sizeof(Neuron));
     fscanf(file, "Value :\n%lf\nBias :\n%lf\n", &n->value, &n->bias);
-    n->links = create_list();
+    double *link = malloc(sizeof(double) * nb_neurons_per_layer[index - 2]);
+    n->links = link;
+
     if (index != 1) {
+        n->nb_link=nb_neurons_per_layer[index - 2];
         fscanf(file, "Links :\n");
         for (size_t i = 0; i < nb_neurons_per_layer[index - 2]; i++) {
-            n->links = push_back_list(n->links, (double *) set_new_link(file), LinkType);
+            n->links[i] = get_link();
         }
     }
     fscanf(file, "\n");

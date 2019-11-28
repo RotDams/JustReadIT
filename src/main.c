@@ -88,25 +88,27 @@ int main() {//int argc, char *argv[]) {
 //    load_neural_network(&s);
 //    print_info(&s);
 
-    size_t nb_layer = 4;
-    size_t nb_input = 110;
-    size_t nb_output = 26;
+    size_t nb_layer = 3;
+    size_t nb_input = 3;
+    size_t nb_output = 3;
     size_t hidden = (nb_input*nb_input) / (3*nb_input*nb_output) +1 ;
-    size_t nb_neurons_per_layer[] = {nb_input,30,30 , nb_output};
+    size_t nb_neurons_per_layer[] = {nb_input,10 , nb_output};
     NeuralNetwork n;
-    init(&n, nb_layer, nb_neurons_per_layer);
+    //init(&n, nb_layer, nb_neurons_per_layer);
+
+    //print_info(&n);
     //  print_info(&n);
 //
 //    print_info(&n);
 //    run(&n,k,10);
 
-    double entry[110];
-    double expected[26];
+    double entry[3];
+    double expected[3];
 
-    for (int j = 0; j <110 ; j++) {
+    for (int j = 0; j <3 ; j++) {
         entry[j]=0;
     }
-    for (int j = 0; j <26 ; j++) {
+    for (int j = 0; j <3 ; j++) {
         expected[j]=0;
     }
 
@@ -131,8 +133,9 @@ int main() {//int argc, char *argv[]) {
 //    ne = (Neuron*) l->first->value;
 //    *(double*)ne->links->first->value = 1;
 //    *(double*)ne->links->first->next->value = -3;
-    printf("\n=====================================\n\n");
-    for (int i = 0; i < 1000000; i++) {
+//    printf("\n=====================================\n\n");
+    load_neural_network(&n);
+    for (int i = 0; i < 10000; i++) {
         entry[0] = random() %2;
         entry[1] = random() %2;
         printf("\n\n\n\n\n\n");
@@ -146,8 +149,8 @@ int main() {//int argc, char *argv[]) {
         printf("\n");
 
     }
-    print_info(&n);
-
-    return 0;
+    save_neural_network(&n);
+//
+//    return 0;
 
 }

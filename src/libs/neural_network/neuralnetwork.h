@@ -13,7 +13,8 @@ typedef struct Neuron {
     double value;
     double bias;
     double error;
-    List links;
+    double* links;
+    size_t nb_link;
 } Neuron;
 
 /* Layers
