@@ -11,17 +11,22 @@ GtkWidget *result_window;
 // The run btn
 GtkButton *btn_run;
 
-GtkButton *btn_credits;
 GtkBuilder *builder;
 GtkFileChooser *fileChooserButton;
 GtkImage *img_selected;
 GtkTextView *textView;
 
-GtkButton *btn_result_cancel;
-GtkButton *btn_result_save;
+GtkButton *result_btn_cancel;
+GtkButton *result_btn_save;
+
+// The spinner on the home screen
+GtkSpinner *home_spinner;
+
+GtkToggleButton *home_show_steps_check_btn;
 
 void btn_run_clicked() {
     // Get the path from the btn
+    /*
     char *path = gtk_file_chooser_get_filename(fileChooserButton);
 
     // Show Loader
@@ -37,48 +42,93 @@ void btn_run_clicked() {
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(textView);
     gtk_text_buffer_set_text(buffer, content, -1);
     gtk_text_view_set_buffer(textView, buffer);
+    */
 
+
+    //char *path = gtk_file_chooser_get_filename(fileChooserButton);
+    //char *content = build_text(path);
+    //printf("%s", content);
+
+    // Show the spinner to explain that the process has started
+    gtk_spinner_start(home_spinner);
+
+    // Set the button to not clickable, to be sure that nobody will click on it
+    gtk_widget_set_sensitive(GTK_WIDGET(btn_run), FALSE);
+
+    // TODO CHECK THIS FUNCTION RETURN
+    if (gtk_toggle_button_get_active(home_show_steps_check_btn) == 1)
+        printf("test");
 
 }
 
-void btn_credits_clicked() {
-    printf("btn_credits_clicked, we must show credits.\n\n");
-}
 
-void btn_result_cancel_clicked() {
-    gtk_widget_hide(result_window);
+
+
+
+
+
+
+
+void init_interface(int argc, char *argv[]) {
+    // Init gtk
+    gtk_init(&argc, &argv);
+
+    // Get the builder
+    builder = gtk_builder_new_from_file("src/libs/interface/interface.glade");
+
+    // get the window
+    main_window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
+
+    result_window = GTK_WIDGET(gtk_builder_get_object(builder, "result_window"));
+
+    // Get the  buttons
+    btn_run = GTK_BUTTON(gtk_builder_get_object(builder, "btn_run"));
+    result_btn_cancel = GTK_BUTTON(gtk_builder_get_object(builder, "result_btn_cancel"));
+    result_btn_save = GTK_BUTTON(gtk_builder_get_object(builder, "result_btn_save"));
+    gtk_widget_set_sensitive(GTK_WIDGET(btn_run), FALSE);
+    textView = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "text_view"));
+    // Get the file choose
+    fileChooserButton = GTK_FILE_CHOOSER(gtk_builder_get_object(builder, "file_chooser"));
+    img_selected = GTK_IMAGE(gtk_builder_get_object(builder, "img_selected"));
+
+    home_spinner = GTK_SPINNER(gtk_builder_get_object(builder, "home_spinner"));
+    home_show_steps_check_btn = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "home_show_steps_check_btn"));
+
+    // Connects windows and buttons
+    g_signal_connect(main_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(btn_run, "clicked", G_CALLBACK(btn_run_clicked), NULL);
+    g_signal_connect(fileChooserButton, "selection_changed", G_CALLBACK(home_selection_changed), NULL);
+    g_signal_connect(result_btn_cancel, "clicked", G_CALLBACK(result_btn_cancel_clicked), NULL);
+    g_signal_connect(result_btn_save, "clicked", G_CALLBACK(result_btn_save_clicked), NULL);
+
+    gtk_builder_connect_signals(builder, NULL);
     gtk_widget_show(main_window);
+
+
+    gtk_main();
 }
 
-void btn_result_save_clicked() {
-    char *filename = calloc(10000, sizeof(char));
-    int state = gtk_get_file_to_save(&filename);
-
-    if (state == 1) {
-        GtkTextIter start, end;
-
-        GtkTextBuffer *buffer = gtk_text_view_get_buffer(textView);
-
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-        gchar *content = gtk_text_buffer_get_text(buffer, &start, &end, 0);
-        FILE *ptr = fopen(filename, "w");
-        fprintf(ptr, "%s", content);
-        fclose(ptr);
-        gtk_widget_hide(result_window);
-        gtk_widget_show(main_window);
-    }
+// Ok
+void home_selection_changed() {
+    // Get the new image from the file chooser picker
+    char *path = gtk_file_chooser_get_filename(fileChooserButton);
 
-}
+    // Create an error variable to pass to the function witch get the image
+    GError *gerror;
 
-void selection_changed() {
-    printf("selection_changed\n\n");
-    gtk_image_set_from_file(img_selected, gtk_file_chooser_get_filename(fileChooserButton));
+    // Create a pixpuf from a file. It will be 480x360 at max, and KEEP THE RATIO
+    GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file_at_size(path, 480, 360, &gerror);
+
+    // Set the image on the screen
+    gtk_image_set_from_pixbuf(img_selected, pixbuf);
+
+    // We have at least 1 file. So we can and must active the button
     gtk_widget_set_sensitive(GTK_WIDGET(btn_run), TRUE);
 }
 
+// Ok
 int gtk_get_file_to_save(char **filename) {
     GtkWidget *dialog;
     GtkFileChooser *chooser;
@@ -106,40 +156,32 @@ int gtk_get_file_to_save(char **filename) {
     return 0;
 }
 
-void init_interface(int argc, char *argv[]) {
-    // Init gtk
-    gtk_init(&argc, &argv);
-
-    // Get the builder
-    builder = gtk_builder_new_from_file("src/libs/interface/interface.glade");
-
-    // get the window
-    main_window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
-    result_window = GTK_WIDGET(gtk_builder_get_object(builder, "result_window"));
-
-    // Get the  buttons
-    btn_run = GTK_BUTTON(gtk_builder_get_object(builder, "btn_run"));
-    btn_credits = GTK_BUTTON(gtk_builder_get_object(builder, "btn_credits"));
-    btn_result_cancel = GTK_BUTTON(gtk_builder_get_object(builder, "btn_result_cancel"));
-    btn_result_save = GTK_BUTTON(gtk_builder_get_object(builder, "btn_result_save"));
-    gtk_widget_set_sensitive(GTK_WIDGET(btn_run), FALSE);
-    textView = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "text_view"));
-    // Get the file choose
-    fileChooserButton = GTK_FILE_CHOOSER(gtk_builder_get_object(builder, "file_chooser"));
-    img_selected = GTK_IMAGE(gtk_builder_get_object(builder, "img_selected"));
-
-
-    // Connects windows and buttons
-    g_signal_connect(main_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(btn_run, "clicked", G_CALLBACK(btn_run_clicked), NULL);
-    g_signal_connect(btn_credits, "clicked", G_CALLBACK(btn_credits_clicked), NULL);
-    g_signal_connect(fileChooserButton, "selection_changed", G_CALLBACK(selection_changed), NULL);
-    g_signal_connect(btn_result_cancel, "clicked", G_CALLBACK(btn_result_cancel_clicked), NULL);
-    g_signal_connect(btn_result_save, "clicked", G_CALLBACK(btn_result_save_clicked), NULL);
-
-    gtk_builder_connect_signals(builder, NULL);
+// Ok
+void result_btn_cancel_clicked() {
+    gtk_widget_hide(result_window);
     gtk_widget_show(main_window);
+}
+
+// Ok
+void result_btn_save_clicked() {
+    char *filename = calloc(10000, sizeof(char));
+    int state = gtk_get_file_to_save(&filename);
+
+    if (state == 1) {
+        GtkTextIter start, end;
+
+        GtkTextBuffer *buffer = gtk_text_view_get_buffer(textView);
+
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    gtk_main();
+        gchar *content = gtk_text_buffer_get_text(buffer, &start, &end, 0);
+        FILE *ptr = fopen(filename, "w");
+        fprintf(ptr, "%s", content);
+        fclose(ptr);
+        gtk_widget_hide(result_window);
+        gtk_widget_show(main_window);
+    }
+
 }
