@@ -425,7 +425,7 @@ void load_neural_network(NeuralNetwork *net) {
     int trash;
 
     // Declaration of variables
-    for (size_t i = 1; i <= nb_layer; i++) {
+    for (size_t i = 0; i < nb_layer; i++) {
         fscanf(file, "= Layer %d =\n\n", &trash);
         net->layers = push_back_list(net->layers, set_new_neurons_list(nb_neurons_per_layer, i, file), LayerType);
     }
