@@ -3,7 +3,6 @@
 #include "index.h"
 #include "neuralnetwork.h"
 #include <SDL/SDL.h>
-#include <SDL_Pango.h>
 #include "../image_segmentation/index.h"
 #include "math.h"
 
@@ -55,21 +54,21 @@ void training(char ** path,size_t len , size_t nb_layer,size_t hidden) {
 
 
 
-    double coef = 0.15;
+    double coef = 0.1;
 
     int k = 0;
     size_t result = 0;
     for (size_t i = 1; i < 1000000; i++) {
 
-        for (size_t j = 0; j <= len; j++) {
+        for (size_t j = 0; j <= 6; j++) {
 
 
             k = random() % len;
 
             expected[k]=1;
 
-            result = learn(n,models[k],expected,coef,j==len);
-            if (j==len)
+            result = learn(n,models[k],expected,coef,j==6);
+            if (j==6)
                 printf("Expected : %c\n",(char)('A'+k));
             expected[k]=0;
         }

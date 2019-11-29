@@ -23,7 +23,7 @@ double get_link() {
 
 Neuron *get_neuron(size_t nb_neurons_per_layer[], size_t index) {
     Neuron *n = malloc(sizeof(Neuron));
-    n->bias = (((double) (random() % 100)) / 10) - 5;
+    n->bias = 0;
     n->value = (((double) (random() % 100)) / 10) - 5;
     n->error = 0;
     double *link = malloc(sizeof(double) * nb_neurons_per_layer[index - 2]);
@@ -159,7 +159,7 @@ void propagation(NeuralNetwork *network, double entry[]) {
             for (size_t i_layer2 = 0; i_layer2 < layer_2->length; i_layer2++) {
                 Neuron *neuron_2 = (Neuron *) current_neuron_2->value;
 
-                neuron_2->value /= total_soft + neuron_2->bias;
+                neuron_2->value = (neuron_2->value+ neuron_2->bias) /total_soft ;
 
                 current_neuron_2 = current_neuron_2->next;
             }
@@ -187,7 +187,7 @@ void backpropagation(NeuralNetwork *network, double coef) {
                 Neuron *neuron_1 = (Neuron *) current_neuron_1->value;
 
                 double tot = neuron_2->links[i_link_2] + coef * neuron_1->value * neuron_2->error;
-                neuron_2->bias = neuron_2->value * neuron_2->error;
+                neuron_2->bias += neuron_2->value * neuron_2->error;
 
                 neuron_2->links[i_link_2] = tot;
                 current_neuron_1 = current_neuron_1->next;

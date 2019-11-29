@@ -6,7 +6,7 @@ HEADER      = $(SOURCE:.c=.h)
 OUT         = JustReadIT.exe
 CC          = gcc
 FLAGS       = -O0
-CFLAGS      = -Wall -Wextra -Werror -g
+CFLAGS      = -g # -Wall -Wextra -Werror -g
 SDL_FLAGS   = `sdl-config --cflags --libs` -lSDL_image
 
 CPPFLAGS= `pkg-config --cflags sdl` -MMD
