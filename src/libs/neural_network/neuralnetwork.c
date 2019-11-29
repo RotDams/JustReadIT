@@ -241,7 +241,7 @@ void update_error(NeuralNetwork *network, double expected[]) {
                 current_neuron_2 = current_neuron_2->next;
             }
 
-            neuron_1->error += derivate_neuron * error_propagation;
+            neuron_1->error += derivate_neuron * error_propagation * neuron_1->bias;
 
             current_neuron_1 = current_neuron_1->next;
         }
