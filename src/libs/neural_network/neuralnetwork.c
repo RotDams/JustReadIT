@@ -333,7 +333,7 @@ void save_neural_network(NeuralNetwork *net) {
                 fprintf(file, "Bias :\n%.30f\n", n->bias);
                 fprintf(file, "Links :\n");
 
-                for (unsigned long j = 1; j <= n->nb_link; j++) {
+                for (unsigned long j = 0; j < n->nb_link; j++) {
 
                     fprintf(file, "%.30f / ", n->links[j]);
                 }
@@ -425,7 +425,7 @@ void load_neural_network(NeuralNetwork *net) {
     int trash;
 
     // Declaration of variables
-    for (size_t i = 0; i < nb_layer; i++) {
+    for (size_t i = 1; i <= nb_layer; i++) {
         fscanf(file, "= Layer %d =\n\n", &trash);
         net->layers = push_back_list(net->layers, set_new_neurons_list(nb_neurons_per_layer, i, file), LayerType);
     }
