@@ -9,13 +9,34 @@
 int main() {//int argc, char *argv[]) {
 
 
-    int nb_output = 5;
+    int nb_output = 26;
     char* paths[] = {
-            "src/A.bmp",
-            "src/B.bmp",
-            "src/C.bmp",
-            "src/D.bmp",
-            "src/E.bmp"
+            "src/assets/training/A.bmp",
+            "src/assets/training/B.bmp",
+            "src/assets/training/C.bmp",
+            "src/assets/training/D.bmp",
+            "src/assets/training/E.bmp",
+            "src/assets/training/F.bmp",
+            "src/assets/training/G.bmp",
+            "src/assets/training/H.bmp",
+            "src/assets/training/I.bmp",
+            "src/assets/training/J.bmp",
+            "src/assets/training/K.bmp",
+            "src/assets/training/L.bmp",
+            "src/assets/training/M.bmp",
+            "src/assets/training/N.bmp",
+            "src/assets/training/O.bmp",
+            "src/assets/training/P.bmp",
+            "src/assets/training/Q.bmp",
+            "src/assets/training/R.bmp",
+            "src/assets/training/S.bmp",
+            "src/assets/training/T.bmp",
+            "src/assets/training/U.bmp",
+            "src/assets/training/V.bmp",
+            "src/assets/training/W.bmp",
+            "src/assets/training/X.bmp",
+            "src/assets/training/Y.bmp",
+            "src/assets/training/Z.bmp",
     };
 
     training(paths,nb_output,4,100);

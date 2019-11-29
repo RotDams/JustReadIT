@@ -3,21 +3,28 @@
 #include "index.h"
 #include "neuralnetwork.h"
 #include <SDL/SDL.h>
+#include <SDL_Pango.h>
 #include "../image_segmentation/index.h"
+#include "math.h"
 
 double *get_matrix(SDL_Surface *image) {
-    int len = image->w * image->h;
-    double *array = malloc(sizeof(double) * len);
+    // Create the new array
+    int length =32;
+    double *array = calloc(32 * 32, sizeof(double));
 
-    Uint8 r, g, b;
-    for (int i = 0; i < image->h; i++) {
-        for (int j = 0; j < image->w; j++) {
-            Uint32 pixel = (get_pixel(image, i, j));
-            SDL_GetRGB(pixel, image->format, &r, &b, &g);
-            if (r < 15 && b < 15 && g < 15)
-                array[i * image->w + j] = 1;
-            else
-                array[i * image->w + j] = 0;
+    Uint8 r,g,b;
+    for (int i = 0; i < length; i++) {
+        for (int j = 0; j < length; j++) {
+            if (i >= image->h || j >= image->h) {
+                array[i*length + j] = 0;
+            } else {
+                Uint32 pixel = (get_pixel(image, i,j));
+                SDL_GetRGB(pixel, image->format, &r,&b,&g);
+                if (r < 15 && g < 15 && b < 15)
+                    array[i*length + j] = 1;
+                else
+                    array[i*length + j] = 0;
+            }
         }
     }
     return array;
@@ -25,9 +32,9 @@ double *get_matrix(SDL_Surface *image) {
 
 void training(char ** path,size_t len , size_t nb_layer,size_t hidden) {
 
-    SDL_Surface *l =SDL_LoadBMP(path[0]);
+    printf("%zu %zu",nb_layer,hidden);
     double ** models= malloc(sizeof(char*)*len);
-    for (int m = 0; m < len; m++) {
+    for (size_t m = 0; m < len; m++) {
         SDL_Surface* image = SDL_LoadBMP(path[m]);
         models[m] = get_matrix(image);
     }
@@ -38,15 +45,17 @@ void training(char ** path,size_t len , size_t nb_layer,size_t hidden) {
     NeuralNetwork* n = &network;
 
     load_neural_network(n);
+//
+//    size_t nb_input = 32*32;
+//    size_t nb_output = len;
+//    size_t nb_neurons_per_layer[] = {nb_input, hidden, hidden, nb_output};
+//
+//    init(n, nb_layer, nb_neurons_per_layer);
+//    save_neural_network(n);
 
-    size_t nb_input = l->h * l->w;
-    size_t nb_output = len;
-    size_t nb_neurons_per_layer[] = {nb_input, hidden, hidden, nb_output};
-    //init(n, nb_layer, nb_neurons_per_layer);
 
 
-
-    double coef = 0.1;
+    double coef = 0.15;
 
     int k = 0;
     size_t result = 0;
