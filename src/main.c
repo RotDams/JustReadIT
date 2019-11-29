@@ -118,7 +118,8 @@ int main() {//int argc, char *argv[]) {
     size_t hidden1 = 100;
     size_t nb_neurons_per_layer[] = {nb_input, hidden1, hidden1, nb_output};
     NeuralNetwork n;
-    //init(&n, nb_layer, nb_neurons_per_layer);
+    init(&n, nb_layer, nb_neurons_per_layer);
+   // save_neural_network(&n);
     load_neural_network(&n);
 
     double *entry_A = get_matrix(l_A);
