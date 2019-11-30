@@ -38,8 +38,12 @@ int main() {//int argc, char *argv[]) {
             "src/assets/training/Y.bmp",
             "src/assets/training/Z.bmp",
     };
+    char result_elements[] = {
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+            'V', 'W', 'X', 'Y', 'Z'
+    };
 
-    training(paths,nb_output,4,100);
+    training(paths,nb_output,4,100,result_elements,1);
     /*if (argc == 1) {
         printf("Error: Please specify the path of the image\nEx: ./output.exe -p \"my_image.bmp\"\n");
         return EXIT_FAILURE;
@@ -120,5 +124,5 @@ int main() {//int argc, char *argv[]) {
 //    NeuralNetwork s;
 //    load_neural_network(&s);
 //    print_info(&s);
-
+    return 0;
 }
