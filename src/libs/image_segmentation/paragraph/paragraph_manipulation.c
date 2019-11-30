@@ -66,6 +66,7 @@ List get_paragraphs_and_lines(SDL_Surface *image, int paragraphJumpSpace) {
 
 				// Here we can insert line on the list ?
 				SDL_Surface *new_img = cut_image(image, 0, saved_index, image->w, index - saved_index - 1);
+				show_image(new_img, 0);
 				List l = get_words_and_letters(new_img);
 				line = push_back_list(line, (void *) l, LineType);
 

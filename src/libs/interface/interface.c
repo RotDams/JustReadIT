@@ -24,73 +24,38 @@ GtkSpinner *home_spinner;
 
 GtkToggleButton *home_show_steps_check_btn;
 
-void btn_run_clicked() {
-    // Get the path from the btn
-    /*
-    char *path = gtk_file_chooser_get_filename(fileChooserButton);
-
-    // Show Loader
-    // TODO SHOW LOADER
-
-    // Hide loader
-    // TODO HIDE LOADER
-
-    char *content = build_text(path);
-    printf("%s", content);
-    gtk_widget_hide(main_window);
-    gtk_widget_show(result_window);
-    GtkTextBuffer *buffer = gtk_text_view_get_buffer(textView);
-    gtk_text_buffer_set_text(buffer, content, -1);
-    gtk_text_view_set_buffer(textView, buffer);
-    */
-
-
-    //char *path = gtk_file_chooser_get_filename(fileChooserButton);
-    //char *content = build_text(path);
-    //printf("%s", content);
-
-    // Show the spinner to explain that the process has started
-    gtk_spinner_start(home_spinner);
-
-    // Set the button to not clickable, to be sure that nobody will click on it
-    gtk_widget_set_sensitive(GTK_WIDGET(btn_run), FALSE);
-
-    // TODO CHECK THIS FUNCTION RETURN
-    if (gtk_toggle_button_get_active(home_show_steps_check_btn) == 1)
-        printf("test");
-
-}
-
-
-
-
-
-
-
+PresentationState dev_mode = {
+        .size = 6,
+        .is_active = 0,
+        .data = {0, 0, 0, 0, 0, 0}
+};
 
 
 void init_interface(int argc, char *argv[]) {
     // Init gtk
     gtk_init(&argc, &argv);
 
-    // Get the builder
+    // Get the builder tool from the file
     builder = gtk_builder_new_from_file("src/libs/interface/interface.glade");
 
-    // get the window
+    // Get the 2 window (main window and result)
     main_window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
-
     result_window = GTK_WIDGET(gtk_builder_get_object(builder, "result_window"));
 
-    // Get the  buttons
+    // Get the  buttons of the home window
     btn_run = GTK_BUTTON(gtk_builder_get_object(builder, "btn_run"));
+
+    // Get the 2 buttons of the result page
     result_btn_cancel = GTK_BUTTON(gtk_builder_get_object(builder, "result_btn_cancel"));
     result_btn_save = GTK_BUTTON(gtk_builder_get_object(builder, "result_btn_save"));
+
+    // Disable the button in main window
     gtk_widget_set_sensitive(GTK_WIDGET(btn_run), FALSE);
+
+
     textView = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "text_view"));
-    // Get the file choose
     fileChooserButton = GTK_FILE_CHOOSER(gtk_builder_get_object(builder, "file_chooser"));
     img_selected = GTK_IMAGE(gtk_builder_get_object(builder, "img_selected"));
-
     home_spinner = GTK_SPINNER(gtk_builder_get_object(builder, "home_spinner"));
     home_show_steps_check_btn = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "home_show_steps_check_btn"));
 
@@ -104,10 +69,45 @@ void init_interface(int argc, char *argv[]) {
     gtk_builder_connect_signals(builder, NULL);
     gtk_widget_show(main_window);
 
-
     gtk_main();
 }
 
+// Ok
+void btn_run_clicked() {
+    // Show the spinner to explain that the process has started
+    gtk_spinner_start(home_spinner);
+
+    // Set the button to not clickable, to be sure that nobody will click on it
+    gtk_widget_set_sensitive(GTK_WIDGET(btn_run), FALSE);
+
+    // If the toggle button is actived
+    if (gtk_toggle_button_get_active(home_show_steps_check_btn) == TRUE) {
+        dev_mode.is_active = 1;
+        for (int i = 0; i < dev_mode.size; i++) {
+            dev_mode.data[i] = 1;
+        }
+    }
+
+    // Get the file to do the segmentation
+    char *path = gtk_file_chooser_get_filename(fileChooserButton);
+
+    // Get the content, by build the list
+    char *content = build_text(path);
+
+    // Set the content of the text of the result window
+    GtkTextBuffer *buffer = gtk_text_view_get_buffer(textView);
+    gtk_text_buffer_set_text(buffer, content, -1);
+    gtk_text_view_set_buffer(textView, buffer);
+
+    // Turn off the spinner
+    gtk_spinner_stop(home_spinner);
+
+    // Show the result window
+    gtk_widget_show(GTK_WIDGET(result_window));
+
+    // Hide the first window
+    gtk_widget_hide(GTK_WIDGET(main_window));
+}
 
 
 // Ok
@@ -183,5 +183,4 @@ void result_btn_save_clicked() {
         gtk_widget_hide(result_window);
         gtk_widget_show(main_window);
     }
-
 }

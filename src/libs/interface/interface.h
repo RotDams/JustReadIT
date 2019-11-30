@@ -39,6 +39,13 @@ void result_btn_cancel_clicked();
 void result_btn_save_clicked();
 
 
+/* btn_run_clicked
+ * Description:
+      - Function called when an user wants to start the process
+ * * */
+void btn_run_clicked();
+
+
 
 
 #endif

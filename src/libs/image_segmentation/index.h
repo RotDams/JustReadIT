@@ -8,6 +8,7 @@
 // Type definition
 typedef struct PresentationState {
     int size;
+    int is_active;
     int data[];
 } PresentationState;
 
