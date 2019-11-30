@@ -37,9 +37,12 @@ void training(char **path, size_t len, size_t nb_layer, size_t hidden) {
         SDL_Surface *image = SDL_LoadBMP(path[m]);
         models[m] = get_matrix(image);
     }
-
     double *expected = calloc(len, sizeof(double));
 
+    char result_elements[] = {
+            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U',
+            'V','W','X','Y','Z'
+                      };
     NeuralNetwork network;
     NeuralNetwork *n = &network;
 
@@ -68,20 +71,21 @@ void training(char **path, size_t len, size_t nb_layer, size_t hidden) {
      size_t result = 0;
     for (size_t i = 1; i < 100000; i++) {
 
-        for (size_t j = 0; j <= 6; j++) {
+        for (size_t j = 0; j <= 10; j++) {
 
             k = random() % len;
 
             expected[k] = (double) 1;
 
-            result = learn(n, models[k], expected, coef, j == 6);
-            if (j == 6)
-                printf("(%zu) Expected : %c  ", i, (char) ('A' + k));
+            result = learn(n, models[k], expected, coef, j == 10);
+            if (j == 10)
+                printf("(%zu) Expected : %c  ",i,result_elements[k]);
+
             expected[k] = (double) 0;
         }
         backpropagation(n, coef);
 
-        printf("result : %c \n", 'A' + (char) result);
+        printf("result : %c \n", result_elements[result]);
         if (i % 100 == 0) {
             save_neural_network(n);
         }

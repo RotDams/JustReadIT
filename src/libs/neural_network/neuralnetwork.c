@@ -256,9 +256,6 @@ size_t learn(NeuralNetwork *network, double entry[], double expected[], double c
 
     propagation(network, entry);
     update_error(network, expected);
-    //backpropagation(network, coef);
-    // backpropagation1(network, expected);
-    //  backpropagation2(network, expected);
 
     double max_proba = 0;
     Node *output_neurons = ((List) (network->layers->last->value))->first;
@@ -266,7 +263,6 @@ size_t learn(NeuralNetwork *network, double entry[], double expected[], double c
 
     size_t i_index = 0;
     for (unsigned long i = 0; i < ((List) (network->layers->last->value))->length; i++) {
-        //print_info(network);
         n = (Neuron *) (output_neurons->value);
         //if (bool) printf("Output : %.30lf\n", n->value);
         if (max_proba < n->value) {
@@ -275,7 +271,6 @@ size_t learn(NeuralNetwork *network, double entry[], double expected[], double c
         }
         output_neurons = output_neurons->next;
     }
-    //printf("Output : %.30lf\n", max_proba);
     return i_index;
 
 
@@ -289,16 +284,13 @@ size_t run(NeuralNetwork *network, double entry[]) {
 
     size_t i_index = 0;
     for (unsigned long i = 0; i < ((List) (network->layers->last->value))->length; i++) {
-        //print_info(network);
         n = (Neuron *) (output_neurons->value);
-       //  printf("Output : %.30lf\n", n->value);
         if (max_proba < n->value) {
             max_proba = n->value;
             i_index = i;
         }
         output_neurons = output_neurons->next;
     }
-    //printf("Output : %.30lf\n", max_proba);
     return i_index;
 
 }
@@ -313,7 +305,6 @@ void save_neural_network(NeuralNetwork *net) {
     Neuron *n;
     FILE *file = fopen("src/libs/neural_network/save_network.txt", "w");
     fprintf(file, "layers: %lu\n", net->layers->length);
-    // List current_layers = net->layers;
 
     Node current_neurons = *(Node *) (layers->first);
     fprintf(file, "neurons:");
