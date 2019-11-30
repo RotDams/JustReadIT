@@ -26,10 +26,10 @@ Neuron *get_neuron(size_t nb_neurons_per_layer[], size_t index) {
     n->bias = 0;
     n->value = (((double) (random() % 100)) / 10) - 5;
     n->error = 0;
-    double *link = malloc(sizeof(double) * nb_neurons_per_layer[index - 2]);
-    n->links = link;
     n->nb_link = 0;
     if (index != 1) {
+        double *link = malloc(sizeof(double) * nb_neurons_per_layer[index - 2]);
+        n->links = link;
         n->nb_link = nb_neurons_per_layer[index - 2];
         for (size_t i = 0; i < nb_neurons_per_layer[index - 2]; i++) {
             n->links[i] = get_link();
@@ -81,11 +81,11 @@ void print_info(NeuralNetwork *net) {
         if (n->links)
             for (unsigned long k = 1; k <= list_neuron->length; k++) {
                 n = (Neuron *) (current_n->value);
-                printf("Current Neuron: %lu : value = %lf ( with %lu links)\n ----links:------\n", k, n->value,
-                       n->nb_link);
+                printf("Current Neuron: %lu : value = %.10lf ( with %lu links)\n bias : %.10lf\n ----links:------\n", k, n->value,
+                       n->nb_link,n->bias);
 
                 for (unsigned long j = 0; j < n->nb_link; j++) {
-                    printf("  (%lu) = %.30f   ", j, n->links[j]);
+       //             printf("  (%lu) = %.30f   ", j, n->links[j]);
                 }
                 printf("\n");
                 current_n = current_n->next;
@@ -268,7 +268,7 @@ size_t learn(NeuralNetwork *network, double entry[], double expected[], double c
     for (unsigned long i = 0; i < ((List) (network->layers->last->value))->length; i++) {
         //print_info(network);
         n = (Neuron *) (output_neurons->value);
-        if (bool) printf("Output : %.30lf\n", n->value);
+        //if (bool) printf("Output : %.30lf\n", n->value);
         if (max_proba < n->value) {
             max_proba = n->value;
             i_index = i;
@@ -289,15 +289,18 @@ size_t run(NeuralNetwork *network, double entry[]) {
 
     size_t i_index = 0;
     for (unsigned long i = 0; i < ((List) (network->layers->last->value))->length; i++) {
-
+        //print_info(network);
         n = (Neuron *) (output_neurons->value);
+       //  printf("Output : %.30lf\n", n->value);
         if (max_proba < n->value) {
             max_proba = n->value;
             i_index = i;
         }
         output_neurons = output_neurons->next;
     }
+    //printf("Output : %.30lf\n", max_proba);
     return i_index;
+
 }
 
 // Save network into save_network.txt
@@ -329,13 +332,14 @@ void save_neural_network(NeuralNetwork *net) {
                 n = (Neuron *) (current_n->value);
 
 
-                fprintf(file, "Value :\n%.30f\n", n->value);
-                fprintf(file, "Bias :\n%.30f\n", n->bias);
+                fprintf(file, "Value :\n%.100f\n", n->value);
+                fprintf(file, "Bias :\n%.100f\n", n->bias);
+                fprintf(file, "Error :\n%.100f\n", n->error);
                 fprintf(file, "Links :\n");
 
                 for (unsigned long j = 0; j < n->nb_link; j++) {
 
-                    fprintf(file, "%.30f / ", n->links[j]);
+                    fprintf(file, "%.100f / ", n->links[j]);
                 }
                 fprintf(file, "\n\n");
                 current_n = current_n->next;
@@ -343,13 +347,11 @@ void save_neural_network(NeuralNetwork *net) {
             }
         else {
             for (unsigned long k = 1; k <= list_neuron->length; k++) {
-                fprintf(file, "Value :\n%.30f\n", n->value);
-                fprintf(file, "Bias :\n%.30f\n", n->bias);
-
-                if (current_n->next) {
+                n = (Neuron *) (current_n->value);
+                fprintf(file, "Value :\n%.100f\n", n->value);
+                fprintf(file, "Bias :\n%.100f\n", n->bias);
+                fprintf(file, "Error :\n%.100f\n", n->error);
                     current_n = (current_n->next);
-                    n = (Neuron *) (current_n->value);
-                }
                 fprintf(file, "\n");
             }
         }
@@ -365,23 +367,23 @@ void save_neural_network(NeuralNetwork *net) {
 }
 
 
-double *set_new_link(FILE *file) {
-    double *link = malloc(sizeof(double));
-    fscanf(file, "%lf / ", link);
+double set_new_link(FILE *file) {
+    double link;
+    fscanf(file, "%lf / ", &link);
     return link;
 }
 
 Neuron *set_new_neuron(size_t nb_neurons_per_layer[], size_t index, FILE *file) {
     Neuron *n = malloc(sizeof(Neuron));
-    fscanf(file, "Value :\n%lf\nBias :\n%lf\n", &n->value, &n->bias);
-    double *link = malloc(sizeof(double) * nb_neurons_per_layer[index - 2]);
-    n->links = link;
+    fscanf(file, "Value :\n%lf\nBias :\n%lf\nError :\n%lf\n", &n->value, &n->bias,&n->error);
     n->nb_link = 0;
-    if (index != 1) {
+    if (index !=1) {
+        double *link = malloc(sizeof(double) * nb_neurons_per_layer[index - 2]);
+        n->links = link;
         n->nb_link = nb_neurons_per_layer[index - 2];
         fscanf(file, "Links :\n");
         for (size_t i = 0; i < nb_neurons_per_layer[index - 2]; i++) {
-            n->links[i] = get_link();
+            n->links[i] = set_new_link(file);
         }
     }
     fscanf(file, "\n");
