@@ -8,6 +8,7 @@
 // Type definition
 typedef struct PresentationState {
     int size;
+    int is_active;
     int data[];
 } PresentationState;
 
@@ -22,5 +23,15 @@ typedef struct PresentationState {
  *      - Do the image segmentation an return the list of paragraphs
  * */
 List image_segmentation(char *image_path);
+
+
+
+void build_word(List letters, char **content);
+
+void build_line(List words, char **content);
+
+void build_paragraph(List lines, char **content);
+
+char *build_text(char *path);
 
 #endif //JUSTREADIT_MAIN_H

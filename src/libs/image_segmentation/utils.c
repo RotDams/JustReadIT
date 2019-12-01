@@ -177,8 +177,11 @@ SDL_Surface *correct_image(SDL_Surface *image, int Seuil) {
 
 
 void show_image(SDL_Surface *image, int id) {
-    // TODO https://stackoverflow.com/questions/3741055/inputs-in-sdl-on-key-pressed
     extern PresentationState dev_mode;
+
+    if (dev_mode.is_active == 0) {
+        return;
+    }
 
     if ( id != -1 && (id >= dev_mode.size || !dev_mode.data[id])) {
         return;
@@ -187,14 +190,13 @@ void show_image(SDL_Surface *image, int id) {
             dev_mode.data[id] = 0;
     }
 
-
-
     SDL_Surface* screen_surface;
 
     screen_surface = display_image(image);
 
     wait_for_keypressed();
 
+    SDL_SetVideoMode(0,0,0,0);
     SDL_FreeSurface(screen_surface);
 
     if (id == 5) {
@@ -272,7 +274,6 @@ void img_to_array(SDL_Surface *image, int length) {
     }
 
     printf("%f\n", array[0]);
-    show_image(image, -1);
 }
 
 void put_in_black_and_white(SDL_Surface *image) {
