@@ -8,7 +8,7 @@
 
 // Activation function n°1
 double sigmoide(double value) {
-    return 1 / (1 + exp(-value));
+	return 1 / (1 + exp(-value));
 }
 
 // Return a random value between 5 and -5
@@ -50,6 +50,7 @@ List get_neurons_list(size_t nb_neurons_per_layer[], size_t index) {
 
 
 // Initialize the network from scratch
+
 void init(NeuralNetwork *net, size_t nb_layer, size_t nb_neurons_per_layer[]) {
 
     // Definition of the list of layers

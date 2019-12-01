@@ -6,6 +6,7 @@
 #include "../image_segmentation/index.h"
 #include "math.h"
 
+
 double *get_matrix(SDL_Surface *image) {
     // Create the new array
     int length = 32;
@@ -147,3 +148,4 @@ void training( size_t len, size_t nb_layer, size_t hidden,char* result_elements,
     }
     save_neural_network(n);
 }
+

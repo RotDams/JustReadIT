@@ -13,182 +13,183 @@
 #define KWHT  "\x1B[37m"
 
 List create_list(void) {
-    return NULL;
+	return NULL;
 }
 
 Bool is_empty(List list) {
-    if (list == NULL) {
-        return true;
-    }
+	if (list == NULL) {
+		return true;
+	}
 
-    if (list->length == 0) {
-        return true;
-    }
+	if (list->length == 0) {
+		return true;
+	}
 
-    return false;
+	return false;
 }
 
 unsigned long get_length(List list) {
-    if (is_empty(list)) {
-        return 0;
-    }
+	if (is_empty(list)) {
+		return 0;
+	}
 
-    return list->length;
+	return list->length;
 }
 
 Node *get_first_element(List list) {
-    if (is_empty(list)) {
-        exit(1);
-    }
+	if (is_empty(list)) {
+		exit(1);
+	}
 
-    return list->first;
+	return list->first;
 }
 
 Node *get_last_element(List list) {
-    if (is_empty(list)) {
-        exit(1);
-    }
+	if (is_empty(list)) {
+		exit(1);
+	}
 
-    return list->last;
+	return list->last;
 }
 
 List push_back_list(List list, void *x, ListElementType elementType) {
-    Node *element;
-    element = malloc(sizeof(*element));
+	Node *element;
+	element = malloc(sizeof(*element));
 
-    if (element == NULL) {
-        fprintf(stderr, "Error: dynamic allocation problem");
-        exit(EXIT_FAILURE);
-    }
+	if (element == NULL) {
+		fprintf(stderr, "Error: dynamic allocation problem");
+		exit(EXIT_FAILURE);
+	}
 
-    element->value = x;
-    element->previous = NULL;
-    element->next = NULL;
+	element->value = x;
+	element->previous = NULL;
+	element->next = NULL;
 
-    if (is_empty(list)) {
-        list = malloc(sizeof(*list));
+	if (is_empty(list)) {
+		list = malloc(sizeof(*list));
 
-        if (list == NULL) {
-            fprintf(stderr, "Error: dynamic allocation problem");
-            exit(EXIT_FAILURE);
-        }
+		if (list == NULL) {
+			fprintf(stderr, "Error: dynamic allocation problem");
+			exit(EXIT_FAILURE);
+		}
 
-        list->elementType = elementType;
-        list->length = 0;
-        list->first = element;
-        list->last = element;
+		list->elementType = elementType;
+		list->length = 0;
+		list->first = element;
+		list->last = element;
 
-    } else {
-        if (elementType != list->elementType) {
-            fprintf(stderr, "Error: the type is different");
-            exit(EXIT_FAILURE);
-        }
+	} else {
+		if (elementType != list->elementType) {
+			fprintf(stderr, "Error: the type is different");
+			exit(EXIT_FAILURE);
+		}
 
-        list->last->next = element;
-        element->previous = list->last;
-        list->last = element;
-    }
+		list->last->next = element;
+		element->previous = list->last;
+		list->last = element;
+	}
 
-    list->length += 1;
+	list->length += 1;
 
-    return list;
+	return list;
 }
 
 List push_front_list(List list, void *x, ListElementType elementType) {
-    Node *element;
-    element = malloc(sizeof(*element));
+	Node *element;
+	element = malloc(sizeof(*element));
 
-    if (element == NULL) {
-        fprintf(stderr, "Error: dynamic allocation problem");
-        exit(EXIT_FAILURE);
-    }
+	if (element == NULL) {
+		fprintf(stderr, "Error: dynamic allocation problem");
+		exit(EXIT_FAILURE);
+	}
 
-    element->value = x;
-    element->previous = NULL;
-    element->next = NULL;
+	element->value = x;
+	element->previous = NULL;
+	element->next = NULL;
 
-    if (is_empty(list)) {
-        list = malloc(sizeof(*list));
+	if (is_empty(list)) {
+		list = malloc(sizeof(*list));
 
-        if (list == NULL) {
-            fprintf(stderr, "Error: dynamic allocation problem");
-            exit(EXIT_FAILURE);
-        }
+		if (list == NULL) {
+			fprintf(stderr, "Error: dynamic allocation problem");
+			exit(EXIT_FAILURE);
+		}
 
-        list->elementType = elementType;
-        list->length = 0;
-        list->first = element;
-        list->last = element;
+		list->elementType = elementType;
+		list->length = 0;
+		list->first = element;
+		list->last = element;
 
-    } else {
-        if (elementType != list->elementType) {
-            fprintf(stderr, "Error: the type is different");
-            exit(EXIT_FAILURE);
-        }
+	} else {
+		if (elementType != list->elementType) {
+			fprintf(stderr, "Error: the type is different");
+			exit(EXIT_FAILURE);
+		}
 
-        list->first->previous = element;
-        element->next = list->first;
-        list->first = element;
-    }
+		list->first->previous = element;
+		element->next = list->first;
+		list->first = element;
+	}
 
-    list->length += 1;
+	list->length += 1;
 
-    return list;
+	return list;
 }
 
 List pop_back_list(List list) {
-    if (is_empty(list)) {
-        printf("Nothing to delete, the list is empty");
-        return create_list();
-    }
+	if (is_empty(list)) {
+		printf("Nothing to delete, the list is empty");
+		return create_list();
+	}
 
-    if (list->first == list->last) {
-        free(list);
-        list = NULL;
-        return create_list();
-    }
+	if (list->first == list->last) {
+		free(list);
+		list = NULL;
+		return create_list();
+	}
 
-    Node *temp = list->last;
+	Node *temp = list->last;
 
-    list->last = list->last->previous;
-    list->last->next = NULL;
+	list->last = list->last->previous;
+	list->last->next = NULL;
 
-    temp->next = NULL;
-    temp->previous = NULL;
+	temp->next = NULL;
+	temp->previous = NULL;
 
-    free(temp);
-    temp = NULL;
+	free(temp);
+	temp = NULL;
 
-    list->length--;
-    return list;
+	list->length--;
+	return list;
 }
 
 List pop_front_list(List list) {
-    if (is_empty(list)) {
-        printf("Nothing to delete, the list is empty");
-        return create_list();
-    }
+	if (is_empty(list)) {
+		printf("Nothing to delete, the list is empty");
+		return create_list();
+	}
 
-    if (list->first == list->last) {
-        free(list);
-        list = NULL;
-        return create_list();
-    }
+	if (list->first == list->last) {
+		free(list);
+		list = NULL;
+		return create_list();
+	}
 
-    Node *temp = list->first;
+	Node *temp = list->first;
 
-    list->first = list->first->next;
-    list->first->previous = NULL;
+	list->first = list->first->next;
+	list->first->previous = NULL;
 
-    temp->next = NULL;
-    temp->previous = NULL;
+	temp->next = NULL;
+	temp->previous = NULL;
 
-    free(temp);
-    temp = NULL;
+	free(temp);
+	temp = NULL;
 
-    list->length--;
-    return list;
+	list->length--;
+	return list;
 }
+
 
 Node* get_element_by_index(List list, int i) {
     if ((unsigned long) i >= list->length) {
@@ -196,63 +197,65 @@ Node* get_element_by_index(List list, int i) {
         exit(EXIT_FAILURE);
     }
 
-    Node *node = list->first;
 
-    while (i > 0) {
+	Node *node = list->first;
+
+  while (i > 0) {
         node = node->next;
         i--;
     }
 
     return node;
+
 }
 
 void print_list(List list) {
-    if (list->elementType == LetterType) {
-        printf("%s [%lu] ", KCYN, list->length);
-        return;
-    }
-    // printf("[");
+	if (list->elementType == LetterType) {
+		printf("%s [%lu] ", KCYN, list->length);
+		return;
+	}
+	// printf("[");
 
-    if (list->elementType == ParagraphType) {
-        printf("%sParagraphs    %sLines    %sWords     %sLetters\n\n", KRED, KYEL, KGRN, KCYN);
-        printf("%s[", KRED);
-    } else if (list->elementType == LineType)
-        printf("%s[", KYEL);
-    else if (list->elementType == WordType)
-        printf("%s\n[", KGRN);
-    else
-        printf("%s[\n", KCYN);
+	if (list->elementType == ParagraphType) {
+		printf("%sParagraphs    %sLines    %sWords     %sLetters\n\n", KRED, KYEL, KGRN, KCYN);
+		printf("%s[", KRED);
+	} else if (list->elementType == LineType)
+		printf("%s[", KYEL);
+	else if (list->elementType == WordType)
+		printf("%s\n[", KGRN);
+	else
+		printf("%s[\n", KCYN);
 
-    Node current_paragraph_node = *((Node *) (list->first));
+	Node current_paragraph_node = *((Node *) (list->first));
 
-    while (current_paragraph_node.value) {
+	while (current_paragraph_node.value) {
 
 
-        if (list->elementType != LetterType) {
-            print_list((List) current_paragraph_node.value);
-        }
+		if (list->elementType != LetterType) {
+			print_list((List) current_paragraph_node.value);
+		}
 
-        if (current_paragraph_node.next == NULL) {
-            current_paragraph_node.value = NULL;
-        } else {
-            current_paragraph_node = *(current_paragraph_node.next);
-        }
-    }
+		if (current_paragraph_node.next == NULL) {
+			current_paragraph_node.value = NULL;
+		} else {
+			current_paragraph_node = *(current_paragraph_node.next);
+		}
+	}
 
-    if (list->elementType == ParagraphType)
-        printf("%s]%s", KRED, KNRM);
-    else if (list->elementType == LineType)
-        printf("%s]\n", KYEL);
-    else if (list->elementType == WordType)
-        printf("%s]", KGRN);
-    else
-        printf("%s]\n", KCYN);
+	if (list->elementType == ParagraphType)
+		printf("%s]%s", KRED, KNRM);
+	else if (list->elementType == LineType)
+		printf("%s]\n", KYEL);
+	else if (list->elementType == WordType)
+		printf("%s]", KGRN);
+	else
+		printf("%s]\n", KCYN);
 }
 
 List clear_list(List list) {
-    while (!is_empty(list)) {
-        list = pop_back_list(list);
-    }
+	while (!is_empty(list)) {
+		list = pop_back_list(list);
+	}
 
-    return create_list();
+	return create_list();
 }

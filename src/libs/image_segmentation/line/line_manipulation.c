@@ -17,11 +17,14 @@ int get_words_space(SDL_Surface *image) {
         } else {
             if (count > max_count)
                 max_count = count;
-            if (count < min_count)
+            if (count < min_count && count != 0)
                 min_count = count;
             count = 0;
         }
     } // return the new limite
+    printf("%d - %d\n", min_count, max_count);
+    if (min_count >= max_count - 5)
+        return 666;
     return max_count - (min_count) / 2;
 }
 
@@ -46,9 +49,10 @@ List get_letters(SDL_Surface *image) {
                 save_index += 1;
             } else {
                 // Push the letter into the list
+                SDL_Surface *new_img = cut_image(image, save_index, 0, x - save_index, image->h);
+                img_to_array(new_img, 32);
                 letters_list = push_back_list(letters_list,
-                                              (void *) cut_image(image,
-                                                                 save_index, 0, x - save_index, image->h),
+                                              (void *) new_img,
                                               LetterType);
                 save_index = x + 1;
             }
@@ -64,7 +68,7 @@ List get_words_and_letters(SDL_Surface *image) {
     // Remove all white excess and get space
     image = get_all_text(image, 10);
     int space_limite = get_words_space(image);
-    space_limite -= (int) (space_limite * 0.3);
+    space_limite -= (int) (space_limite * 0.4);
 
     // Init
     List words_list = create_list();
@@ -85,9 +89,9 @@ List get_words_and_letters(SDL_Surface *image) {
 
             // Change the word to List of letters
             // and push it into the List
+            SDL_Surface *new_img = cut_image(image, save_index, 0, x - save_index, image->h);
             words_list = push_back_list(words_list,
-                                        (void *) get_letters(cut_image(image,
-                                                                       save_index, 0, x - save_index, image->h)),
+                                        (void *) get_letters(new_img),
                                         WordType);
             save_index = x + 1;
             blank_count = 0;

@@ -106,4 +106,47 @@ void put_pixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel);
 SDL_Surface *correct_image(SDL_Surface *image, int Seuil);
 
 
+/* show_image
+ * Input:
+ *      - *image        => SDL_SURFACE (source image)
+ *      - id            => size_t (the id for the type of element to show)
+ *
+ * Description:
+ *      - If dev mode is set to true, show image
+ * */
+void show_image(SDL_Surface *image, int id);
+
+
+/* wait_for_keypressed
+ *
+ * Description:
+ *      - wait for a key to be pressed
+ * */
+void wait_for_keypressed();
+
+
+
+/* display_image
+ *
+ * Input:
+ *      - *image        => SDL_SURFACE (source image)
+ *
+ * Description:
+ *      - show an image in the screen
+ * */
+SDL_Surface *display_image(SDL_Surface *img);
+
+
+/* put_in_black_and_white
+ *
+ * Input:
+ *      - *image        => SDL_SURFACE (source image)
+ *
+ * Description:
+ *      - Put the image in black and white
+ * */
+void put_in_black_and_white(SDL_Surface *image);
+
+
+void img_to_array(SDL_Surface *image, int length);
 #endif

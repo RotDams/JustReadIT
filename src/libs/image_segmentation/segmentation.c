@@ -1,11 +1,23 @@
 #include "segmentation.h"
+#include "utils.h"
+#include "rotation.h"
 
 
 SDL_Surface *extract_text(char *source_location, int threshold) {
     SDL_Surface *image;
     Uint8 r, g, b;
 
+    // Get the image
     image = SDL_LoadBMP(source_location);
+
+    show_image(image, -1);
+
+    put_in_black_and_white(image);
+    show_image(image, -1);
+
+    double angle = find_angle(image);
+    image = SDL_RotateImage(image, -angle);
+    show_image(image, -1);
 
     if (image == NULL) {
         printf("Fail with loading image");
@@ -27,8 +39,10 @@ SDL_Surface *extract_text(char *source_location, int threshold) {
     }
     // Corrects the finishes of pixels
     image = correct_image(image, threshold + 2);
+    show_image(image, -1);
     return get_all_text(image, threshold);
 }
+
 
 SDL_Surface *get_all_text(SDL_Surface *image, int Seuil) {
     // default values
@@ -65,6 +79,10 @@ SDL_Surface *get_all_text(SDL_Surface *image, int Seuil) {
 
     //Create a new image with the good scale
     SDL_Surface *newImage = cut_image(image, left, top, right - left + 1, bottom - top + 1);
+    show_image(newImage, -1);
     return newImage;
 }
+
+
+
 
