@@ -1,6 +1,7 @@
 #include "index.h"
 #include "utils.h"
 #include <string.h>
+#include "../neural_network/index.h"
 
 //Keep the List of all bmp words
 List image_segmentation(char *image_path) {
@@ -16,8 +17,10 @@ void build_word(List letters, char **content) {
     Node *letter = letters->first;
 
     while (letter != NULL) {
-        char *new_content = "x";
-        *content = strcat(*content, new_content);
+        char new_content = get_letter((SDL_Surface *) (letter->value));
+        char *c = calloc(2, sizeof(char));
+        c[0] = new_content;
+        *content = strcat(*content, c);
 
         // Get the next elements
         letter = letter->next;

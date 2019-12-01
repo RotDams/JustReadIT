@@ -198,10 +198,6 @@ void show_image(SDL_Surface *image, int id) {
 
     SDL_SetVideoMode(0,0,0,0);
     SDL_FreeSurface(screen_surface);
-
-    if (id == 5) {
-        img_to_array(image, 28);
-    }
 }
 
 void wait_for_keypressed()
@@ -246,7 +242,7 @@ SDL_Surface* display_image(SDL_Surface *img)
 }
 
 
-void img_to_array(SDL_Surface *image, int length) {
+SDL_Surface *resize_image(SDL_Surface *image, int length) {
     // Get the max dimension between height and width
     int max = fmax(image->h, image->w);
 
@@ -256,6 +252,7 @@ void img_to_array(SDL_Surface *image, int length) {
     // Get the new image
     image = rotozoomSurface(image, 0, ratio,1);
 
+    return image;
     // Create the new array
     double array[length * length];
 

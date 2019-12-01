@@ -148,5 +148,5 @@ SDL_Surface *display_image(SDL_Surface *img);
 void put_in_black_and_white(SDL_Surface *image);
 
 
-void img_to_array(SDL_Surface *image, int length);
+SDL_Surface *resize_image(SDL_Surface *image, int length);
 #endif

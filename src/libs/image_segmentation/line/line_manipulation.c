@@ -22,7 +22,7 @@ int get_words_space(SDL_Surface *image) {
             count = 0;
         }
     } // return the new limite
-    printf("%d - %d\n", min_count, max_count);
+
     if (min_count >= max_count - 5)
         return 666;
     return max_count - (min_count) / 2;
@@ -50,7 +50,7 @@ List get_letters(SDL_Surface *image) {
             } else {
                 // Push the letter into the list
                 SDL_Surface *new_img = cut_image(image, save_index, 0, x - save_index, image->h);
-                img_to_array(new_img, 32);
+                new_img = resize_image(new_img, 32);
                 letters_list = push_back_list(letters_list,
                                               (void *) new_img,
                                               LetterType);
