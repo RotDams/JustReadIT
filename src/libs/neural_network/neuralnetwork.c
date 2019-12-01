@@ -173,7 +173,7 @@ void propagation(NeuralNetwork *network, double entry[]) {
             for (size_t i_layer2 = 0; i_layer2 < layer_2->length; i_layer2++) {
                 Neuron *neuron_2 = (Neuron *) current_neuron_2->value;
 
-                neuron_2->value = (neuron_2->value + neuron_2->bias) / total_soft;
+                neuron_2->value = (neuron_2->value ) / total_soft;//+ neuron_2->bias
 
                 current_neuron_2 = current_neuron_2->next;
             }
@@ -315,6 +315,7 @@ size_t run(NeuralNetwork *network, double entry[]) {
     size_t i_index = 0;
     for (unsigned long i = 0; i < ((List) (network->layers->last->value))->length; i++) {
         n = (Neuron *) (output_neurons->value);
+        printf("%.10f\n",n->value);
         if (max_proba < n->value) {
             max_proba = n->value;
             i_index = i;
