@@ -1,5 +1,6 @@
 #ifndef NEURALNETWORK_H
 #define NEURALNETWORK_H
+#include "../list_manipulation/index.h"
 
 // ================================
 // Type definition
@@ -11,17 +12,23 @@
 typedef struct Neuron {
     double value;
     double bias;
-    double link[2];
+    double error;
+    double* links;
     size_t nb_link;
 } Neuron;
+
+/* Layers
+ * Definition of layer
+ * */
+/*typedef struct Layer {
+	List neurons;
+} Layers;*/
 
 /* NeuralNetwork
  * Definition of a neural network
  * */
 typedef struct NeuralNetwork {
-    float error;
-    Neuron neurons[5];
-    size_t nb_neurons;
+    List layers;
 } NeuralNetwork;
 
 // ================================
@@ -31,6 +38,7 @@ typedef struct NeuralNetwork {
 /* sigmoide
  * Input:
  *      - double => value to compute with sigmoide function
+ *
  * Return:
  *      - double => sigmoide(input)
  *
@@ -43,6 +51,7 @@ double sigmmoide(double value);
 /* derivative
  * Input:
  *      - double => value to compute
+ *
  * Return:
  *      - double => value*(1-value)
  *
@@ -53,13 +62,18 @@ double derivative(double value);
 
 
 /* Init
+ * Input:
+ *      - nb_layer 			   => number of layers wanted in the neural network
+ *		- nb_neurons_per_layer => array containing the number of neuron
+ *			for each layer
+ *
  * Return:
  *      - NeuralNetwork => new neural network from scratch
  *
  * Description:
  *      - Return a new neural network from scratch with default value
  * */
-struct NeuralNetwork init();
+void init(NeuralNetwork *net, size_t nb_layer, size_t nb_neurons_per_layer[]);
 
 
 /* print_info
@@ -81,7 +95,7 @@ void print_info(NeuralNetwork *network);
  * Description:
  *      - Compute the output of the neural network with entry values
  * */
-void propagation(NeuralNetwork *network, int entry[], size_t len);
+void propagation(NeuralNetwork *network, double entry[]);
 
 
 /* backpropagation
@@ -92,7 +106,7 @@ void propagation(NeuralNetwork *network, int entry[], size_t len);
  * Description:
  *      - Compute all new weights
  * */
-void backpropagation(NeuralNetwork *network, int expected);
+void backpropagation(NeuralNetwork *network, double coef);
 
 
 /* learn
@@ -104,7 +118,7 @@ void backpropagation(NeuralNetwork *network, int expected);
  * Description:
  *      - Function that combine propagation and backpropagation
  * */
-void learn(NeuralNetwork *network, int entry[], int expected);
+size_t learn(NeuralNetwork *network, double entry[], double expected[]);
 
 
 /* run
@@ -112,6 +126,7 @@ void learn(NeuralNetwork *network, int entry[], int expected);
  *      - *network => pointer to a neural network
  *      - entry[]  => entry values of the neural network
  *      - len => size of the entry array
+ *
  * Return:
  *      - double => the output of the neural network
  *
@@ -119,7 +134,7 @@ void learn(NeuralNetwork *network, int entry[], int expected);
  *      - Display in the console the result of the neural network
  *          and returns this value
  * */
-double run(NeuralNetwork *network, int entry[], size_t len);
+size_t run(NeuralNetwork *network, double entry[]);
 
 
 /* save_neural_network
@@ -132,9 +147,26 @@ double run(NeuralNetwork *network, int entry[], size_t len);
 void save_neural_network(NeuralNetwork *network);
 
 
-/* load_neuron
+/* load_link
  * Input:
  *      - *file => pointer to a file
+ *
+ * Return:
+ *      - double => neuron create with information from save_network.txt
+ *
+ * Description:
+ *      - Read in save_network.txt information about one link from 
+ *			one neuron and return a neuron instanciated with this information
+ * */
+double load_link(FILE *file);
+
+
+/* load_neuron
+ * Input:
+ *      - *file 			   => pointer to a file
+ *		- num_layer 		   => number of the current loading layer
+ *		- nb_neurons_per_layer => array of number of neurons per layer
+ *
  * Return:
  *      - Neuron => neuron create with information from save_network.txt
  *
@@ -142,12 +174,15 @@ void save_neural_network(NeuralNetwork *network);
  *      - Read in save_network.txt information about one neuron
  *          and return a neuron instanciated with this information
  * */
-Neuron load_neuron(FILE *file);
+Neuron load_neuron(FILE *file, size_t num_layer, size_t nb_neurons_per_layer[]);
 
+List load_layer(FILE *file, int num_layer, size_t nb_neurons_per_layer[]);
 
-/* load_neuron
+/* load_neural_network
  * Input:
- *      - *file => pointer to a file
+ *      - nb_layer 			   => number of layers in the neural network
+ *		- nb_neurons_per_layer => array of number of neurons per layer
+ *
  * Return:
  *      - NeuralNetwork => neural network create with information
  *          from save_network.txt
@@ -157,7 +192,7 @@ Neuron load_neuron(FILE *file);
  *          thanks to load_neuron function and return a neural network
  *          instanciated
  * */
-NeuralNetwork load_neural_network();
+void load_neural_network(NeuralNetwork *net);
 
 
 #endif

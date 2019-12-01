@@ -10,6 +10,5 @@
  * - Description:
  *      - Do the xor function for x iteration in the neural network
  * */
-void xor_neural_network(int nb_iteration, int must_load, int must_save);
-
+void training(size_t len , size_t nb_layer,size_t hidden,char* result_elements,int load);
 #endif //JUSTREADIT_XOR_INDEX_H
