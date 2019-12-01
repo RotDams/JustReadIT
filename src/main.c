@@ -2,7 +2,7 @@
 #include "libs/interface/interface.h"
 
 
-int main() {//int argc, char *argv[]) {
+int main(int argc , char *argv[]) {//int argc, char *argc[]) {
 
     //int nb_output = 26+26;
     //char result_elements[] = {
