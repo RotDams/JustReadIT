@@ -1,21 +1,17 @@
 #include "libs/image_segmentation/rotation.h"
 #include "libs/interface/interface.h"
+#include "libs/neural_network/index.h"
 
 
-int main() {//int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
 
-    //int nb_output = 26+26;
-    //char result_elements[] = {
-      //      'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
-        //    'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
-          //  'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
-            //'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-            //'s', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-    //};
+    int nb_output = 26+26;
 
-    //training(nb_output, 4, 100, result_elements, 1);
+
+    training(nb_output, 4, 100, 1);
  
     // Check if we want the interface
+    printf("%c",get_letter(SDL_LoadBMP("src/assets/training/up_letter/L.bmp")));
     init_interface(argc, argv);
 
     return 0;

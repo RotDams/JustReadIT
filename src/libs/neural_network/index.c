@@ -6,6 +6,68 @@
 #include "../image_segmentation/index.h"
 #include "math.h"
 
+char *path[] = {
+        "src/assets/training/up_letter/A.bmp",
+        "src/assets/training/up_letter/B.bmp",
+        "src/assets/training/up_letter/C.bmp",
+        "src/assets/training/up_letter/D.bmp",
+        "src/assets/training/up_letter/E.bmp",
+        "src/assets/training/up_letter/F.bmp",
+        "src/assets/training/up_letter/G.bmp",
+        "src/assets/training/up_letter/H.bmp",
+        "src/assets/training/up_letter/I.bmp",
+        "src/assets/training/up_letter/J.bmp",
+        "src/assets/training/up_letter/K.bmp",
+        "src/assets/training/up_letter/L.bmp",
+        "src/assets/training/up_letter/M.bmp",
+        "src/assets/training/up_letter/N.bmp",
+        "src/assets/training/up_letter/O.bmp",
+        "src/assets/training/up_letter/P.bmp",
+        "src/assets/training/up_letter/Q.bmp",
+        "src/assets/training/up_letter/R.bmp",
+        "src/assets/training/up_letter/S.bmp",
+        "src/assets/training/up_letter/T.bmp",
+        "src/assets/training/up_letter/U.bmp",
+        "src/assets/training/up_letter/V.bmp",
+        "src/assets/training/up_letter/W.bmp",
+        "src/assets/training/up_letter/X.bmp",
+        "src/assets/training/up_letter/Y.bmp",
+        "src/assets/training/up_letter/Z.bmp",
+        "src/assets/training/down_letter/a.bmp",
+        "src/assets/training/down_letter/b.bmp",
+        "src/assets/training/down_letter/c.bmp",
+        "src/assets/training/down_letter/d.bmp",
+        "src/assets/training/down_letter/e.bmp",
+        "src/assets/training/down_letter/f.bmp",
+        "src/assets/training/down_letter/g.bmp",
+        "src/assets/training/down_letter/h.bmp",
+        "src/assets/training/down_letter/i.bmp",
+        "src/assets/training/down_letter/j.bmp",
+        "src/assets/training/down_letter/k.bmp",
+        "src/assets/training/down_letter/l.bmp",
+        "src/assets/training/down_letter/m.bmp",
+        "src/assets/training/down_letter/n.bmp",
+        "src/assets/training/down_letter/o.bmp",
+        "src/assets/training/down_letter/p.bmp",
+        "src/assets/training/down_letter/q.bmp",
+        "src/assets/training/down_letter/r.bmp",
+        "src/assets/training/down_letter/s.bmp",
+        "src/assets/training/down_letter/t.bmp",
+        "src/assets/training/down_letter/u.bmp",
+        "src/assets/training/down_letter/v.bmp",
+        "src/assets/training/down_letter/w.bmp",
+        "src/assets/training/down_letter/x.bmp",
+        "src/assets/training/down_letter/y.bmp",
+        "src/assets/training/down_letter/z.bmp",
+};
+
+char result_elements[] = {
+      'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+    'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+  'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+'s', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+};
 
 double *get_matrix(SDL_Surface *image) {
     // Create the new array
@@ -33,7 +95,21 @@ double *get_matrix(SDL_Surface *image) {
     return array;
 }
 
-void training( size_t len, size_t nb_layer, size_t hidden,char* result_elements, int load) {
+char get_letter(SDL_Surface *image) {
+
+
+
+    // Load or init the NeuralNetwork
+    NeuralNetwork network;
+    NeuralNetwork *n = &network;
+    load_neural_network(n);
+
+    size_t result= run(n, get_matrix(image));
+
+    return result_elements[result];
+}
+
+void training(size_t len, size_t nb_layer, size_t hidden, int load) {
 
     // All paths for tests images
     char *path[] = {
@@ -106,8 +182,8 @@ void training( size_t len, size_t nb_layer, size_t hidden,char* result_elements,
     NeuralNetwork *n = &network;
     if (load)
         load_neural_network(n);
-    else{
-        size_t nb_input = 32*32;
+    else {
+        size_t nb_input = 32 * 32;
         size_t nb_output = len;
         size_t nb_neurons_per_layer[] = {nb_input, hidden, hidden, nb_output};
 
