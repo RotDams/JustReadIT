@@ -10,60 +10,6 @@ int main() {//int argc, char *argv[]) {
 
 
     int nb_output = 26+26;
-    char *paths[] = {
-            "src/assets/training/up_letter/A.bmp",
-            "src/assets/training/up_letter/B.bmp",
-            "src/assets/training/up_letter/C.bmp",
-            "src/assets/training/up_letter/D.bmp",
-            "src/assets/training/up_letter/E.bmp",
-            "src/assets/training/up_letter/F.bmp",
-            "src/assets/training/up_letter/G.bmp",
-            "src/assets/training/up_letter/H.bmp",
-            "src/assets/training/up_letter/I.bmp",
-            "src/assets/training/up_letter/J.bmp",
-            "src/assets/training/up_letter/K.bmp",
-            "src/assets/training/up_letter/L.bmp",
-            "src/assets/training/up_letter/M.bmp",
-            "src/assets/training/up_letter/N.bmp",
-            "src/assets/training/up_letter/O.bmp",
-            "src/assets/training/up_letter/P.bmp",
-            "src/assets/training/up_letter/Q.bmp",
-            "src/assets/training/up_letter/R.bmp",
-            "src/assets/training/up_letter/S.bmp",
-            "src/assets/training/up_letter/T.bmp",
-            "src/assets/training/up_letter/U.bmp",
-            "src/assets/training/up_letter/V.bmp",
-            "src/assets/training/up_letter/W.bmp",
-            "src/assets/training/up_letter/X.bmp",
-            "src/assets/training/up_letter/Y.bmp",
-            "src/assets/training/up_letter/Z.bmp",
-            "src/assets/training/down_letter/a.bmp",
-            "src/assets/training/down_letter/b.bmp",
-            "src/assets/training/down_letter/c.bmp",
-            "src/assets/training/down_letter/d.bmp",
-            "src/assets/training/down_letter/e.bmp",
-            "src/assets/training/down_letter/f.bmp",
-            "src/assets/training/down_letter/g.bmp",
-            "src/assets/training/down_letter/h.bmp",
-            "src/assets/training/down_letter/i.bmp",
-            "src/assets/training/down_letter/j.bmp",
-            "src/assets/training/down_letter/k.bmp",
-            "src/assets/training/down_letter/l.bmp",
-            "src/assets/training/down_letter/m.bmp",
-            "src/assets/training/down_letter/n.bmp",
-            "src/assets/training/down_letter/o.bmp",
-            "src/assets/training/down_letter/p.bmp",
-            "src/assets/training/down_letter/q.bmp",
-            "src/assets/training/down_letter/r.bmp",
-            "src/assets/training/down_letter/s.bmp",
-            "src/assets/training/down_letter/t.bmp",
-            "src/assets/training/down_letter/u.bmp",
-            "src/assets/training/down_letter/v.bmp",
-            "src/assets/training/down_letter/w.bmp",
-            "src/assets/training/down_letter/x.bmp",
-            "src/assets/training/down_letter/y.bmp",
-            "src/assets/training/down_letter/z.bmp",
-    };
     char result_elements[] = {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
             'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
@@ -72,7 +18,7 @@ int main() {//int argc, char *argv[]) {
             's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
     };
 
-    training(paths, nb_output, 4, 100, result_elements, 1);
+    training(nb_output, 4, 100, result_elements, 1);
     /*if (argc == 1) {
         printf("Error: Please specify the path of the image\nEx: ./output.exe -p \"my_image.bmp\"\n");
         return EXIT_FAILURE;
