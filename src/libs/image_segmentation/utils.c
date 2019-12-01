@@ -255,6 +255,7 @@ void img_to_array(SDL_Surface *image, int length) {
 
     // Get the new image
     image = rotozoomSurface(image, 0, ratio,1);
+    SDL_SaveBMP(image, "1.bmp");
 
     // Create the new array
     double array[length * length];
