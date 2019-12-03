@@ -1,3 +1,4 @@
+#include <SDL/SDL_image.h>
 #include "segmentation.h"
 #include "utils.h"
 #include "rotation.h"
@@ -8,7 +9,8 @@ SDL_Surface *extract_text(char *source_location, int threshold) {
     Uint8 r, g, b;
 
     // Get the image
-    image = SDL_LoadBMP(source_location);
+    //image = SDL_LoadBMP(source_location);
+    image = IMG_Load(source_location);
 
     show_image(image, -1);
 
