@@ -78,17 +78,17 @@ double *get_matrix(SDL_Surface *image) {
     Uint8 r, g, b;
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < length; j++) {
-            if (i >= image->h || j >= image->h) {
-                array[i * length + j] = 0;
+            if (i >= image->w || j >= image->h) {
+                array[j * length + i] = 0;
             } else {
                 Uint32 pixel = (get_pixel(image, i, j));
                 SDL_GetRGB(pixel, image->format, &r, &b, &g);
 
                 // if the pixel is black ->1 else -> 0
-                if (r < 15 && g < 15 && b < 15)
-                    array[i * length + j] = 1;
+                if (r < 150 && g < 150 && b < 150)
+                    array[j * length + i] = 1;
                 else
-                    array[i * length + j] = 0;
+                    array[j * length + i] = 0;
             }
         }
     }
@@ -96,16 +96,21 @@ double *get_matrix(SDL_Surface *image) {
 }
 
 char get_letter(SDL_Surface *image) {
-
-
-
     // Load or init the NeuralNetwork
     NeuralNetwork network;
     NeuralNetwork *n = &network;
     load_neural_network(n);
-
-    size_t result= run(n, get_matrix(image));
-
+    double *yes = get_matrix(image);
+    //yes[32 * 32 - 10] = 1;
+    //SDL_SaveBMP(image, "pb.jpg");
+//    for (int i = 0; i < 32; i++) {
+//        for (int j = 0; j < 32; j++) {
+//            printf("%.0f.", yes[i * 32 + j]);
+//        }
+//        printf("\n");
+//    }
+//    printf("\n\n\n\n");
+    size_t result = run(n, yes);
     return result_elements[result];
 }
 

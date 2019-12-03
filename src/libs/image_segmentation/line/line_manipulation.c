@@ -50,6 +50,7 @@ List get_letters(SDL_Surface *image) {
             } else {
                 // Push the letter into the list
                 SDL_Surface *new_img = cut_image(image, save_index, 0, x - save_index, image->h);
+                new_img = get_all_text(new_img,50);
                 new_img = resize_image(new_img, 32);
                 letters_list = push_back_list(letters_list,
                                               (void *) new_img,
