@@ -7,10 +7,9 @@
 List image_segmentation(char *image_path) {
     SDL_Surface *image = extract_text(image_path, 20);
     List paragraphs = get_paragraphs(image);
+    SDL_Quit();
     return paragraphs;
 }
-
-
 
 
 void build_word(List letters, char **content) {
