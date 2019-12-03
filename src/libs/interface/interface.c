@@ -111,7 +111,7 @@ void btn_run_clicked() {
 
 
 // Ok
-void home_selection_changed() {
+void home_selection_changed2() {
     // Get the new image from the file chooser picker
     char *path = gtk_file_chooser_get_filename(fileChooserButton);
 
@@ -122,6 +122,21 @@ void home_selection_changed() {
     GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file_at_size(path, 480, 360, &gerror);
 
     // Set the image on the screen
+    gtk_image_set_from_pixbuf(img_selected, pixbuf);
+
+    // We have at least 1 file. So we can and must active the button
+    gtk_widget_set_sensitive(GTK_WIDGET(btn_run), TRUE);
+}
+
+void home_selection_changed() {
+    // Get the new image from the file chooser picker
+    char *path = gtk_file_chooser_get_filename(fileChooserButton);
+
+    GtkImage *img = GTK_IMAGE(gtk_image_new_from_file (path));
+    GdkPixbuf *pixbuf = gtk_image_get_pixbuf(img);
+    pixbuf = gdk_pixbuf_scale_simple(pixbuf, 480, 360, GDK_INTERP_BILINEAR);
+    gtk_image_set_from_pixbuf(img_selected, pixbuf);
+
     gtk_image_set_from_pixbuf(img_selected, pixbuf);
 
     // We have at least 1 file. So we can and must active the button
