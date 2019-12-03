@@ -110,7 +110,7 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
         load_neural_network(n);
     else {
         size_t nb_input = 32 * 32;
-        size_t nb_output = len;
+        size_t nb_output = nb_results;
         size_t nb_neurons_per_layer[] = {nb_input, hidden, hidden, nb_output};
 
         init(n, nb_layer, nb_neurons_per_layer);
