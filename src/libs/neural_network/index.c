@@ -6,67 +6,20 @@
 #include "../image_segmentation/index.h"
 #include "math.h"
 
+int nb_fonts = 4;
 char *path[] = {
-        "src/assets/training/up_letter/A.bmp",
-        "src/assets/training/up_letter/B.bmp",
-        "src/assets/training/up_letter/C.bmp",
-        "src/assets/training/up_letter/D.bmp",
-        "src/assets/training/up_letter/E.bmp",
-        "src/assets/training/up_letter/F.bmp",
-        "src/assets/training/up_letter/G.bmp",
-        "src/assets/training/up_letter/H.bmp",
-        "src/assets/training/up_letter/I.bmp",
-        "src/assets/training/up_letter/J.bmp",
-        "src/assets/training/up_letter/K.bmp",
-        "src/assets/training/up_letter/L.bmp",
-        "src/assets/training/up_letter/M.bmp",
-        "src/assets/training/up_letter/N.bmp",
-        "src/assets/training/up_letter/O.bmp",
-        "src/assets/training/up_letter/P.bmp",
-        "src/assets/training/up_letter/Q.bmp",
-        "src/assets/training/up_letter/R.bmp",
-        "src/assets/training/up_letter/S.bmp",
-        "src/assets/training/up_letter/T.bmp",
-        "src/assets/training/up_letter/U.bmp",
-        "src/assets/training/up_letter/V.bmp",
-        "src/assets/training/up_letter/W.bmp",
-        "src/assets/training/up_letter/X.bmp",
-        "src/assets/training/up_letter/Y.bmp",
-        "src/assets/training/up_letter/Z.bmp",
-        "src/assets/training/down_letter/a.bmp",
-        "src/assets/training/down_letter/b.bmp",
-        "src/assets/training/down_letter/c.bmp",
-        "src/assets/training/down_letter/d.bmp",
-        "src/assets/training/down_letter/e.bmp",
-        "src/assets/training/down_letter/f.bmp",
-        "src/assets/training/down_letter/g.bmp",
-        "src/assets/training/down_letter/h.bmp",
-        "src/assets/training/down_letter/i.bmp",
-        "src/assets/training/down_letter/j.bmp",
-        "src/assets/training/down_letter/k.bmp",
-        "src/assets/training/down_letter/l.bmp",
-        "src/assets/training/down_letter/m.bmp",
-        "src/assets/training/down_letter/n.bmp",
-        "src/assets/training/down_letter/o.bmp",
-        "src/assets/training/down_letter/p.bmp",
-        "src/assets/training/down_letter/q.bmp",
-        "src/assets/training/down_letter/r.bmp",
-        "src/assets/training/down_letter/s.bmp",
-        "src/assets/training/down_letter/t.bmp",
-        "src/assets/training/down_letter/u.bmp",
-        "src/assets/training/down_letter/v.bmp",
-        "src/assets/training/down_letter/w.bmp",
-        "src/assets/training/down_letter/x.bmp",
-        "src/assets/training/down_letter/y.bmp",
-        "src/assets/training/down_letter/z.bmp",
+        "font-01", "font-02", "font-03", "font-04",
 };
 
+int nb_results = 73;
 char result_elements[] = {
-      'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
-    'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
-  'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
-'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-'s', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+        'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+        'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+        'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+        's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3',
+        '4', '5', '6', '7', '8', '9', '.', ';', ':', '!', '?',
+        '\'', '(', ')', '[', ']', '-', '%'
 };
 
 double *get_matrix(SDL_Surface *image) {
@@ -116,67 +69,36 @@ char get_letter(SDL_Surface *image) {
 
 void training(size_t len, size_t nb_layer, size_t hidden, int load) {
 
-    // All paths for tests images
-    char *path[] = {
-            "src/assets/training/up_letter/A.bmp",
-            "src/assets/training/up_letter/B.bmp",
-            "src/assets/training/up_letter/C.bmp",
-            "src/assets/training/up_letter/D.bmp",
-            "src/assets/training/up_letter/E.bmp",
-            "src/assets/training/up_letter/F.bmp",
-            "src/assets/training/up_letter/G.bmp",
-            "src/assets/training/up_letter/H.bmp",
-            "src/assets/training/up_letter/I.bmp",
-            "src/assets/training/up_letter/J.bmp",
-            "src/assets/training/up_letter/K.bmp",
-            "src/assets/training/up_letter/L.bmp",
-            "src/assets/training/up_letter/M.bmp",
-            "src/assets/training/up_letter/N.bmp",
-            "src/assets/training/up_letter/O.bmp",
-            "src/assets/training/up_letter/P.bmp",
-            "src/assets/training/up_letter/Q.bmp",
-            "src/assets/training/up_letter/R.bmp",
-            "src/assets/training/up_letter/S.bmp",
-            "src/assets/training/up_letter/T.bmp",
-            "src/assets/training/up_letter/U.bmp",
-            "src/assets/training/up_letter/V.bmp",
-            "src/assets/training/up_letter/W.bmp",
-            "src/assets/training/up_letter/X.bmp",
-            "src/assets/training/up_letter/Y.bmp",
-            "src/assets/training/up_letter/Z.bmp",
-            "src/assets/training/down_letter/a.bmp",
-            "src/assets/training/down_letter/b.bmp",
-            "src/assets/training/down_letter/c.bmp",
-            "src/assets/training/down_letter/d.bmp",
-            "src/assets/training/down_letter/e.bmp",
-            "src/assets/training/down_letter/f.bmp",
-            "src/assets/training/down_letter/g.bmp",
-            "src/assets/training/down_letter/h.bmp",
-            "src/assets/training/down_letter/i.bmp",
-            "src/assets/training/down_letter/j.bmp",
-            "src/assets/training/down_letter/k.bmp",
-            "src/assets/training/down_letter/l.bmp",
-            "src/assets/training/down_letter/m.bmp",
-            "src/assets/training/down_letter/n.bmp",
-            "src/assets/training/down_letter/o.bmp",
-            "src/assets/training/down_letter/p.bmp",
-            "src/assets/training/down_letter/q.bmp",
-            "src/assets/training/down_letter/r.bmp",
-            "src/assets/training/down_letter/s.bmp",
-            "src/assets/training/down_letter/t.bmp",
-            "src/assets/training/down_letter/u.bmp",
-            "src/assets/training/down_letter/v.bmp",
-            "src/assets/training/down_letter/w.bmp",
-            "src/assets/training/down_letter/x.bmp",
-            "src/assets/training/down_letter/y.bmp",
-            "src/assets/training/down_letter/z.bmp",
-    };
 
     // Save all images into an array
-    double **models = malloc(sizeof(char *) * len);
-    for (size_t m = 0; m < len; m++) {
-        SDL_Surface *image = SDL_LoadBMP(path[m]);
-        models[m] = get_matrix(image);
+    double **models = malloc(sizeof(char *) * nb_fonts * nb_results);
+
+    char paths[] = "src/assets/training/font-01/letter000.bmp";
+
+    for (size_t m = 0; m < nb_fonts; m++) {
+        paths[36] ='0';
+        paths[35] ='0';
+
+        for (size_t m = 0; m < nb_results; m++) {
+
+
+            SDL_Surface *image = SDL_LoadBMP(paths);
+            models[m] = get_matrix(image);
+
+            if (paths[36] == '9'){
+                paths[36] ='0';
+                paths[35] ++;
+            }
+            else
+                paths[36]++;
+        }
+
+        if (paths[26] == '9'){
+            paths[26] ='0';
+            paths[27] ++;
+        }
+        else
+            paths[26]++;
     }
 
     // Array of 0
@@ -205,22 +127,22 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
     for (size_t i = 1; i < 100000; i++) {
         for (size_t j = 0; j <= 10; j++) {
             // Random letter
-            k = random() % len;
+            k = random() % nb_results * nb_fonts;
 
             // Expected response
-            expected[k] = (double) 1;
+            expected[k % nb_results] = (double) 1;
 
             // Update all errors and return result
-            result = learn(n, models[k], expected);
+            result = learn(n, models[k % nb_results], expected);
 
             // Reset expected to 0
-            expected[k] = (double) 0;
+            expected[k % nb_results] = (double) 0;
         }
         // Update all links with the errors
         backpropagation(n, coef);
 
         // Print th result of the last test
-        printf("(%zu) Expected : %c  ", i, result_elements[k]);
+        printf("(%zu) Expected : %c  ", i, result_elements[k % nb_results]);
         printf("result : %c \n", result_elements[result]);
 
         // All 1000 call, save th network into a file
