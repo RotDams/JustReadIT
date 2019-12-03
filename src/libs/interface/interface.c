@@ -134,10 +134,11 @@ void home_selection_changed() {
 
     GtkImage *img = GTK_IMAGE(gtk_image_new_from_file (path));
     GdkPixbuf *pixbuf = gtk_image_get_pixbuf(img);
+
     pixbuf = gdk_pixbuf_scale_simple(pixbuf, 480, 360, GDK_INTERP_BILINEAR);
-    gtk_image_set_from_pixbuf(img_selected, pixbuf);
 
     gtk_image_set_from_pixbuf(img_selected, pixbuf);
+
 
     // We have at least 1 file. So we can and must active the button
     gtk_widget_set_sensitive(GTK_WIDGET(btn_run), TRUE);
