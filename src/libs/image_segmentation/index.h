@@ -26,7 +26,7 @@ List image_segmentation(char *image_path);
 
 
 
-void build_word(List letters, char **content);
+void build_word(List letters, char **content, int bool);
 
 void build_line(List words, char **content);
 

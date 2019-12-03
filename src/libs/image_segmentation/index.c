@@ -11,12 +11,30 @@ List image_segmentation(char *image_path) {
 }
 
 
+char number1 = '0';
+char number2 = '0';
+char number3 = '0';
 
-
-void build_word(List letters, char **content) {
+void build_word(List letters, char **content, int bool) {
     Node *letter = letters->first;
 
+    char filesname[] = "letter000.bmp"; //todo create letter
+
     while (letter != NULL) {
+        if (bool) {
+            filesname[8] = number3;
+            filesname[6] = number2;
+            filesname[7] = number1;
+            if (number3 == '9') {
+                number3 = '0';
+                number1++;
+            } else if (number1 == '9') {
+                number1 = '0';
+                number2++;
+            } else number3++;
+
+            SDL_SaveBMP((SDL_Surface *) (letter->value), filesname);
+        }
         char new_content = get_letter((SDL_Surface *) (letter->value));
         char *c = calloc(2, sizeof(char));
         c[0] = new_content;
@@ -32,7 +50,7 @@ void build_line(List words, char **content) {
 
     while (word != NULL) {
         char *new_content = calloc(10000, sizeof(char));
-        build_word((List) word->value, &new_content);
+        build_word((List) word->value, &new_content,1); // change to not save
 
         *content = strcat(*content, new_content);
 
@@ -43,6 +61,7 @@ void build_line(List words, char **content) {
         word = word->next;
     }
 }
+
 void build_paragraph(List lines, char **content) {
     Node *line = lines->first;
 

@@ -102,7 +102,7 @@ char get_letter(SDL_Surface *image) {
     load_neural_network(n);
     double *yes = get_matrix(image);
     //yes[32 * 32 - 10] = 1;
-    SDL_SaveBMP(image, "pb.jpg");
+    //SDL_SaveBMP(image, "pb.jpg");
 //    for (int i = 0; i < 32; i++) {
 //        for (int j = 0; j < 32; j++) {
 //            printf("%.0f.", yes[i * 32 + j]);
