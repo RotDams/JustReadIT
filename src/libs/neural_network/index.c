@@ -131,7 +131,7 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
             expected[k % nb_results] = (double) 1;
 
             // Update all errors and return result
-            result = learn(n, models[k % nb_results], expected);
+            result = learn(n, models[k], expected);
 
             // Reset expected to 0
             expected[k % nb_results] = (double) 0;
@@ -139,12 +139,12 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
         // Update all links with the errors
         backpropagation(n, coef);
 //
-//        for (size_t l = 0; l < nb_results * nb_fonts; ++l) {
-//
-           // printf("(%zu)  : %c  \n",l, result_elements[l % nb_results]);
+//       for (size_t l = 0; l < nb_results * nb_fonts; ++l) {
+////
+//            printf("(%zu)  : %c  \n",l, result_elements[l % nb_results]);
 //            for (int i = 0; i < 32; i++) {
 //                for (int j = 0; j < 32; j++) {
-//                    printf("%.0f.", models[k][i * 32 + j]);
+//                    printf("%.0f.", models[l][i * 32 + j]);
 //                }
 //                printf("\n");
 //            }
