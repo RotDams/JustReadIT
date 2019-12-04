@@ -20,6 +20,8 @@ void build_word(List letters, char **content) {
 
     while (letter != NULL) {
 
+        SDL_SaveBMP((SDL_Surface *) (letter->value), filesname);
+
         //save the letter
         if (save_letter) {
             if (filesname[8] == '9') {
@@ -29,7 +31,7 @@ void build_word(List letters, char **content) {
                 filesname[7] = '0';
                 filesname[6]++;
             } else filesname[8]++;
-            SDL_SaveBMP((SDL_Surface *) (letter->value), filesname);
+
         }
 
         char new_content = get_letter((SDL_Surface *) (letter->value));
@@ -74,6 +76,11 @@ void build_paragraph(List lines, char **content) {
 }
 
 char *build_text(char *path) {
+    if (save_letter) {
+        filesname[6] = '0';
+        filesname[7] = '0';
+        filesname[8] = '0';
+    }
     List paragraphs = image_segmentation(path);
     char *content = calloc(1000000, sizeof(char));
     Node *paragraph = paragraphs->first;

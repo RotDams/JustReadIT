@@ -6,7 +6,7 @@
 #include "../image_segmentation/index.h"
 #include "math.h"
 
-int nb_fonts = 4;
+int nb_fonts = 15;
 
 int nb_results = 74;
 char result_elements[] = {
