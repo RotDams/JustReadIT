@@ -33,9 +33,11 @@ void build_word(List letters, char **content, int bool) {
                 number1 = '0';
                 number2++;
             } else number3++;
-
-            SDL_SaveBMP((SDL_Surface *) (letter->value), filesname);
+           // SDL_SaveBMP((SDL_Surface *) (letter->value), filesname);
         }
+
+
+
         char new_content = get_letter((SDL_Surface *) (letter->value));
         char *c = calloc(2, sizeof(char));
         c[0] = new_content;

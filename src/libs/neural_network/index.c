@@ -50,18 +50,17 @@ double *get_matrix(SDL_Surface *image) {
 
 char get_letter(SDL_Surface *image) {
     // Load or init the NeuralNetwork
-    NeuralNetwork network;
-    NeuralNetwork *n = &network;
-    load_neural_network(n);
+    extern NeuralNetwork *n;
     double *yes = get_matrix(image);
+
     //yes[32 * 32 - 10] = 1;
     //SDL_SaveBMP(image, "pb.jpg");
-//    for (int i = 0; i < 32; i++) {
-//        for (int j = 0; j < 32; j++) {
-//            printf("%.0f.", yes[i * 32 + j]);
-//        }
-//        printf("\n");
-//    }
+    for (int i = 0; i < 32; i++) {
+        for (int j = 0; j < 32; j++) {
+            printf("%.0f.", yes[i * 32 + j]);
+        }
+        printf("\n");
+    }
 //    printf("\n\n\n\n");
     size_t result = run(n, yes);
     return result_elements[result];
