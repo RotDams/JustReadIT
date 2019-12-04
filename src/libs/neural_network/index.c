@@ -8,7 +8,7 @@
 
 int nb_fonts = 15;
 
-int nb_results = 74;
+int nb_results = 26+26; //74;
 char result_elements[] = {
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
         'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
@@ -35,7 +35,7 @@ double *get_matrix(SDL_Surface *image) {
                 SDL_GetRGB(pixel, image->format, &r, &b, &g);
 
                 // if the pixel is black ->1 else -> 0
-                if (r < 150 && g < 150 && b < 150)
+                if (r < 240 && g < 240 && b < 240)
                     array[j * length + i] = 1;
                 else
                     array[j * length + i] = 0;

@@ -5,7 +5,7 @@
 
 NeuralNetwork net;
 NeuralNetwork* n = &net;
-Bool save_letter = true;
+Bool save_letter = false;
 
 int main(int argc, char *argv[]) {
 
