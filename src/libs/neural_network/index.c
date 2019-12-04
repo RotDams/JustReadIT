@@ -125,7 +125,7 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
     for (size_t i = 1; i < 100000; i++) {
         for (size_t j = 0; j <= 10; j++) {
             // Random letter
-            k = random() % nb_results * nb_fonts;
+            k = random() % (nb_results * nb_fonts);
 
             // Expected response
             expected[k % nb_results] = (double) 1;
@@ -138,21 +138,10 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
         }
         // Update all links with the errors
         backpropagation(n, coef);
-//
-//       for (size_t l = 0; l < nb_results * nb_fonts; ++l) {
-////
-//            printf("(%zu)  : %c  \n",l, result_elements[l % nb_results]);
-//            for (int i = 0; i < 32; i++) {
-//                for (int j = 0; j < 32; j++) {
-//                    printf("%.0f.", models[l][i * 32 + j]);
-//                }
-//                printf("\n");
-//            }
-//        }
-//        printf("\n\n\n\n");
+
         // Print th result of the last test
         printf("(%zu) Expected : %c  ", i, result_elements[k % nb_results]);
-        printf("result : %c \n", result_elements[result]);
+        printf("result : %c   |   <input>: %i \n", result_elements[result],k);
 
         // All 1000 call, save th network into a file
         if (i % 1000 == 0)

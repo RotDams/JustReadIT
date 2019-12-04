@@ -10,10 +10,10 @@ int main(int argc, char *argv[]) {
 
     load_neural_network(n);
     // Check if we want the interface
-    //printf("%c",get_letter(SDL_LoadBMP("src/assets/training/font-01/letter001.bmp")));
-    //training(73,4,100,1);
+    //printf("%c",get_letter(SDL_LoadBMP("src/assets/training/font-01/letter073.bmp")));
+    training(73,4,100,1);
 
-    init_interface(argc, argv);
+    //init_interface(argc, argv);
     return 0;
 
 }
