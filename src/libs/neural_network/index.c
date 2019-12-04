@@ -7,9 +7,6 @@
 #include "math.h"
 
 int nb_fonts = 4;
-char *path[] = {
-        "font-01", "font-02", "font-03", "font-04",
-};
 
 int nb_results = 74;
 char result_elements[] = {
@@ -94,7 +91,7 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
 
         if (paths[26] == '9') {
             paths[26] = '0';
-            paths[27]++;
+            paths[25]++;
         } else
             paths[26]++;
     }
