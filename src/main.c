@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
 
     // Check if we want the interface
     // printf("%c",get_letter(SDL_LoadBMP("src/assets/training/font-01-01/letter073.bmp")));
-     // training(74,4,100,0);
+    //training(74,4,100,0);
 
     init_interface(argc, argv);
     return 0;

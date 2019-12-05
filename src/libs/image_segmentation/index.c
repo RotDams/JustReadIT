@@ -6,7 +6,7 @@
 
 //Keep the List of all bmp words
 List image_segmentation(char *image_path) {
-    SDL_Surface *image = extract_text(image_path, 20);
+    SDL_Surface *image = extract_text(image_path, 150);
     List paragraphs = get_paragraphs(image);
     SDL_Quit();
     return paragraphs;
