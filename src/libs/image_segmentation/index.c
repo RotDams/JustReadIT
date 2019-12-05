@@ -69,6 +69,7 @@ void build_paragraph(List lines, char **content) {
         build_line((List) line->value, &new_content);
 
         *content = strcat(*content, new_content);
+        *content = strcat(*content, "\n");
 
         // Get the next elements
         line = line->next;
