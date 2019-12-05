@@ -33,7 +33,7 @@ int get_words_space(SDL_Surface *image) {
 List get_letters(SDL_Surface *image) {
 
     // Remove the white in excess
-    image = get_all_text(image, 10);
+    //SDL_Surface* image = get_all_text(imag, 250);
 
     List letters_list = create_list();
     int save_index = 0;

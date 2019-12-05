@@ -9,12 +9,13 @@ SDL_Surface *extract_text(char *source_location, int threshold) {
     Uint8 r, g, b;
 
     // Get the image
+    // Get the image
     //image = SDL_LoadBMP(source_location);
     image = IMG_Load(source_location);
 
     show_image(image, -1);
 
-    put_in_black_and_white(image);
+   // put_in_black_and_white(image);
     show_image(image, -1);
 
     //double angle = find_angle(image);
@@ -40,7 +41,7 @@ SDL_Surface *extract_text(char *source_location, int threshold) {
         }
     }
     // Corrects the finishes of pixels
-    image = correct_image(image, threshold + 2);
+    // image = correct_image(image, threshold + 2);
     show_image(image, -1);
     return get_all_text(image, threshold);
 }

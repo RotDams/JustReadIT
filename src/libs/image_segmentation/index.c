@@ -34,7 +34,7 @@ void build_word(List letters, char **content) {
 
         }
 
-        char new_content = get_letter((SDL_Surface *) (letter->value));
+        char new_content = get_letter_by_image((SDL_Surface *) (letter->value));
         char *c = calloc(2, sizeof(char));
         c[0] = new_content;
         *content = strcat(*content, c);

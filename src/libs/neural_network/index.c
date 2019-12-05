@@ -6,9 +6,9 @@
 #include "../image_segmentation/index.h"
 #include "math.h"
 
-int nb_fonts = 15;
+int nb_fonts = 1; //15;
 
-int nb_results = 26+26; //74;
+int nb_results = 26 + 26; //74;
 char result_elements[] = {
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
         'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
@@ -29,32 +29,30 @@ double *get_matrix(SDL_Surface *image) {
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < length; j++) {
             if (i >= image->w || j >= image->h) {
-                array[j * length + i] = 0;
+                array[i * length + j] = 0;
             } else {
                 Uint32 pixel = (get_pixel(image, i, j));
                 SDL_GetRGB(pixel, image->format, &r, &b, &g);
 
                 // if the pixel is black ->1 else -> 0
                 if (r < 240 && g < 240 && b < 240)
-                    array[j * length + i] = 1;
+                    array[i * length + j] = 1;
                 else
-                    array[j * length + i] = 0;
+                    array[i * length + j] = 0;
             }
         }
     }
     return array;
 }
 
-char get_letter(SDL_Surface *image) {
+char get_letter_by_image(SDL_Surface *image) {
     // Load or init the NeuralNetwork
     extern NeuralNetwork *n;
     double *yes = get_matrix(image);
 
-    //yes[32 * 32 - 10] = 1;
-    //SDL_SaveBMP(image, "pb.jpg");
     for (int i = 0; i < 32; i++) {
         for (int j = 0; j < 32; j++) {
-            printf("%.0f.", yes[i * 32 + j]);
+            printf("%.0f.", yes[j * 32 + i]);
         }
         printf("\n");
     }
@@ -69,7 +67,7 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
     // Save all images into an array
     double **models = malloc(sizeof(char *) * nb_fonts * nb_results);
 
-    char paths[] = "src/assets/training/font-01/letter000.bmp";
+    char paths[] = "src/assets/trainang/font-01/letter000.bmp";
 
     int index_in = 0;
     for (size_t m = 0; m < nb_fonts; m++) {
@@ -138,7 +136,7 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
 
         // Print th result of the last test
         printf("(%zu) Expected : %c  ", i, result_elements[k % nb_results]);
-        printf("result : %c   |   <input>: %i \n", result_elements[result],k);
+        printf("result : %c   |   <input>: %i \n", result_elements[result], k);
 
         // All 1000 call, save th network into a file
         if (i % 1000 == 0)
