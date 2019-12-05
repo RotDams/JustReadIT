@@ -8,7 +8,7 @@
 
 int nb_fonts = 2; //15;
 
-int nb_results = 26 + 26; //74;
+int nb_results = 74; //74;
 char result_elements[] = {
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
         'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
