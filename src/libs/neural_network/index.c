@@ -50,12 +50,12 @@ char get_letter_by_image(SDL_Surface *image) {
     extern NeuralNetwork *n;
     double *yes = get_matrix(image);
 
-    for (int i = 0; i < 32; i++) {
+    /*for (int i = 0; i < 32; i++) {
         for (int j = 0; j < 32; j++) {
             printf("%.0f.", yes[j * 32 + i]);
         }
         printf("\n");
-    }
+    }*/
 //    printf("\n\n\n\n");
     size_t result = run(n, yes);
     return result_elements[result];

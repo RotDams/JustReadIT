@@ -20,10 +20,12 @@ void build_word(List letters, char **content) {
 
     while (letter != NULL) {
 
-        SDL_SaveBMP((SDL_Surface *) (letter->value), filesname);
+        extern int must_save_letter;
+        if (must_save_letter)
+            SDL_SaveBMP((SDL_Surface *) (letter->value), filesname);
 
         //save the letter
-        if (save_letter) {
+        if (must_save_letter) {
             if (filesname[8] == '9') {
                 filesname[8] = '0';
                 filesname[7]++;
