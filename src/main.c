@@ -6,7 +6,7 @@
 
 NeuralNetwork net;
 NeuralNetwork* n = &net;
-Bool save_letter = true;
+Bool save_letter = false;
 
 int main(int argc, char *argv[]) {
 
@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 
     // Check if we want the interface
     //printf("%c",get_letter_by_image(SDL_LoadBMP("src/assets/trainang/font-01")));
-    //training(74,4,100,0);
+    //training(74,4,100,1);
 
     init_interface(argc, argv);
     return 0;
