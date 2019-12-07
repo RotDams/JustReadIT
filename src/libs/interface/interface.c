@@ -187,6 +187,7 @@ int gtk_get_file_to_save(char **filename) {
 void result_btn_cancel_clicked() {
     gtk_widget_hide(result_window);
     gtk_widget_show(main_window);
+    gtk_widget_set_sensitive(GTK_WIDGET(btn_run), TRUE);
 }
 
 // Ok

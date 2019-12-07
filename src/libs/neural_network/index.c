@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "index.h"
 #include "neuralnetwork.h"
 #include <SDL/SDL.h>
 #include "../image_segmentation/index.h"
-#include "math.h"
 
-int nb_fonts = 2; //15;
+int nb_fonts = 4; //15;
 
 int nb_results = 74; //74;
 char result_elements[] = {
@@ -67,7 +65,7 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
     // Save all images into an array
     double **models = malloc(sizeof(char *) * nb_fonts * nb_results);
 
-    char paths[] = "src/assets/trainang/font-01/letter000.bmp";
+    char paths[] = "src/assets/training/font-01/letter000.bmp";
 
     int index_in = 0;
     for (size_t m = 0; m < nb_fonts; m++) {

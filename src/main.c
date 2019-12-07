@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     load_neural_network(n);
 
     // Check if we want the interface
-    //printf("%c",get_letter_by_image(SDL_LoadBMP("src/assets/trainang/font-01")));
+    //printf("%c",get_letter_by_image(SDL_LoadBMP("src/assets/training/font-01")));
     //training(74,4,100,1);
 
     init_interface(argc, argv);

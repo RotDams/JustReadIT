@@ -79,7 +79,8 @@ void build_paragraph(List lines, char **content) {
 }
 
 char *build_text(char *path) {
-    if (save_letter) {
+    extern int must_save_letter;
+    if (must_save_letter) {
         filesname[6] = '0';
         filesname[7] = '0';
         filesname[8] = '0';
