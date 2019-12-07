@@ -69,7 +69,7 @@ List get_letters(SDL_Surface *image) {
 List get_words_and_letters(SDL_Surface *image) {
 
     // Remove all white excess and get space
-    image = get_all_text(image, 10);
+    image = get_all_text(image, 50);
     int space_limite = get_words_space(image);
     space_limite -= (int) (space_limite * 0.4);
 

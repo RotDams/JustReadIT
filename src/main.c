@@ -17,6 +17,8 @@ int main(int argc, char *argv[]) {
     //training(74,4,100,1);
 
     init_interface(argc, argv);
-    return 0;
 
+
+
+    return 0;
 }
