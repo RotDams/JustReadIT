@@ -14,35 +14,28 @@ typedef struct node
     struct node* next;
 }node;
 
-
-char* dictionary =  "/home/damien.champeyroux/Downloads/dictionary.txt";
-char* word = "incredible";
-
-
-bool check(const char* word);
-
-bool load(const char* dictionary);
+// link to the dico
+char* dictionary =  "src/libs/dictionary_correction/dictionary.txt";
 
 node* hashtable[HASH_SIZE];
-
-int hash_function(const char* word);
 
 int number_of_words = 0;
 
 
-int is_in_dictionary(char* word)
+int hash_function(const char* word)
 {
-    bool loaded = load(dictionary);
+    int sum = 0;
+    int word_length = strlen(word);
 
-    if (!loaded){
-        printf("Fail dictionary loading");
-        return 1;
-    }
-    return check(word);
+    for (int i = 0; i < word_length; i++)
+        sum += word[i];
+
+    int bucket = sum % HASH_SIZE;
+    return bucket;
 }
 
 
-bool check(const char* word)
+bool check_in_dictionary(const char* word)
 {
     int word_length = strlen(word);
     char lower_word[LENGTH+1];
@@ -67,7 +60,7 @@ bool check(const char* word)
 }
 
 
-bool load(const char* dictionary)
+bool load()
 {
     for(int i = 0; i < HASH_SIZE; i++)
         hashtable[i] = NULL;
@@ -94,20 +87,6 @@ bool load(const char* dictionary)
     fclose(the_dictionary);
     return true;
 }
-
-int hash_function(const char* word)
-{
-    int sum = 0;
-    int word_length = strlen(word);
-
-    for (int i = 0; i < word_length; i++)
-        sum += word[i];
-
-    int bucket = sum % HASH_SIZE;
-    return bucket;
-}
-
-//is_in_dictionary(word))
 
 
 
