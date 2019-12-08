@@ -106,7 +106,6 @@ List get_paragraphs_and_lines(SDL_Surface *image, int paragraphJumpSpace) {
 	SDL_Surface *new_img = cut_image(image, 0, saved_index, image->w, index - saved_index);
 	List l = get_words_and_letters(new_img);
 	line = push_back_list(line, (void *) l, LineType);
-	List f = (List) line->first->value;
 
 	paragraphs = push_back_list(paragraphs, (void *) line, ParagraphType);
 

@@ -4,8 +4,8 @@
 #include <SDL/SDL.h>
 #include "../image_segmentation/index.h"
 
-extern int nb_fonts;
-extern int nb_results;
+extern size_t nb_fonts;
+extern size_t nb_results;
 
 char result_elements[] = {
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
