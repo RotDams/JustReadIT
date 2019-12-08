@@ -18,6 +18,7 @@ GtkTextView *textView;
 
 GtkButton *result_btn_cancel;
 GtkButton *result_btn_save;
+GtkButton *home_close_button;
 
 // The spinner on the home screen
 GtkSpinner *home_spinner;
@@ -33,6 +34,8 @@ PresentationState dev_mode = {
         .is_active = 0,
         .data = {0, 0, 0, 0, 0, 0}
 };
+
+PresentationState *presentationState = &dev_mode;
 
 int must_save_letter = 0;
 int must_rotate_image = 0;
@@ -61,6 +64,7 @@ void init_interface(int argc, char *argv[]) {
 
 
     textView = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "text_view"));
+    gtk_text_view_set_wrap_mode(textView, GTK_WRAP_WORD_CHAR);
     fileChooserButton = GTK_FILE_CHOOSER(gtk_builder_get_object(builder, "file_chooser"));
     img_selected = GTK_IMAGE(gtk_builder_get_object(builder, "img_selected"));
     home_spinner = GTK_SPINNER(gtk_builder_get_object(builder, "home_spinner"));
@@ -68,6 +72,7 @@ void init_interface(int argc, char *argv[]) {
     home_rotate_image_check_btn = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "home_rotate_image_check_btn"));
     home_save_letters_check_btn = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "home_save_letters_check_btn"));
     home_remove_bg_check_btn = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "home_remove_bg_check_btn"));
+    home_close_button = GTK_BUTTON(gtk_builder_get_object(builder, "home_close_button"));
 
     // Connects windows and buttons
     g_signal_connect(main_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -75,6 +80,7 @@ void init_interface(int argc, char *argv[]) {
     g_signal_connect(fileChooserButton, "selection_changed", G_CALLBACK(home_selection_changed), NULL);
     g_signal_connect(result_btn_cancel, "clicked", G_CALLBACK(result_btn_cancel_clicked), NULL);
     g_signal_connect(result_btn_save, "clicked", G_CALLBACK(result_btn_save_clicked), NULL);
+    g_signal_connect(home_close_button, "clicked", G_CALLBACK(gtk_main_quit), NULL);
 
     gtk_builder_connect_signals(builder, NULL);
     gtk_widget_show(main_window);
@@ -92,9 +98,13 @@ void btn_run_clicked() {
 
     // If the toggle button is actived
     if (gtk_toggle_button_get_active(home_show_steps_check_btn) == TRUE) {
-        dev_mode.is_active = 1;
-        for (int i = 0; i < dev_mode.size; i++) {
-            dev_mode.data[i] = 1;
+        presentationState->is_active = 1;
+        presentationState->data[0] = 1;
+        presentationState->data[1] = 2;
+    } else {
+        presentationState->is_active = 0;
+        for (int i = 0; i < presentationState->size; i++) {
+            presentationState->data[i] = 0;
         }
     }
 
@@ -147,7 +157,7 @@ void home_selection_changed() {
     // Get the new image from the file chooser picker
     char *path = gtk_file_chooser_get_filename(fileChooserButton);
 
-    GtkImage *img = GTK_IMAGE(gtk_image_new_from_file (path));
+    GtkImage *img = GTK_IMAGE(gtk_image_new_from_file(path));
     GdkPixbuf *pixbuf = gtk_image_get_pixbuf(img);
 
     pixbuf = gdk_pixbuf_scale_simple(pixbuf, 480, 360, GDK_INTERP_BILINEAR);

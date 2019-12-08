@@ -59,7 +59,7 @@ char get_letter_by_image(SDL_Surface *image) {
     return result_elements[result];
 }
 
-void training(size_t len, size_t nb_layer, size_t hidden, int load) {
+void training(size_t len, size_t nb_layer, size_t hidden, int load, int save) {
 
 
     // Save all images into an array
@@ -106,7 +106,6 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
         size_t nb_neurons_per_layer[] = {nb_input, hidden, hidden, nb_output};
 
         init(n, nb_layer, nb_neurons_per_layer);
-        save_neural_network(n);
     }
 
     // learning rate
@@ -133,13 +132,20 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
         backpropagation(n, coef);
 
         // Print th result of the last test
+        if (result_elements[k % nb_results] != result_elements[result])
+            printf("\033[1;31m");
+        else
+            printf("\033[0;36m");
+
         printf("(%zu) Expected : %c  ", i, result_elements[k % nb_results]);
         printf("result : %c   |   <input>: %i \n", result_elements[result], k);
-
+        printf("\033[0m");
         // All 1000 call, save th network into a file
-        if (i % 1000 == 0)
+        if (i % 1000 == 0 && save)
             save_neural_network(n);
     }
-    save_neural_network(n);
+
+    if (save)
+        save_neural_network(n);
 }
 
