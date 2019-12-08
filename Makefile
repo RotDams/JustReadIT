@@ -6,12 +6,18 @@ HEADER      = $(SOURCE:.c=.h)
 OUT         = JustReadIT.exe
 CC          = gcc
 FLAGS       = -O0
-CFLAGS      = -Wall -Wextra -Werror -O3 -g
-SDL_FLAGS   = `sdl-config --cflags --libs`
 
+CFLAGS      =  -g `pkg-config --cflags gtk+-3.0` #-Wall -Wextra -Werror -O3
+SDL_FLAGS   = `sdl-config --cflags --libs` -lSDL_image -lSDL_gfx `pkg-config --libs gtk+-3.0`
+CPPFLAGS= `pkg-config --cflags sdl` -MMD `pkg-config --libs gtk+-3.0`
+LDLIBS= `pkg-config --libs sdl` -lSDL_image -lSDL_gfx `pkg-config --libs gtk+-3.0`
+
+
+CPPFLAGS= `pkg-config --cflags sdl` -MMD
+LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
 all: $(OBJS)
-	$(CC) $(FLAGS) -g $(OBJS) -o $(OUT) $(SDL_FLAGS) -lm -ldl
+	$(CC) $(FLAGS) -g $(OBJS) -o $(OUT) ${SDL_FLAGS} -lm -ldl
 
 _build/%.o: %.c
 	mkdir -p $(dir $@)

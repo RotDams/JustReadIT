@@ -1,6 +1,7 @@
 #ifndef JUSTREADIT_XOR_INDEX_H
 #define JUSTREADIT_XOR_INDEX_H
 
+#include "SDL/SDL.h"
 /* xor_neural_network
  * Input:
  *      - nb_iteration: int (the number of iteration)
@@ -10,6 +11,7 @@
  * - Description:
  *      - Do the xor function for x iteration in the neural network
  * */
-void xor_neural_network(int nb_iteration, int must_load, int must_save);
+void training(size_t len , size_t nb_layer,size_t hidden,int load);
 
+char get_letter_by_image(SDL_Surface *image);
 #endif //JUSTREADIT_XOR_INDEX_H

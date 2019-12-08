@@ -1,5 +1,5 @@
-#ifndef JUSTREADIT_INDEX_H
-#define JUSTREADIT_INDEX_H
+#ifndef JUSTREADIT_LIST_INDEX_H
+#define JUSTREADIT_LIST_INDEX_H
 
 // ================================
 // Type definition
@@ -17,7 +17,10 @@ typedef enum {
     ParagraphType,
     LineType,
     WordType,
-    LetterType
+    LetterType,
+    NeuronType,
+    LinkType,
+    LayerType
 } ListElementType;
 
 /* Node
@@ -164,7 +167,7 @@ List pop_front_list(List list);
  * Description:
  *      - return an element by its id
  * */
-Node get_element_by_index(List list, int i);
+Node *get_element_by_index(List list, int i);
 
 /* print_list
  * Input:
