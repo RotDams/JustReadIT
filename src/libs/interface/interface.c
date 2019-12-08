@@ -34,6 +34,8 @@ PresentationState dev_mode = {
         .data = {0, 0, 0, 0, 0, 0}
 };
 
+PresentationState *presentationState = &dev_mode;
+
 int must_save_letter = 0;
 int must_rotate_image = 0;
 int must_remove_bg = 0;
@@ -92,9 +94,13 @@ void btn_run_clicked() {
 
     // If the toggle button is actived
     if (gtk_toggle_button_get_active(home_show_steps_check_btn) == TRUE) {
-        dev_mode.is_active = 1;
-        for (int i = 0; i < dev_mode.size; i++) {
-            dev_mode.data[i] = 1;
+        presentationState->is_active = 1;
+        presentationState->data[0] = 1;
+        presentationState->data[1] = 2;
+    } else {
+        presentationState->is_active = 0;
+        for (int i = 0; i < presentationState->size; i++) {
+            presentationState->data[i] = 0;
         }
     }
 
@@ -147,7 +153,7 @@ void home_selection_changed() {
     // Get the new image from the file chooser picker
     char *path = gtk_file_chooser_get_filename(fileChooserButton);
 
-    GtkImage *img = GTK_IMAGE(gtk_image_new_from_file (path));
+    GtkImage *img = GTK_IMAGE(gtk_image_new_from_file(path));
     GdkPixbuf *pixbuf = gtk_image_get_pixbuf(img);
 
     pixbuf = gdk_pixbuf_scale_simple(pixbuf, 480, 360, GDK_INTERP_BILINEAR);
