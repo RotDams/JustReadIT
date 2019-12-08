@@ -26,6 +26,7 @@ GtkSpinner *home_spinner;
 GtkToggleButton *home_show_steps_check_btn;
 GtkToggleButton *home_rotate_image_check_btn;
 GtkToggleButton *home_save_letters_check_btn;
+GtkToggleButton *home_remove_bg_check_btn;
 
 PresentationState dev_mode = {
         .size = 6,
@@ -35,6 +36,7 @@ PresentationState dev_mode = {
 
 int must_save_letter = 0;
 int must_rotate_image = 0;
+int must_remove_bg = 0;
 
 void init_interface(int argc, char *argv[]) {
     // Init gtk
@@ -65,6 +67,7 @@ void init_interface(int argc, char *argv[]) {
     home_show_steps_check_btn = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "home_show_steps_check_btn"));
     home_rotate_image_check_btn = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "home_rotate_image_check_btn"));
     home_save_letters_check_btn = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "home_save_letters_check_btn"));
+    home_remove_bg_check_btn = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "home_remove_bg_check_btn"));
 
     // Connects windows and buttons
     g_signal_connect(main_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -98,6 +101,7 @@ void btn_run_clicked() {
 
     must_save_letter = gtk_toggle_button_get_active(home_save_letters_check_btn);
     must_rotate_image = gtk_toggle_button_get_active(home_rotate_image_check_btn);
+    must_remove_bg = gtk_toggle_button_get_active(home_remove_bg_check_btn);
 
     // Get the file to do the segmentation
     char *path = gtk_file_chooser_get_filename(fileChooserButton);
@@ -187,7 +191,7 @@ int gtk_get_file_to_save(char **filename) {
 void result_btn_cancel_clicked() {
     gtk_widget_hide(result_window);
     gtk_widget_show(main_window);
-    gtk_widget_set_sensitive(GTK_WIDGET(btn_run), TRUE);
+    // gtk_widget_set_sensitive(GTK_WIDGET(btn_run), TRUE);
 }
 
 // Ok

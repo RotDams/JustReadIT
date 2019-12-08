@@ -11,7 +11,7 @@
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">JustReadIT - OCR</property>
     <property name="resizable">False</property>
-    <property name="default_width">800</property>
+    <property name="default_width">850</property>
     <property name="default_height">400</property>
     <property name="icon">../../../public/justreadit.png</property>
     <child>
@@ -67,7 +67,7 @@
             </child>
           </object>
           <packing>
-            <property name="x">300</property>
+            <property name="x">350</property>
           </packing>
         </child>
         <child>
@@ -84,7 +84,7 @@
           </object>
           <packing>
             <property name="x">50</property>
-            <property name="y">125</property>
+            <property name="y">155</property>
           </packing>
         </child>
         <child>
@@ -103,7 +103,7 @@
           <object class="GtkCheckButton" id="home_show_steps_check_btn">
             <property name="label" translatable="yes">Show Steps</property>
             <property name="width_request">95</property>
-            <property name="height_request">20</property>
+            <property name="height_request">30</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
@@ -119,7 +119,7 @@
           <object class="GtkCheckButton" id="home_rotate_image_check_btn">
             <property name="label" translatable="yes">Auto  Rotate</property>
             <property name="width_request">95</property>
-            <property name="height_request">20</property>
+            <property name="height_request">30</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
@@ -128,14 +128,14 @@
           </object>
           <packing>
             <property name="x">150</property>
-            <property name="y">135</property>
+            <property name="y">145</property>
           </packing>
         </child>
         <child>
           <object class="GtkCheckButton" id="home_save_letters_check_btn">
             <property name="label" translatable="yes">Save Letters</property>
             <property name="width_request">95</property>
-            <property name="height_request">20</property>
+            <property name="height_request">30</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
@@ -144,7 +144,23 @@
           </object>
           <packing>
             <property name="x">150</property>
-            <property name="y">155</property>
+            <property name="y">205</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="home_remove_bg_check_btn">
+            <property name="label" translatable="yes">Remove Background</property>
+            <property name="width_request">95</property>
+            <property name="height_request">30</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="margin_left">5</property>
+            <property name="draw_indicator">True</property>
+          </object>
+          <packing>
+            <property name="x">150</property>
+            <property name="y">175</property>
           </packing>
         </child>
       </object>

@@ -144,35 +144,23 @@ void put_pixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel) {
 }
 
 // Check and correct if black pixel are solo into the image
-SDL_Surface *correct_image(SDL_Surface *image, int Seuil) {
+SDL_Surface *correct_image(SDL_Surface *image, double threshold) {
     Uint8 r, g, b;
     int bool;
 
     // Browse the current image
-    for (int x = 2; x < image->w - 2; ++x) {
-        for (int y = 2; y < image->h - 2; ++y) {
+    for (int x = 1; x < image->w; x++) {
+        for (int y = 1; y < image->h; y++) {
 
             // Pick the current pixel color
             SDL_GetRGB(get_pixel(image, x, y), image->format, &r, &g, &b);
 
             // if the pixel is black check around and count the others black pixels
-            if ((r <= Seuil && g <= Seuil && b <= Seuil)) {
-                bool = 0;
-                for (int i = x - 2; i <= x + 2; ++i) {
-                    for (int j = y - 2; j <= y + 2; ++j) {
-                        SDL_GetRGB(get_pixel(image, i, j), image->format, &r, &g, &b);
-                        if ((r <= Seuil && g <= Seuil && b <= Seuil)) {
-                            bool += 1;
-                        }
-                    }
-                }
-                // if there is less that 4 black pixel around, make it white
-                if (bool < 5)
-                    put_pixel(image, x, y, SDL_MapRGBA(image->format, 255, 255, 255, 255));
-            }
+            if ((r >= threshold || g >= threshold || b >= threshold))
+                put_pixel(image, x, y, SDL_MapRGBA(image->format, 255, 255, 255, 255));
         }
     }
-    return image;
+    return get_all_text(image, 3);
 }
 
 
