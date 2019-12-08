@@ -7,7 +7,7 @@ NeuralNetwork net;
 NeuralNetwork *n = &net;
 Bool save_letter = false;
 
-int nb_fonts = 21;
+int nb_fonts = 22;
 int nb_results = 74;
 
 int main(int argc, char *argv[]) {
