@@ -142,7 +142,6 @@ void put_pixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel) {
 // Check and correct if black pixel are solo into the image
 SDL_Surface *correct_image(SDL_Surface *image, double threshold) {
     Uint8 r, g, b;
-    int bool;
 
     // Browse the current image
     for (int x = 1; x < image->w; x++) {
