@@ -176,6 +176,7 @@ void show_image(SDL_Surface *image, int id) {
 
         SDL_SetVideoMode(0, 0, 0, 0);
         SDL_FreeSurface(screen_surface);
+        SDL_Quit();
     }
 }
 
