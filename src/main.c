@@ -2,6 +2,7 @@
 #include "libs/image_segmentation/rotation.h"
 #include "libs/interface/interface.h"
 #include "libs/neural_network/neuralnetwork.h"
+#include "libs/dictionary_correction/dictionary.h"
 
 NeuralNetwork net;
 NeuralNetwork *n = &net;
@@ -58,6 +59,12 @@ int main(int argc, char *argv[]) {
         else
             printf("Error: Please specify the some arguments:\n -t to do the training\n -l to load the ocr file\n -s to save the ocr\n");
     }
+//
+//    load_dictionary("dictionary.txt");
+//
+//    printf("%i\n",check_in_dictionary("game"));
+//    printf("%i\n",check_in_dictionary("gaegeagame"));
+//
 
     return 0;
 }
