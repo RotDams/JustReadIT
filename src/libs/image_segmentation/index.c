@@ -1,23 +1,45 @@
 #include "index.h"
 #include "utils.h"
 #include <string.h>
+#include "../neural_network/index.h"
+#include "../../main.h"
 
 //Keep the List of all bmp words
 List image_segmentation(char *image_path) {
-    SDL_Surface *image = extract_text(image_path, 20);
+    SDL_Surface *image = extract_text(image_path, 150);
     List paragraphs = get_paragraphs(image);
+    SDL_Quit();
     return paragraphs;
 }
 
-
-
+char filesname[] = "letter000.bmp";
+extern Bool save_letter;
 
 void build_word(List letters, char **content) {
     Node *letter = letters->first;
 
     while (letter != NULL) {
-        char *new_content = "x";
-        *content = strcat(*content, new_content);
+
+        extern int must_save_letter;
+        if (must_save_letter)
+            SDL_SaveBMP((SDL_Surface *) (letter->value), filesname);
+
+        //save the letter
+        if (must_save_letter) {
+            if (filesname[8] == '9') {
+                filesname[8] = '0';
+                filesname[7]++;
+            } else if (filesname[7] == '9') {
+                filesname[7] = '0';
+                filesname[6]++;
+            } else filesname[8]++;
+
+        }
+
+        char new_content = get_letter_by_image((SDL_Surface *) (letter->value));
+        char *c = calloc(2, sizeof(char));
+        c[0] = new_content;
+        *content = strcat(*content, c);
 
         // Get the next elements
         letter = letter->next;
@@ -40,6 +62,7 @@ void build_line(List words, char **content) {
         word = word->next;
     }
 }
+
 void build_paragraph(List lines, char **content) {
     Node *line = lines->first;
 
@@ -48,6 +71,7 @@ void build_paragraph(List lines, char **content) {
         build_line((List) line->value, &new_content);
 
         *content = strcat(*content, new_content);
+        *content = strcat(*content, "\n");
 
         // Get the next elements
         line = line->next;
@@ -55,6 +79,12 @@ void build_paragraph(List lines, char **content) {
 }
 
 char *build_text(char *path) {
+    extern int must_save_letter;
+    if (must_save_letter) {
+        filesname[6] = '0';
+        filesname[7] = '0';
+        filesname[8] = '0';
+    }
     List paragraphs = image_segmentation(path);
     char *content = calloc(1000000, sizeof(char));
     Node *paragraph = paragraphs->first;

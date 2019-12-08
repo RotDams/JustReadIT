@@ -22,7 +22,11 @@ GtkButton *result_btn_save;
 // The spinner on the home screen
 GtkSpinner *home_spinner;
 
+// the 3 toggle btn
 GtkToggleButton *home_show_steps_check_btn;
+GtkToggleButton *home_rotate_image_check_btn;
+GtkToggleButton *home_save_letters_check_btn;
+GtkToggleButton *home_remove_bg_check_btn;
 
 PresentationState dev_mode = {
         .size = 6,
@@ -30,6 +34,9 @@ PresentationState dev_mode = {
         .data = {0, 0, 0, 0, 0, 0}
 };
 
+int must_save_letter = 0;
+int must_rotate_image = 0;
+int must_remove_bg = 0;
 
 void init_interface(int argc, char *argv[]) {
     // Init gtk
@@ -58,6 +65,9 @@ void init_interface(int argc, char *argv[]) {
     img_selected = GTK_IMAGE(gtk_builder_get_object(builder, "img_selected"));
     home_spinner = GTK_SPINNER(gtk_builder_get_object(builder, "home_spinner"));
     home_show_steps_check_btn = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "home_show_steps_check_btn"));
+    home_rotate_image_check_btn = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "home_rotate_image_check_btn"));
+    home_save_letters_check_btn = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "home_save_letters_check_btn"));
+    home_remove_bg_check_btn = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "home_remove_bg_check_btn"));
 
     // Connects windows and buttons
     g_signal_connect(main_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -88,6 +98,11 @@ void btn_run_clicked() {
         }
     }
 
+
+    must_save_letter = gtk_toggle_button_get_active(home_save_letters_check_btn);
+    must_rotate_image = gtk_toggle_button_get_active(home_rotate_image_check_btn);
+    must_remove_bg = gtk_toggle_button_get_active(home_remove_bg_check_btn);
+
     // Get the file to do the segmentation
     char *path = gtk_file_chooser_get_filename(fileChooserButton);
 
@@ -111,7 +126,7 @@ void btn_run_clicked() {
 
 
 // Ok
-void home_selection_changed() {
+void home_selection_changed2() {
     // Get the new image from the file chooser picker
     char *path = gtk_file_chooser_get_filename(fileChooserButton);
 
@@ -123,6 +138,22 @@ void home_selection_changed() {
 
     // Set the image on the screen
     gtk_image_set_from_pixbuf(img_selected, pixbuf);
+
+    // We have at least 1 file. So we can and must active the button
+    gtk_widget_set_sensitive(GTK_WIDGET(btn_run), TRUE);
+}
+
+void home_selection_changed() {
+    // Get the new image from the file chooser picker
+    char *path = gtk_file_chooser_get_filename(fileChooserButton);
+
+    GtkImage *img = GTK_IMAGE(gtk_image_new_from_file (path));
+    GdkPixbuf *pixbuf = gtk_image_get_pixbuf(img);
+
+    pixbuf = gdk_pixbuf_scale_simple(pixbuf, 480, 360, GDK_INTERP_BILINEAR);
+
+    gtk_image_set_from_pixbuf(img_selected, pixbuf);
+
 
     // We have at least 1 file. So we can and must active the button
     gtk_widget_set_sensitive(GTK_WIDGET(btn_run), TRUE);
@@ -160,6 +191,7 @@ int gtk_get_file_to_save(char **filename) {
 void result_btn_cancel_clicked() {
     gtk_widget_hide(result_window);
     gtk_widget_show(main_window);
+    // gtk_widget_set_sensitive(GTK_WIDGET(btn_run), TRUE);
 }
 
 // Ok

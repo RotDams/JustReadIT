@@ -13,5 +13,5 @@
  * */
 void training(size_t len , size_t nb_layer,size_t hidden,int load);
 
-char get_letter(SDL_Surface *image);
+char get_letter_by_image(SDL_Surface *image);
 #endif //JUSTREADIT_XOR_INDEX_H

@@ -1,72 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "index.h"
 #include "neuralnetwork.h"
 #include <SDL/SDL.h>
 #include "../image_segmentation/index.h"
-#include "math.h"
 
-char *path[] = {
-        "src/assets/training/up_letter/A.bmp",
-        "src/assets/training/up_letter/B.bmp",
-        "src/assets/training/up_letter/C.bmp",
-        "src/assets/training/up_letter/D.bmp",
-        "src/assets/training/up_letter/E.bmp",
-        "src/assets/training/up_letter/F.bmp",
-        "src/assets/training/up_letter/G.bmp",
-        "src/assets/training/up_letter/H.bmp",
-        "src/assets/training/up_letter/I.bmp",
-        "src/assets/training/up_letter/J.bmp",
-        "src/assets/training/up_letter/K.bmp",
-        "src/assets/training/up_letter/L.bmp",
-        "src/assets/training/up_letter/M.bmp",
-        "src/assets/training/up_letter/N.bmp",
-        "src/assets/training/up_letter/O.bmp",
-        "src/assets/training/up_letter/P.bmp",
-        "src/assets/training/up_letter/Q.bmp",
-        "src/assets/training/up_letter/R.bmp",
-        "src/assets/training/up_letter/S.bmp",
-        "src/assets/training/up_letter/T.bmp",
-        "src/assets/training/up_letter/U.bmp",
-        "src/assets/training/up_letter/V.bmp",
-        "src/assets/training/up_letter/W.bmp",
-        "src/assets/training/up_letter/X.bmp",
-        "src/assets/training/up_letter/Y.bmp",
-        "src/assets/training/up_letter/Z.bmp",
-        "src/assets/training/down_letter/a.bmp",
-        "src/assets/training/down_letter/b.bmp",
-        "src/assets/training/down_letter/c.bmp",
-        "src/assets/training/down_letter/d.bmp",
-        "src/assets/training/down_letter/e.bmp",
-        "src/assets/training/down_letter/f.bmp",
-        "src/assets/training/down_letter/g.bmp",
-        "src/assets/training/down_letter/h.bmp",
-        "src/assets/training/down_letter/i.bmp",
-        "src/assets/training/down_letter/j.bmp",
-        "src/assets/training/down_letter/k.bmp",
-        "src/assets/training/down_letter/l.bmp",
-        "src/assets/training/down_letter/m.bmp",
-        "src/assets/training/down_letter/n.bmp",
-        "src/assets/training/down_letter/o.bmp",
-        "src/assets/training/down_letter/p.bmp",
-        "src/assets/training/down_letter/q.bmp",
-        "src/assets/training/down_letter/r.bmp",
-        "src/assets/training/down_letter/s.bmp",
-        "src/assets/training/down_letter/t.bmp",
-        "src/assets/training/down_letter/u.bmp",
-        "src/assets/training/down_letter/v.bmp",
-        "src/assets/training/down_letter/w.bmp",
-        "src/assets/training/down_letter/x.bmp",
-        "src/assets/training/down_letter/y.bmp",
-        "src/assets/training/down_letter/z.bmp",
-};
+extern int nb_fonts;
+extern int nb_results;
 
 char result_elements[] = {
-      'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
-    'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
-  'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
-'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-'s', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+        'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+        'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+        'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+        's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3',
+        '4', '5', '6', '7', '8', '9', '.', ';', ':', '!', '?',
+        '\'', '(', ')', '[', ']', '-', '%'
 };
 
 double *get_matrix(SDL_Surface *image) {
@@ -78,14 +26,14 @@ double *get_matrix(SDL_Surface *image) {
     Uint8 r, g, b;
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < length; j++) {
-            if (i >= image->h || j >= image->h) {
+            if (i >= image->w || j >= image->h) {
                 array[i * length + j] = 0;
             } else {
                 Uint32 pixel = (get_pixel(image, i, j));
                 SDL_GetRGB(pixel, image->format, &r, &b, &g);
 
                 // if the pixel is black ->1 else -> 0
-                if (r < 15 && g < 15 && b < 15)
+                if (r < 240 && g < 240 && b < 240)
                     array[i * length + j] = 1;
                 else
                     array[i * length + j] = 0;
@@ -95,83 +43,53 @@ double *get_matrix(SDL_Surface *image) {
     return array;
 }
 
-char get_letter(SDL_Surface *image) {
-
-
-
+char get_letter_by_image(SDL_Surface *image) {
     // Load or init the NeuralNetwork
-    NeuralNetwork network;
-    NeuralNetwork *n = &network;
-    load_neural_network(n);
+    extern NeuralNetwork *n;
+    double *yes = get_matrix(image);
 
-    size_t result= run(n, get_matrix(image));
-
+    /*for (int i = 0; i < 32; i++) {
+        for (int j = 0; j < 32; j++) {
+            printf("%.0f.", yes[j * 32 + i]);
+        }
+        printf("\n");
+    }*/
+//    printf("\n\n\n\n");
+    size_t result = run(n, yes);
     return result_elements[result];
 }
 
 void training(size_t len, size_t nb_layer, size_t hidden, int load) {
 
-    // All paths for tests images
-    char *path[] = {
-            "src/assets/training/up_letter/A.bmp",
-            "src/assets/training/up_letter/B.bmp",
-            "src/assets/training/up_letter/C.bmp",
-            "src/assets/training/up_letter/D.bmp",
-            "src/assets/training/up_letter/E.bmp",
-            "src/assets/training/up_letter/F.bmp",
-            "src/assets/training/up_letter/G.bmp",
-            "src/assets/training/up_letter/H.bmp",
-            "src/assets/training/up_letter/I.bmp",
-            "src/assets/training/up_letter/J.bmp",
-            "src/assets/training/up_letter/K.bmp",
-            "src/assets/training/up_letter/L.bmp",
-            "src/assets/training/up_letter/M.bmp",
-            "src/assets/training/up_letter/N.bmp",
-            "src/assets/training/up_letter/O.bmp",
-            "src/assets/training/up_letter/P.bmp",
-            "src/assets/training/up_letter/Q.bmp",
-            "src/assets/training/up_letter/R.bmp",
-            "src/assets/training/up_letter/S.bmp",
-            "src/assets/training/up_letter/T.bmp",
-            "src/assets/training/up_letter/U.bmp",
-            "src/assets/training/up_letter/V.bmp",
-            "src/assets/training/up_letter/W.bmp",
-            "src/assets/training/up_letter/X.bmp",
-            "src/assets/training/up_letter/Y.bmp",
-            "src/assets/training/up_letter/Z.bmp",
-            "src/assets/training/down_letter/a.bmp",
-            "src/assets/training/down_letter/b.bmp",
-            "src/assets/training/down_letter/c.bmp",
-            "src/assets/training/down_letter/d.bmp",
-            "src/assets/training/down_letter/e.bmp",
-            "src/assets/training/down_letter/f.bmp",
-            "src/assets/training/down_letter/g.bmp",
-            "src/assets/training/down_letter/h.bmp",
-            "src/assets/training/down_letter/i.bmp",
-            "src/assets/training/down_letter/j.bmp",
-            "src/assets/training/down_letter/k.bmp",
-            "src/assets/training/down_letter/l.bmp",
-            "src/assets/training/down_letter/m.bmp",
-            "src/assets/training/down_letter/n.bmp",
-            "src/assets/training/down_letter/o.bmp",
-            "src/assets/training/down_letter/p.bmp",
-            "src/assets/training/down_letter/q.bmp",
-            "src/assets/training/down_letter/r.bmp",
-            "src/assets/training/down_letter/s.bmp",
-            "src/assets/training/down_letter/t.bmp",
-            "src/assets/training/down_letter/u.bmp",
-            "src/assets/training/down_letter/v.bmp",
-            "src/assets/training/down_letter/w.bmp",
-            "src/assets/training/down_letter/x.bmp",
-            "src/assets/training/down_letter/y.bmp",
-            "src/assets/training/down_letter/z.bmp",
-    };
 
     // Save all images into an array
-    double **models = malloc(sizeof(char *) * len);
-    for (size_t m = 0; m < len; m++) {
-        SDL_Surface *image = SDL_LoadBMP(path[m]);
-        models[m] = get_matrix(image);
+    double **models = malloc(sizeof(char *) * nb_fonts * nb_results);
+
+    char paths[] = "src/assets/training/font-01/letter000.bmp";
+
+    int index_in = 0;
+    for (size_t m = 0; m < nb_fonts; m++) {
+        paths[36] = '0';
+        paths[35] = '0';
+
+        for (size_t m = 0; m < nb_results; m++) {
+
+
+            SDL_Surface *image = SDL_LoadBMP(paths);
+            models[index_in] = get_matrix(image);
+            index_in++;
+            if (paths[36] == '9') {
+                paths[36] = '0';
+                paths[35]++;
+            } else
+                paths[36]++;
+        }
+
+        if (paths[26] == '9') {
+            paths[26] = '0';
+            paths[25]++;
+        } else
+            paths[26]++;
     }
 
     // Array of 0
@@ -184,7 +102,7 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
         load_neural_network(n);
     else {
         size_t nb_input = 32 * 32;
-        size_t nb_output = len;
+        size_t nb_output = nb_results;
         size_t nb_neurons_per_layer[] = {nb_input, hidden, hidden, nb_output};
 
         init(n, nb_layer, nb_neurons_per_layer);
@@ -200,23 +118,23 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load) {
     for (size_t i = 1; i < 100000; i++) {
         for (size_t j = 0; j <= 10; j++) {
             // Random letter
-            k = random() % len;
+            k = random() % (nb_results * nb_fonts);
 
             // Expected response
-            expected[k] = (double) 1;
+            expected[k % nb_results] = (double) 1;
 
             // Update all errors and return result
             result = learn(n, models[k], expected);
 
             // Reset expected to 0
-            expected[k] = (double) 0;
+            expected[k % nb_results] = (double) 0;
         }
         // Update all links with the errors
         backpropagation(n, coef);
 
         // Print th result of the last test
-        printf("(%zu) Expected : %c  ", i, result_elements[k]);
-        printf("result : %c \n", result_elements[result]);
+        printf("(%zu) Expected : %c  ", i, result_elements[k % nb_results]);
+        printf("result : %c   |   <input>: %i \n", result_elements[result], k);
 
         // All 1000 call, save th network into a file
         if (i % 1000 == 0)
