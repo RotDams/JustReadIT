@@ -4,8 +4,8 @@
 #include <SDL/SDL.h>
 #include "../image_segmentation/index.h"
 
-extern size_t nb_fonts;
-extern size_t nb_results;
+extern int nb_fonts;
+extern int nb_results;
 
 char result_elements[] = {
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
@@ -68,11 +68,11 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load, int save) {
     char paths[] = "src/assets/training/font-01/letter000.bmp";
 
     int index_in = 0;
-    for (size_t m = 0; m < nb_fonts; m++) {
+    for (int m = 0; m < nb_fonts; m++) {
         paths[36] = '0';
         paths[35] = '0';
 
-        for (size_t m = 0; m < nb_results; m++) {
+        for (int m = 0; m < nb_results; m++) {
 
 
             SDL_Surface *image = SDL_LoadBMP(paths);
@@ -113,9 +113,9 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load, int save) {
 
     // Principal learn function
     int k = 0;
-    size_t result = 0;
-    for (size_t i = 1; i < 100000; i++) {
-        for (size_t j = 0; j <= 10; j++) {
+    int result = 0;
+    for (int i = 1; i < 100000; i++) {
+        for (int j = 0; j <= 10; j++) {
             // Random letter
             k = random() % (nb_results * nb_fonts);
 
@@ -137,7 +137,7 @@ void training(size_t len, size_t nb_layer, size_t hidden, int load, int save) {
         else
             printf("\033[0;36m");
 
-        printf("(%zu) Expected : %c  ", i, result_elements[k % nb_results]);
+        printf("(%u) Expected : %c  ", i, result_elements[k % nb_results]);
         printf("result : %c   |   <input>: %i \n", result_elements[result], k);
         printf("\033[0m");
         // All 1000 call, save th network into a file
