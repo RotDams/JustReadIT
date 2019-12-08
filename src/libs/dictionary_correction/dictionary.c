@@ -60,7 +60,7 @@ bool check_in_dictionary(const char* word)
 }
 
 
-bool load()
+bool load_dictionary()
 {
     for(int i = 0; i < HASH_SIZE; i++)
         hashtable[i] = NULL;

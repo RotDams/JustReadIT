@@ -4,5 +4,5 @@
 // check if the word is in the dictionary
 int check_in_dictionary(char* word);
 
-bool load();
+bool load_dictionary();
 #endif
