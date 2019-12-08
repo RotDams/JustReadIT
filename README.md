@@ -13,7 +13,7 @@ This software allows to extract a text from an image, and this through 3 process
 
 - [x] A segmentation of the image into paragraphs, lines, words and characters.
 
-- [ ] A recognition of each character through a neural network.
+- [x] A recognition of each character through a neural network.
 
 # Getting Started
 
@@ -24,6 +24,10 @@ These instructions will get you a copy of the project up and running on your mac
 - [SDL 1](https://www.libsdl.org/download-1.2.php)
 
 - [GTK 3](https://developer.gnome.org/gtk3/stable/)
+
+- [SDL_image](https://www.libsdl.org/projects/SDL_image/)
+
+- [SDL_gfx](http://www.ferzkopp.net/wordpress/2016/01/02/sdl_gfx-sdl2_gfx/)
 
 ## Installing
 
@@ -46,33 +50,27 @@ $ make
 
 Our program currently offers two main functions, segmentation and xor.
 
-### Segmentation
+### Complete OCR
 
-Segmentation is based on an image, so it is important to provide the link from the image to the program.
-This is to be done via the path parameter.
-
-```
-$ ./JustReadIt --path public/my_image.bmp
-```
-
-*The keyword `--path` can be reduced to `-p`.*
-
-You can also see the image during the segmentation. For this, you need to provide the `--dev` parameter. You can also just provide a `-d`.
+The complete OCR can be start easily, and help you by showing an UI. You can start it by just typing:
 
 ```
-$ ./JustReadIt --path public/my_image.bmp --dev
+$ ./JustReadIt
 ```
 
-### XOR
+### Trainning
 
-As XOR is only a step in discovering neural networks, it is not automatically launched.
-It is therefore necessary to use the `--xor` (or `-x`) flag.
+If you want, you can try the neural network. For it, just start the program with the -t flag.
+
+```
+$ ./JustReadIt -t
+```
  
  Our function can also take 3 optional parameters.
  
  - `--save` (or `-s`): if specify, the code will save the data of neural networks after working.
  - `--load` (or `-l`): if specify, the code will load the saved data of neural networks before working.
- - `--iteration x` (or `-i x`): if specify, the code will set the number of iteration to x. (default value: 1 000 000)
+ - `--fonts x` (or `-f x`): if specify, the code will set the number of font to x.
  
 
 

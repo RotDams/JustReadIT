@@ -1,6 +1,6 @@
 #include <err.h>
 #include <math.h>
-#include "../../main.h"
+#include "../image_segmentation/index.h"
 #include "utils.h"
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_rotozoom.h"
@@ -58,10 +58,6 @@ SDL_Surface *cut_image(SDL_Surface *Source, int startX, int startY, int W, int H
     cut.h = H;  // height
 
     SDL_BlitSurface(Source, &cut, screen, &pos);
-
-    // Save image, to allow user to see the image after manipulation
-    //  SDL_SaveBMP (screen, "ImageTest.bmp");      //TODO Debug mode
-
     return screen;
 }
 
@@ -165,27 +161,23 @@ SDL_Surface *correct_image(SDL_Surface *image, double threshold) {
 
 
 void show_image(SDL_Surface *image, int id) {
-    extern PresentationState dev_mode;
+    extern PresentationState *presentationState;
 
-    if (dev_mode.is_active == 0) {
+    if (presentationState->is_active == 0) {
         return;
     }
 
-    if (id != -1 && (id >= dev_mode.size || !dev_mode.data[id])) {
-        return;
-    } else {
-        if (id != -1)
-            dev_mode.data[id] = 0;
+    if (id == -1 || presentationState->data[id] != 0) {
+        SDL_Surface *screen_surface;
+
+        screen_surface = display_image(image);
+
+        wait_for_keypressed();
+
+        SDL_SetVideoMode(0, 0, 0, 0);
+        SDL_FreeSurface(screen_surface);
+        SDL_Quit();
     }
-
-    SDL_Surface *screen_surface;
-
-    screen_surface = display_image(image);
-
-    wait_for_keypressed();
-
-    SDL_SetVideoMode(0, 0, 0, 0);
-    SDL_FreeSurface(screen_surface);
 }
 
 void wait_for_keypressed() {

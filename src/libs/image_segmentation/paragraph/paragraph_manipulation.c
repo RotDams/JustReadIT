@@ -1,8 +1,8 @@
 #include <SDL/SDL.h>
 #include "paragraph_manipulation.h"
 #include "../utils.h"
-#include "../../list_manipulation/index.h"
 #include "../line/line_manipulation.h"
+#include "../index.h"
 
 
 int get_paragraph_space(SDL_Surface *image) {
@@ -42,7 +42,7 @@ int get_paragraph_space(SDL_Surface *image) {
 
 
 List get_paragraphs_and_lines(SDL_Surface *image, int paragraphJumpSpace) {
-
+    extern PresentationState *presentationState;
 	// Index to remind the start of the text
 	int saved_index = 0;
 
@@ -65,8 +65,9 @@ List get_paragraphs_and_lines(SDL_Surface *image, int paragraphJumpSpace) {
 				white_counter++;
 
 				// Here we can insert line on the list ?
-				SDL_Surface *new_img = cut_image(image, 0, saved_index, image->w, index - saved_index); //todo here
+				SDL_Surface *new_img = cut_image(image, 0, saved_index, image->w, index - saved_index);
 				show_image(new_img, 0);
+                presentationState->data[0] = 0;
 				List l = get_words_and_letters(new_img);
 				line = push_back_list(line, (void *) l, LineType);
 
@@ -102,7 +103,7 @@ List get_paragraphs_and_lines(SDL_Surface *image, int paragraphJumpSpace) {
 
 		}
 	}
-	SDL_Surface *new_img = cut_image(image, 0, saved_index, image->w, index - saved_index);//todo here
+	SDL_Surface *new_img = cut_image(image, 0, saved_index, image->w, index - saved_index);
 	List l = get_words_and_letters(new_img);
 	line = push_back_list(line, (void *) l, LineType);
 	List f = (List) line->first->value;

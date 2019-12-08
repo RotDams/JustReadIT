@@ -1,7 +1,8 @@
-#include "line_manipulation.h"
+#include <math.h>
 #include "../utils.h"
 #include "../../list_manipulation/index.h"
 #include "../segmentation.h"
+#include "../index.h"
 
 // take the space between 2 words
 int get_words_space(SDL_Surface *image) {
@@ -21,7 +22,7 @@ int get_words_space(SDL_Surface *image) {
                 min_count = count;
             count = 0;
         }
-    } // return the new limite
+    }
 
     if (min_count >= max_count - 5)
         return 666;
@@ -54,6 +55,7 @@ List get_letters(SDL_Surface *image) {
                 SDL_Surface *new_img = cut_image(image, save_index, 0, x - save_index, image->h);
                 new_img = get_all_text(new_img,50);
                 new_img = resize_image(new_img, 32);
+                show_image(SDL_ConvertSurface(new_img, new_img->format, SDL_SWSURFACE), 1);
                 letters_list = push_back_list(letters_list,
                                               (SDL_Surface *) new_img,
                                               LetterType);
@@ -67,6 +69,7 @@ List get_letters(SDL_Surface *image) {
 
 // Get a line and cut it in words
 List get_words_and_letters(SDL_Surface *image) {
+    extern PresentationState *presentationState;
 
     // Remove all white excess and get space
     image = get_all_text(image, 50);
@@ -97,9 +100,13 @@ List get_words_and_letters(SDL_Surface *image) {
             // Change the word to List of letters
             // and push it into the List
             SDL_Surface *new_img = cut_image(image, save_index, 0, x - save_index, image->h);
+            show_image(new_img, 1);
+
             words_list = push_back_list(words_list,
                                         (void *) get_letters(new_img),
                                         WordType);
+
+            presentationState->data[1] = fmax(0, presentationState->data[1] - 1);
             wait_for_black_column =1;
             save_index = x + 1;
             blank_count = 0;
