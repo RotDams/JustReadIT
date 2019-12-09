@@ -13,6 +13,14 @@ int nb_results = 74;
 
 int main(int argc, char *argv[]) {
 
+
+    load_dictionary("dictionary.txt");
+
+    printf("%i\n",check_in_dictionary("game"));
+    printf("%i\n",check_in_dictionary(""));
+
+    return 0;
+
     load_neural_network(n);
 
     if (argc == 1) {
@@ -59,12 +67,6 @@ int main(int argc, char *argv[]) {
         else
             printf("Error: Please specify the some arguments:\n -t to do the training\n -l to load the ocr file\n -s to save the ocr\n");
     }
-//
-//    load_dictionary("dictionary.txt");
-//
-//    printf("%i\n",check_in_dictionary("game"));
-//    printf("%i\n",check_in_dictionary("gaegeagame"));
-//
 
     return 0;
 }

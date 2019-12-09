@@ -34,19 +34,50 @@ int hash_function(const char* word)
     return bucket;
 }
 
+char* car_last = "]}),;.:!%?'";
+char* car_first = "[{(";
 
-bool check_in_dictionary(const char* word)
+bool is_last_char(char word){
+    bool b = false;
+    for (size_t i = 0; i <strlen(car_last); i++)
+        b = b || car_last[i] == word;
+    return b;
+}
+bool is_first_char(char word){
+    bool b = false;
+    for (size_t i = 0; i <strlen(car_first); i++)
+        b = b || car_first[i] == word;
+    return b;
+}
+
+bool check_in_dictionary(char* word)
 {
     int word_length = strlen(word);
     char lower_word[LENGTH+1];
+    bool b = true;
+    for (int j = 0; j < word_length && b ; j++)
+        b = b && isdigit(word[j]);
+
+    if (b)
+           return true;
+
     for (int i = 0; i < word_length; i++)
     {
         if(isupper(word[i]))
             lower_word[i] = tolower(word[i]) ;
         else
             lower_word[i] = word[i];
-
     }
+
+    if (is_last_char(word[word_length-1])){
+        word_length-=1;
+        word[word_length] = 0;
+    }
+    if (is_first_char(word[0])){
+        word_length-=1;
+        word = word+1;
+    }
+
     lower_word[word_length] = '\0';
     int bucket = hash_function(lower_word);
     node* cursor = hashtable[bucket];
