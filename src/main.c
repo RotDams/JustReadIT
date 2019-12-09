@@ -12,8 +12,6 @@ int nb_fonts = 22;
 int nb_results = 74;
 
 int main(int argc, char *argv[]) {
-
-
     load_neural_network(n);
     load_dictionary();
 
