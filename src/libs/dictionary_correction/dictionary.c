@@ -50,9 +50,11 @@ bool is_first_char(char word){
     return b;
 }
 
-bool check_in_dictionary(char* word)
+bool check_in_dictionary(char* word_to_check)
 {
-    int word_length = strlen(word);
+    int word_length = strlen(word_to_check);
+    char *word = calloc(word_length + 1, sizeof(char));
+    strcpy(word, word_to_check);
     char lower_word[LENGTH+1];
     bool b = true;
     for (int j = 0; j < word_length && b ; j++)

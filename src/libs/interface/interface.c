@@ -3,6 +3,7 @@
 #include <gtk/gtk.h>
 #include "interface.h"
 #include "../image_segmentation/index.h"
+#include "../dictionary_correction/dictionary.h"
 
 // The all window
 GtkWidget *main_window;
@@ -88,6 +89,52 @@ void init_interface(int argc, char *argv[]) {
     gtk_main();
 }
 
+GtkTextBuffer *get_colorized_text(char *text) {
+    GtkTextBuffer *buffer = gtk_text_view_get_buffer(textView);
+    GtkTextIter start;
+    GtkTextIter end;
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+    gtk_text_buffer_delete(buffer, &start, &end);
+
+    int i = 0;
+    char *temp = calloc(10000, sizeof(char));
+    while (text[i] != 0) {
+        if (text[i] == ' ' || text[i] == '\n') {
+            if (!check_in_dictionary(temp)) {
+                char *word = calloc(1000, sizeof(char));
+                strcat(word, "<span color=\"red\">");
+                strcat(word, temp);
+                strcat(word, "</span>");
+                char *w = calloc(2, sizeof(char));
+                w[0] = text[i];
+                w[1] = 0;
+                strcat(word, w);
+                gtk_text_buffer_insert_markup(buffer, &end, word, -1);
+
+            } else {
+                char *word = calloc(1000, sizeof(char));
+                strcat(word, temp);
+                char *w = calloc(2, sizeof(char));
+                w[0] = text[i];
+                w[1] = 0;
+                strcat(word, w);
+                gtk_text_buffer_insert(buffer, &end, word, -1);
+            }
+
+            free(temp);
+            temp = calloc(10000, sizeof(char));
+        } else {
+            char *w = calloc(2, sizeof(char));
+            w[0] = text[i];
+            w[1] = 0;
+            strcat(temp, w);
+        }
+        i++;
+    }
+    return buffer;
+}
+
 // Ok
 void btn_run_clicked() {
     // Show the spinner to explain that the process has started
@@ -120,9 +167,13 @@ void btn_run_clicked() {
     char *content = build_text(path);
 
     // Set the content of the text of the result window
-    GtkTextBuffer *buffer = gtk_text_view_get_buffer(textView);
-    gtk_text_buffer_set_text(buffer, content, -1);
+
+
+
+    GtkTextBuffer *buffer = get_colorized_text(content);
+
     gtk_text_view_set_buffer(textView, buffer);
+
 
     // Turn off the spinner
     gtk_spinner_stop(home_spinner);
@@ -134,24 +185,6 @@ void btn_run_clicked() {
     gtk_widget_hide(GTK_WIDGET(main_window));
 }
 
-
-// Ok
-void home_selection_changed2() {
-    // Get the new image from the file chooser picker
-    char *path = gtk_file_chooser_get_filename(fileChooserButton);
-
-    // Create an error variable to pass to the function witch get the image
-    GError *gerror;
-
-    // Create a pixpuf from a file. It will be 480x360 at max, and KEEP THE RATIO
-    GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file_at_size(path, 480, 360, &gerror);
-
-    // Set the image on the screen
-    gtk_image_set_from_pixbuf(img_selected, pixbuf);
-
-    // We have at least 1 file. So we can and must active the button
-    gtk_widget_set_sensitive(GTK_WIDGET(btn_run), TRUE);
-}
 
 void home_selection_changed() {
     // Get the new image from the file chooser picker
