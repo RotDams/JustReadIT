@@ -13,7 +13,6 @@ typedef struct node
     char word[LENGTH + 1];
     struct node* next;
 }node;
-
 // link to the dico
 char* dictionary =  "src/libs/dictionary_correction/dictionary.txt";
 

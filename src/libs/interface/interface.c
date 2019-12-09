@@ -63,7 +63,6 @@ void init_interface(int argc, char *argv[]) {
     // Disable the button in main window
     gtk_widget_set_sensitive(GTK_WIDGET(btn_run), FALSE);
 
-
     textView = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "text_view"));
     gtk_text_view_set_wrap_mode(textView, GTK_WRAP_WORD_CHAR);
     fileChooserButton = GTK_FILE_CHOOSER(gtk_builder_get_object(builder, "file_chooser"));
@@ -85,7 +84,6 @@ void init_interface(int argc, char *argv[]) {
 
     gtk_builder_connect_signals(builder, NULL);
     gtk_widget_show(main_window);
-
     gtk_main();
 }
 
@@ -154,8 +152,7 @@ void btn_run_clicked() {
             presentationState->data[i] = 0;
         }
     }
-
-
+    
     must_save_letter = gtk_toggle_button_get_active(home_save_letters_check_btn);
     must_rotate_image = gtk_toggle_button_get_active(home_rotate_image_check_btn);
     must_remove_bg = gtk_toggle_button_get_active(home_remove_bg_check_btn);
